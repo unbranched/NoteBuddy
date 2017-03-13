@@ -1,0 +1,107 @@
+<resources>
+    <!--Activities-->
+    <string name="app_name">NoteBuddy</string>
+    <string name="title_activity_notes">Your NoteBuddy</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_setup">Setup</string>
+    <string name="title_activity_create_note">Note</string>
+
+    <!-- System information -->
+    <string name="error_starting_app">Cannot start the application</string>
+    <string name="error_general">Something went wrong</string>
+    <string name="error_login_wrong_password">Password is incorrect</string>
+    <string name="error_login_general">Cannot login</string>
+    <string name="error_storing_password">Cannot store the password</string>
+    <string name="error_no_permission">No permission to do this</string>
+    <string name="error_cannot_save">Cannot save file</string>
+    <string name="error_cannot_read_files">Cannot read files</string>
+    <string name="error_cannot_delete">Cannot delete</string>
+    <string name="success_login_general">Logged in</string>
+    <string name="success_saved">Saved</string>
+    <string name="success_changed">Changed</string>
+    <string name="success_deleted">Deleted</string>
+    <string name="success_setup_general">Setup completed</string>
+    <string name="settings_deleted">Settings deleted</string>
+    <string name="file_deleted">File deleted</string>
+
+    <!-- Actions -->
+    <string name="action_try_again">Try again</string>
+    <string name="action_provide_user">Fill in a username</string>
+    <string name="action_provide_password">Fill in a password (must be numbers)</string>
+    <string name="action_reset">Reset</string>
+    <string name="action_back">Back</string>
+
+    <!-- Greetings -->
+    <string name="greeting_general">Hi</string>
+    <string name="greeting_username">Logged in as</string>
+
+    <!-- Dialog -->
+    <string name="dialog_question_general">Are you sure?</string>
+    <string name="dialog_question_confirm">Yes</string>
+    <string name="dialog_question_deny">No</string>
+    <string name="dialog_answer_yes">Yes</string>
+    <string name="dialog_answer_cancel">Cancel</string>
+    <string name="dialog_title_delete_credentials">Delete credentials and secret</string>
+    <string name="dialog_question_delete_credentials">Are you sure to delete your credentials and your secret question? Your notes will not be deleted.</string>
+    <string name="dialog_title_note_exists">Note already exists</string>
+    <string name="dialog_question_overwrite_note">Are you sure to overwrite the existing note?</string>
+    <string name="dialog_title_delete_notes">Delete all existing notes</string>
+    <string name="dialog_question_delete_notes">Are you sure to delete all saved notes?</string>
+    <string name="dialog_title_delete_note">Delete note</string>
+    <string name="dialog_question_delete_note">Are you sure to delete this note?</string>
+    <string name="dialog_title_delete_everything">Delete notes, secret question and credentials</string>
+    <string name="dialog_question_delete_everything">Are you sure to delete everything?</string>
+    <string name="dialog_title_setup_secret">You have a secret already</string>
+    <string name="dialog_question_setup_secret">Want to delete the current one and create a new one?</string>
+
+    <!-- String related to menu -->
+    <string name="menu_lock">Lock</string>
+    <string name="menu_secret">Secret question</string>
+    <string name="menu_remove_notes">Remove all notes</string>
+    <string name="menu_reset_credentials">Reset credentials</string>
+    <string name="menu_kill">Kill switch</string>
+    <string name="menu_credits">Credits</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_password_forgotten">Forgot password</string>
+    <string name="action_register">Register</string>
+    <string name="action_login">Login</string>
+    <string name="action_complete">Ready!</string>
+    <string name="error_invalid_username">This username is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="prompt_email">Email</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="title_activity_provide_secret">Provide Secret</string>
+
+    <!-- Strings related to secret question -->
+    <string name="title_activity_setup_secret_question">Secret Question</string>
+    <string name="secret_intro">A secret question can be used in order to login when the password is lost</string>
+    <string name="prompt_secret">Your secret question</string>
+    <string name="prompt_secret_answer">Your answer</string>
+    <string name="error_invalid_secret_question">This question is too short</string>
+    <string name="error_invalid_secret_answer">This answer is too short</string>
+    <string name="error_invalid_answer">Answer is incorrect</string>
+    <string name="error_retrieving_question">Cannot retrieve question</string>
+    <string name="success_valid_question">Secret question created</string>
+    <string name="success_valid_answer">Answer is correct. In order to increase security, reset your credentials and set up a new secret</string>
+
+    <!-- Strings related to adding or editing a note -->
+    <string name="prompt_note_title">Note title</string>
+    <string name="prompt_note_body">Note</string>
+    <string name="error_invalid_note_title">Note title is invalid</string>
+    <string name="error_invalid_note_body">Note is invalid</string>
+
+    <!-- Strings related to navigation drawer -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Strings related to settings -->
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+</resources>
