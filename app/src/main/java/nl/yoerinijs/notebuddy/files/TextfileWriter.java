@@ -9,9 +9,8 @@ import nl.yoerinijs.notebuddy.security.SaltGenerator;
 import nl.yoerinijs.notebuddy.security.TextCryptor;
 
 /**
- * Created by Yoeri on 11-3-2017.
+ * A class responsible for writing text files.
  */
-
 public class TextfileWriter {
 
     private static final String LOG_TAG = "Textfile Writer";
