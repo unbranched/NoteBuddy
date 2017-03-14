@@ -1,7 +1,0 @@
-#Mon Mar 13 21:28:26 CET 2017
-base.0=/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_e3644d4cb50e96f2933f125d7742234606e1f464
-renamed.1=classes.dex
-renamed.0=classes2.dex
-file.1=/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_feedd459bf5b2745592d15f791cf498dadf5d5f3/classes.dex
-base.1=/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_feedd459bf5b2745592d15f791cf498dadf5d5f3
-file.0=/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_e3644d4cb50e96f2933f125d7742234606e1f464/classes.dex
