@@ -3,66 +3,102 @@
 
     <item
         is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/transition/25.1.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="357d698b8fa361854679ec496ea58fd5f096b6ff">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_feedd459bf5b2745592d15f791cf498dadf5d5f3/classes.dex" />
+        sha1="d38084015027549951cbaea5d5f6fb795cc81151">
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-transition-25.1.0_2900a23d3cfd70eaf5a5fabdf19c16bd50a3bcd3/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.1.0/jars/classes.jar"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.1.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="ca3c7aa31e2726a400a6e552b93cb9f63c9a1e6d">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-compat-25.1.0_34f36ee6a4eec5f895939018166082dd845d8d7e/classes.dex" />
+        sha1="0a0ef86b7fa568a52bf6214a0326ca1f1d618da7">
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-utils-25.1.0_58bd3a068c4a6ca591119ec73b405cdc3185375a/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.1.0/jars/classes.jar"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.1.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-25.1.0_0c009a02399c298f6598e13b845c642e2ce0f981/classes.dex" />
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-25.1.0_4d3211ecc752095c41073e087e2e5c179c45d729/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.1.0/jars/classes.jar"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="aee64634871d88a419d59eb743c1258a60f19700">
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-25.1.0_c9d9fd9c679a41ce73cbd2dbe6848b125a531c55/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e79aa3d9a16f8c9f16377c0608de70a8f31e5d80">
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-25.1.0_88e3dc7a9d6d5f7d3869c73bc4b14e16e54f525e/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ca3c7aa31e2726a400a6e552b93cb9f63c9a1e6d">
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-compat-25.1.0_4453f5edd30fbf5f9ff9cf8d3b8b024da28f2dfc/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.1.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="6fb6ac3e8d3b9013819920d9ea11f3803c4c0033">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-25.1.0_138d6bde10d2870a3627648de8470031cf76e3b0/classes.dex" />
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-25.1.0_39c725adf1cd920e3ba197dfb44bb889bb18f0f8/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.1.0/jars/classes.jar"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.1.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="b266c8faa5af72e579b9da36ef35053ffed6ac64">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-25.1.0_ba52fd577506d5c078bc87bcc01f1c721292b215/classes.dex" />
+        sha1="f02263e35e52668dd17b73bf961437e3d562b35f">
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-25.1.0_a8c3253ce5695285b05d871a73f6ef8d70ef8f18/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.0/jars/classes.jar"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="11fdfa9bc1d10422237cda541140fe1aef419d27">
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_7a30bd49652764fda8c9de0c9cc948bae577a8f2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.1.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="2a53c4f3518116b8c6aee0e477233f0f7da8616f">
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-fragment-25.1.0_05c2d8d8b4d2b5a5497d40b154457c6f355353f3/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.1.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="1630658fbc2d222b988603c27b4a4249586fbfe7">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-25.1.0_e292fde0c393ab67bbc522321d4f86e089f37975/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="cf7b65e446df5ba1ddeaab39933ba8f08644b50c">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_e3644d4cb50e96f2933f125d7742234606e1f464/classes.dex" />
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-25.1.0_39538819db3604ae1767b95cd0a24c68a6bbdb7c/classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -71,70 +107,34 @@
         optimize="true"
         revision="25.0.2"
         sha1="64cb6b229a8bdfd907bc8dd46839a0053e4c018d">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.1.0_94084bddd77ad2e20c736fe991aceb92d006580b/classes.dex" />
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.1.0_94084bddd77ad2e20c736fe991aceb92d006580b/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.1.0/jars/classes.jar"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="aee64634871d88a419d59eb743c1258a60f19700">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-25.1.0_f3d5ff4314fedc8af1dc5dcf68a931eacc0c5c11/classes.dex" />
+        sha1="ecb14d8bfd6f321ebd653d033721f76aa5800c7c">
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_2baf4d864bda90087bcbb700746d59f250c387f6/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.1.0/jars/classes.jar"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.1.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="e79aa3d9a16f8c9f16377c0608de70a8f31e5d80">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-25.1.0_7dc44f099e910b20c14a9a964f07f059cab2aa27/classes.dex" />
+        sha1="b266c8faa5af72e579b9da36ef35053ffed6ac64">
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-25.1.0_53a3f9f72e0c64fc90dd3408778c846f37aad11c/classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/design/25.1.0/jars/classes.jar"
+        jar="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/design/25.1.0/jars/classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="30103d98fa5ed824b54af839c85e2111f9bde8ec">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-25.1.0_6bb1f61ddae48c31d7ee73d54052183873e77e57/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.1.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="f02263e35e52668dd17b73bf961437e3d562b35f">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-25.1.0_0c8ec5abb98e6568f43bf5d3dff14bcbc54d335a/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.1.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="0a0ef86b7fa568a52bf6214a0326ca1f1d618da7">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-utils-25.1.0_9f41db54300cbab6a2c02843c1741b0b04edee67/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/transition/25.1.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="d38084015027549951cbaea5d5f6fb795cc81151">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-transition-25.1.0_f776791d273c8fa2a1c3bb3ce1ea83c440dc42e3/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.1.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="2a53c4f3518116b8c6aee0e477233f0f7da8616f">
-        <dex dex="/Users/yoeri/Desktop/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-fragment-25.1.0_1db01afd836aadb0bcafbf21489077a8e0f5dd7b/classes.dex" />
+        <dex dex="/Users/yoeri/Desktop/Test/NoteBuddy/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-25.1.0_e948ed91e9d034dcaf8e7ec0394a9ec17d753805/classes.dex" />
     </item>
 
 </items>

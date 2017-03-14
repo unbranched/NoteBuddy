@@ -27,7 +27,7 @@
     <!-- Actions -->
     <string name="action_try_again">Try again</string>
     <string name="action_provide_user">Fill in a username</string>
-    <string name="action_provide_password">Fill in a password (must be numbers)</string>
+    <string name="action_provide_password">Fill in a password (must be numerical)</string>
     <string name="action_reset">Reset</string>
     <string name="action_back">Back</string>
 
