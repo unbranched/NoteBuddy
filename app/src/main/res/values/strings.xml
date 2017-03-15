@@ -92,7 +92,7 @@
     <string name="success_valid_answer">Answer is correct. In order to increase security, reset your credentials and set up a new secret</string>
 
     <!-- Strings related to adding or editing a note -->
-    <string name="prompt_note_title">Note title</string>
+    <string name="prompt_note_title">Title</string>
     <string name="prompt_note_body">Note</string>
     <string name="error_invalid_note_title">Note title is invalid</string>
     <string name="error_invalid_note_body">Note is invalid</string>
