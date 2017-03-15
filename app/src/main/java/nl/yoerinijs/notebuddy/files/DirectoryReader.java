@@ -37,8 +37,10 @@ public class DirectoryReader {
         for (int i = 0; i < files.length; i++) {
             storedData.add(files[i]);
         }
-        if (storedData.size() == 0) {
-            return null;
+        if (storedData != null) {
+            if (storedData.size() == 0) {
+                return null;
+            }
         }
 
         if (sort != 0)

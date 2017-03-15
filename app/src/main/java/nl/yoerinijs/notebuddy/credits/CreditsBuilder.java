@@ -22,7 +22,7 @@ public class CreditsBuilder {
 
         // General message
         sb.append("NoteBuddy is made by Yoeri Nijs and is released under the GNU General Public License v3 with gratitude.\n");
-        sb.append("https://www.yoerinijs.nl\n\n");
+        sb.append("https://github.com/YoeriNijs/NoteBuddy/\n\n");
 
         // General thank you message
         sb.append("This program uses various sources in order to work properly. The following people and institutions will be acknowledged for their work:\n\n");
