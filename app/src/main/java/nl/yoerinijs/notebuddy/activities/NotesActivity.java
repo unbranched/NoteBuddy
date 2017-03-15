@@ -81,8 +81,10 @@ public class NotesActivity extends AppCompatActivity
         DirectoryReader dr = new DirectoryReader();
         try {
             mNoteNames = dr.getFileNames(location, 0);
-            final StableArrayAdapter adapter = new StableArrayAdapter(this, android.R.layout.simple_list_item_1, mNoteNames);
-            listNotes.setAdapter(adapter);
+            if (mNoteNames != null) {
+                final StableArrayAdapter adapter = new StableArrayAdapter(this, android.R.layout.simple_list_item_1, mNoteNames);
+                listNotes.setAdapter(adapter);
+            }
         } catch (Exception e) {
             // Let the user know that the app cannot read the files
             Toast.makeText(getApplicationContext(), getString(R.string.error_cannot_read_files) + ".", Toast.LENGTH_SHORT).show();
