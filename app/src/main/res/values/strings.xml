@@ -41,8 +41,8 @@
     <string name="dialog_question_deny">No</string>
     <string name="dialog_answer_yes">Yes</string>
     <string name="dialog_answer_cancel">Cancel</string>
-    <string name="dialog_title_delete_credentials">Delete credentials and secret</string>
-    <string name="dialog_question_delete_credentials">Are you sure to delete your credentials and your secret question? Your notes will not be deleted.</string>
+    <string name="dialog_title_delete_credentials">Delete credentials</string>
+    <string name="dialog_question_delete_credentials">Are you sure to delete your credentials? Your notes will not be deleted.</string>
     <string name="dialog_title_note_exists">Note already exists</string>
     <string name="dialog_question_overwrite_note">Are you sure to overwrite the existing note?</string>
     <string name="dialog_title_delete_notes">Delete all existing notes</string>
