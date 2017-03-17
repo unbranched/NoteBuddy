@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
-import static android.os.Build.VERSION.RELEASE;
-
 /**
  * A class for creating a credits string
  */
