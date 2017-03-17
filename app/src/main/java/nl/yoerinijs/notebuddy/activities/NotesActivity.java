@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,7 @@ public class NotesActivity extends AppCompatActivity
 
     // Commonly used variables
     private String location;
+    private KeyValueDB keyValueDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,9 @@ public class NotesActivity extends AppCompatActivity
         // Salt is needed for encrypting and decrypting the notes
         SaltGenerator sg = new SaltGenerator();
         sg.getSalt(mContext);
+
+        // Set up key value storage
+        keyValueDB = new KeyValueDB();
 
         // Get absolute internal storage path
         location = getFilesDir().getAbsolutePath();
@@ -192,13 +197,23 @@ public class NotesActivity extends AppCompatActivity
                             // Log delete notes
                             Log.d(LOG_TAG, "Delete credentials");
 
-                            // Delete credentials
-                            KeyValueDB k = new KeyValueDB();
-                            k.clearSharedPreference(mContext);
+                            // Response variables
+                            String message;
+                            String logMessage;
 
-                            // Notify user and ourselves
-                            Toast.makeText(getApplicationContext(), getString(R.string.success_deleted) + ".", Toast.LENGTH_SHORT).show();
-                            Log.d(LOG_TAG, "Credentials deleted");
+                            // Try to delete credentials
+                            try {
+                                keyValueDB.deleteCredentials(mContext);
+                                message = getString(R.string.success_deleted);
+                                logMessage = "Credentials deleted";
+                            } catch (NoSuchAlgorithmException n) {
+                                message = getString(R.string.error_cannot_delete);
+                                logMessage = "Cannot delete credentials";
+                            }
+
+                            // Provide response to the user and to ourselves
+                            Toast.makeText(getApplicationContext(), message + ".", Toast.LENGTH_SHORT).show();
+                            Log.d(LOG_TAG, logMessage);
 
                             // Go to notes activity
                             startActvitiy(SETUP_ACTIVITY, true, null, null);
@@ -225,8 +240,7 @@ public class NotesActivity extends AppCompatActivity
                             Log.d(LOG_TAG, "Delete credentials");
 
                             // Delete all settings
-                            KeyValueDB k = new KeyValueDB();
-                            k.clearSharedPreference(mContext);
+                            keyValueDB.clearSharedPreference(mContext);
 
                             // Delete notes
                             TextfileRemover tr = new TextfileRemover();

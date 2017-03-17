@@ -13,7 +13,7 @@ import nl.yoerinijs.notebuddy.security.StringEncryptor;
  */
 public class KeyValueDB {
 
-    public static final String PREFS_NAME = "NoteVaultPreferences";
+    public static final String PREFS_NAME = "NoteBuddyPrefs";
     public static final String KEY_USERNAME = "username_scrt_key";
     public static final String KEY_PASSWORD = "password_scrt_key";
     public static final String KEY_SALT = "salt_scrt_key";
@@ -34,9 +34,8 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public void setSalt(Context context, String salt) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Set salt");
+        Log.d(LOG_TAG, "Set salt");
         setValue(context, KEY_SALT, salt, true);
-        Log.v(LOG_TAG, "Salt set");
     }
 
     /**
@@ -46,7 +45,7 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public String getSalt(Context context) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Get salt");
+        Log.d(LOG_TAG, "Get salt");
         return getValue(context, KEY_SALT);
     }
 
@@ -56,9 +55,8 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public void setSetup(Context context) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Set setup status");
+        Log.d(LOG_TAG, "Set setup status");
         setValue(context, KEY_SETUP, VALUE_SETUP, true);
-        Log.v(LOG_TAG, "Setup status set");
     }
 
     /**
@@ -68,7 +66,7 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public String getSetup(Context context) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Get setup status");
+        Log.d(LOG_TAG, "Get setup status");
         return getValue(context, KEY_SETUP);
     }
 
@@ -79,9 +77,8 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public void setUsername(Context context, String value) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Set username");
+        Log.d(LOG_TAG, "Set username");
         setValue(context, KEY_USERNAME, value, false);
-        Log.v(LOG_TAG, "Username set");
     }
 
     /**
@@ -91,7 +88,7 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public String getUsername(Context context) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Get username");
+        Log.d(LOG_TAG, "Get username");
         return getValue(context, KEY_USERNAME);
     }
 
@@ -102,9 +99,8 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public void setSecretQuestion(Context context, String value) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Set secret question");
+        Log.d(LOG_TAG, "Set secret question");
         setValue(context, KEY_SECRET_QUESTION, value, false);
-        Log.v(LOG_TAG, "Secret question set");
     }
 
     /**
@@ -114,7 +110,7 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public String getSecretQuestion(Context context) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Get secret question");
+        Log.d(LOG_TAG, "Get secret question");
         return getValue(context, KEY_SECRET_QUESTION);
     }
 
@@ -124,7 +120,7 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public void deleteSecretQuestion(Context context) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Delete secret question");
+        Log.d(LOG_TAG, "Delete secret question");
         deleteValue(context, KEY_SECRET_QUESTION);
     }
 
@@ -135,9 +131,8 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public void setSecretAnswer(Context context, String value) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Set secret answer");
+        Log.d(LOG_TAG, "Set secret answer");
         setValue(context, KEY_SECRET_ANWER, value.toLowerCase(), true);
-        Log.v(LOG_TAG, "Secret answer set");
     }
 
     /**
@@ -147,7 +142,7 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public String getSecretAnswer(Context context) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Get secret answer");
+        Log.d(LOG_TAG, "Get secret answer");
         return getValue(context, KEY_SECRET_ANWER);
     }
 
@@ -157,7 +152,7 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public void deleteSecretAnswer(Context context) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Delete secret answer");
+        Log.d(LOG_TAG, "Delete secret answer");
         deleteValue(context, KEY_SECRET_ANWER);
     }
 
@@ -168,9 +163,8 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public void setPassword(Context context, String value) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Set password");
+        Log.d(LOG_TAG, "Set password");
         setValue(context, KEY_PASSWORD, value, true);
-        Log.v(LOG_TAG, "Password set");
     }
 
     /**
@@ -180,8 +174,19 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     public String getPassword(Context context) throws NoSuchAlgorithmException {
-        Log.v(LOG_TAG, "Get password");
+        Log.d(LOG_TAG, "Get password");
         return getValue(context, KEY_PASSWORD);
+    }
+
+    /**
+     * Method to delete credentials only
+     * @param context
+     * @throws NoSuchAlgorithmException
+     */
+    public void deleteCredentials(Context context) throws NoSuchAlgorithmException {
+        Log.d(LOG_TAG, "Delete credentials");
+        deleteValue(context, KEY_USERNAME);
+        deleteValue(context, KEY_PASSWORD);
     }
 
     /**

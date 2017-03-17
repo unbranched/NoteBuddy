@@ -1,5 +1,6 @@
 package nl.yoerinijs.notebuddy.activities;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,11 +20,15 @@ public class CreditsActivity extends AppCompatActivity {
 
     TextView mTextView;
     Button mButton;
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_credits);
+
+        // Set context
+        mContext = this;
 
         // Log credit activity
         Log.d(LOG_TAG, "Display credits");
@@ -31,7 +36,7 @@ public class CreditsActivity extends AppCompatActivity {
         // Display credits
         mTextView = (TextView) findViewById(R.id.creditsView);
         CreditsBuilder cb = new CreditsBuilder();
-        mTextView.setText(cb.getCredits());
+        mTextView.setText(cb.getCredits(mContext));
 
         // Back button
         mButton = (Button) findViewById(R.id.backButton);
