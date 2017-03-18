@@ -5,7 +5,8 @@ To use NoteBuddy, one must setup a simple user account (username and numerical p
 
 # Todo
 - Implement unit tests;
-- Do some code reviewing.
+- Do some code reviewing;
+- Add some (external) back-up functionality.
 
 # Screenshots
 [Login](http://imgur.com/tyCq6Nu)
