@@ -13,3 +13,8 @@ To use NoteBuddy, one must setup a simple user account (username and numerical p
 [Menu](http://imgur.com/Amme6pb)
 
 [Note editing](http://imgur.com/Cnzwmbd)
+
+# Download
+![Download NoteBuddy](https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Get_it_on_F-Droid.svg/320px-Get_it_on_F-Droid.svg.png)
+
+[Download NoteBuddy](https://f-droid.org/repository/browse/?fdfilter=notebuddy&fdid=nl.yoerinijs.notebuddy)
