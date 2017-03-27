@@ -3,6 +3,9 @@ A simple Android application for storing encrypted notes. Notes are encrypted us
 
 To use NoteBuddy, one must setup a simple user account (username and numerical password) in order to login. Moreover, one may create a secret question in order to gain access when the password is lost. All settings are stored encrypted in Android's Shared Preferences for now. The idea is to work with a SQlite database on the long term.
 
+<a href="https://f-droid.org/repository/browse/?fdid=nl.yoerinijs.notebuddy" target="_blank">
+<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"/></a>
+
 # Todo
 - Implement unit tests;
 - Do some code reviewing;
@@ -14,8 +17,3 @@ To use NoteBuddy, one must setup a simple user account (username and numerical p
 [Menu](http://imgur.com/Amme6pb)
 
 [Note editing](http://imgur.com/Cnzwmbd)
-
-# Download
-![Download NoteBuddy](https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Get_it_on_F-Droid.svg/320px-Get_it_on_F-Droid.svg.png)
-
-[Download NoteBuddy](https://f-droid.org/repository/browse/?fdfilter=notebuddy&fdid=nl.yoerinijs.notebuddy)
