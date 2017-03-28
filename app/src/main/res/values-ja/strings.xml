@@ -1,0 +1,107 @@
+<resources>
+    <!--Activities-->
+    <string name="app_name">NoteBuddy</string>
+    <string name="title_activity_notes">あなたの NoteBuddy</string>
+    <string name="title_activity_login">ログイン</string>
+    <string name="title_activity_setup">セットアップ</string>
+    <string name="title_activity_create_note">ノート</string>
+
+    <!-- System information -->
+    <string name="error_starting_app">アプリケーションを開始できません</string>
+    <string name="error_general">何か問題があります</string>
+    <string name="error_login_wrong_password">パスワードが間違っています</string>
+    <string name="error_login_general">ログインできません</string>
+    <string name="error_storing_password">パスワードを保存できません</string>
+    <string name="error_no_permission">これを行うアクセス許可がありません</string>
+    <string name="error_cannot_save">ファイルを保存できません</string>
+    <string name="error_cannot_read_files">ファイルを読み取りできません</string>
+    <string name="error_cannot_delete">削除できません</string>
+    <string name="success_login_general">ログインしました</string>
+    <string name="success_saved">保存しました</string>
+    <string name="success_changed">変更しました</string>
+    <string name="success_deleted">削除しました</string>
+    <string name="success_setup_general">セットアップが完了しました</string>
+    <string name="settings_deleted">設定を削除しました</string>
+    <string name="file_deleted">ファイルを削除しました</string>
+
+    <!-- Actions -->
+    <string name="action_try_again">もう一度やり直す</string>
+    <string name="action_provide_user">ユーザー名を入力</string>
+    <string name="action_provide_password">パスワードを入力 (数字にする必要があります)</string>
+    <string name="action_reset">リセット</string>
+    <string name="action_back">戻る</string>
+
+    <!-- Greetings -->
+    <string name="greeting_general">こんにちは</string>
+    <string name="greeting_username">ログイン</string>
+
+    <!-- Dialog -->
+    <string name="dialog_question_general">よろしいですか?</string>
+    <string name="dialog_question_confirm">はい</string>
+    <string name="dialog_question_deny">いいえ</string>
+    <string name="dialog_answer_yes">はい</string>
+    <string name="dialog_answer_cancel">キャンセル</string>
+    <string name="dialog_title_delete_credentials">資格情報を削除</string>
+    <string name="dialog_question_delete_credentials">資格情報を削除してもよろしいですか? ノートは削除されません。</string>
+    <string name="dialog_title_note_exists">ノートはすでに存在します</string>
+    <string name="dialog_question_overwrite_note">既存のノートを上書きしてもよろしいですか?</string>
+    <string name="dialog_title_delete_notes">既存のノートをすべて削除</string>
+    <string name="dialog_question_delete_notes">保存されたノートをすべて削除してもよろしいですか?</string>
+    <string name="dialog_title_delete_note">ノートを削除</string>
+    <string name="dialog_question_delete_note">このノートを削除してもよろしいですか?</string>
+    <string name="dialog_title_delete_everything">ノート、秘密の質問、資格情報を削除</string>
+    <string name="dialog_question_delete_everything">すべて削除してもよろしいですか?</string>
+    <string name="dialog_title_setup_secret">すでに秘密があります</string>
+    <string name="dialog_question_setup_secret">現在のものを削除して新しいものを作成しますか?</string>
+
+    <!-- String related to menu -->
+    <string name="menu_lock">ロック</string>
+    <string name="menu_secret">秘密の質問</string>
+    <string name="menu_remove_notes">すべてのノートを削除</string>
+    <string name="menu_reset_credentials">資格情報をリセット</string>
+    <string name="menu_kill">Kill スイッチ</string>
+    <string name="menu_credits">クレジット</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">ユーザー名</string>
+    <string name="prompt_password">パスワード</string>
+    <string name="prompt_password_forgotten">パスワードを忘れた</string>
+    <string name="action_register">登録</string>
+    <string name="action_login">ログイン</string>
+    <string name="action_complete">準備完了!</string>
+    <string name="error_invalid_username">このユーザー名は無効です</string>
+    <string name="error_invalid_password">このパスワードは短すぎます</string>
+    <string name="error_incorrect_password">このパスワードは間違っています</string>
+    <string name="error_field_required">この項目は必須です</string>
+    <string name="prompt_email">メールアドレス</string>
+    <string name="action_sign_in">サインインまたは登録</string>
+    <string name="action_sign_in_short">サインイン</string>
+    <string name="error_invalid_email">このメールアドレスは無効です</string>
+    <string name="title_activity_provide_secret">秘密を入力</string>
+
+    <!-- Strings related to secret question -->
+    <string name="title_activity_setup_secret_question">秘密の質問</string>
+    <string name="secret_intro">秘密の質問は、パスワードを無くしたときにログインするために使用することができます</string>
+    <string name="prompt_secret">あなたの秘密の質問</string>
+    <string name="prompt_secret_answer">あなたの答え</string>
+    <string name="error_invalid_secret_question">この質問は短すぎます</string>
+    <string name="error_invalid_secret_answer">この答えは短すぎます</string>
+    <string name="error_invalid_answer">答えが間違っています</string>
+    <string name="error_retrieving_question">質問を取得できません</string>
+    <string name="success_valid_question">秘密の質問を作成しました</string>
+    <string name="success_valid_answer">答えが正しいです。 セキュリティを向上させるために、資格情報をリセットして新しい秘密を設定してください</string>
+
+    <!-- Strings related to adding or editing a note -->
+    <string name="prompt_note_title">タイトル</string>
+    <string name="prompt_note_body">ノート</string>
+    <string name="error_invalid_note_title">ノートのタイトルが無効です</string>
+    <string name="error_invalid_note_body">ノートが無効です</string>
+
+    <!-- Strings related to navigation drawer -->
+    <string name="navigation_drawer_open">ナビゲーションドロワーを開く</string>
+    <string name="navigation_drawer_close">ナビゲーションドロワーを閉じる</string>
+
+    <!-- Strings related to settings -->
+    <string name="action_settings">設定</string>
+    <string name="title_activity_settings">設定</string>
+</resources>
