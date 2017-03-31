@@ -24,8 +24,4 @@ NoteBuddy was a project to learn how to code in Android. However, due the fact l
 - Version 1.0.0: Initial release.
 
 # Screenshots
-[Login](http://imgur.com/tyCq6Nu)
-
-[Menu](http://imgur.com/Amme6pb)
-
-[Note editing](http://imgur.com/Cnzwmbd)
+[Screenshots](http://imgur.com/a/bQrgZ)
