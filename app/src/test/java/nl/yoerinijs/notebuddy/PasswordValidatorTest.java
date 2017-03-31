@@ -27,8 +27,9 @@ public class PasswordValidatorTest {
     @Test
     public void passwordValidator_checkPassword() {
         PasswordValidator pv = new PasswordValidator();
-        assertFalse(pv.isPasswordValid("thispasswordisnotvalid"));
+        assertTrue(pv.isPasswordValid("thispasswordisnotvalid"));
+        assertTrue(pv.isPasswordValid("123456"));
         assertFalse(pv.isPasswordValid("this password is not valid as well"));
-        assertTrue(pv.isPasswordValid("12345"));
+        assertFalse(pv.isPasswordValid("12345"));
     }
 }

@@ -20,13 +20,20 @@ public class MainActivity extends AppCompatActivity {
     private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
     private static final String LOG_TAG = "Main Activity";
 
+    private boolean devMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Enable or disable dev mode
+        // Dev mode can be used to test the application more convenient
+        devMode = false;
+
         // Log that the program has started
-        Log.d(LOG_TAG, "Notebudy has started!");
+        String devModeEnabled = (devMode) ? "is enabled" : "is disabled";
+        Log.d(LOG_TAG, "Notebuddy has started! Dev mode " + devModeEnabled);
 
         // Trying to start the setup or the login activity
         try {
@@ -37,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
             setActivity();
         } catch (Exception e) {
             // If something goes wrong, notify the user
-            String errorMessage = getString(R.string.error_starting_app);
+            String errorMessage = getString(R.string.error_general);
             Toast.makeText(getApplicationContext(), errorMessage + ".", Toast.LENGTH_SHORT).show();
 
             // Log failure as well
@@ -57,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Add activity name to intent
         intent.setClassName(this, activity);
+        intent.putExtra("DEVMODE", devMode);
 
         // Start activity
         startActivity(intent);

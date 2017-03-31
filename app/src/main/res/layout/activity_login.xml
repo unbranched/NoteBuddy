@@ -49,9 +49,9 @@
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_provide_password"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="numberPassword"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:inputType="textPassword" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -65,11 +65,11 @@
                 android:textStyle="bold" />
 
             <Button
-                android:text="@string/prompt_password_forgotten"
-                android:layout_width="match_parent"
-                android:id="@+id/secretQuestion"
-                android:layout_height="wrap_content"
+                android:text="@string/dev_clear_shared_preferences"
                 android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/clear_prefs_button"
                 style="@android:style/TextAppearance.Material.Small" />
 
         </LinearLayout>

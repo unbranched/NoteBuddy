@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Build;
@@ -21,18 +23,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import nl.yoerinijs.notebuddy.R;
-import nl.yoerinijs.notebuddy.security.StringEncryptor;
+import nl.yoerinijs.notebuddy.security.LoginHashCreator;
 import nl.yoerinijs.notebuddy.storage.KeyValueDB;
 
 /**
- * A login screen that offers login via username and password
+ * A login screen that offers login via username and mPassword
  */
 public class LoginActivity extends AppCompatActivity {
 
     // Activity references
     private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
     private static final String NOTES_ACTIVITY = "NotesActivity";
-    private static final String SECRET_ACTIVITY = "ProvideSecretActivity";
+    private static final String MAIN_ACTIVITY = "MainActivity";
     private static final String LOG_TAG = "Login Activity";
 
     // UI references
@@ -40,34 +42,28 @@ public class LoginActivity extends AppCompatActivity {
     private View mProgressView;
     private View mLoginFormView;
     private Context mContext;
-    private Button mSecretButton;
+    private Button mClearPrefsButton;
 
     // Key value storage
     private KeyValueDB keyValueDB;
+
+    // Password
+    private String mPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Set up the UI
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mSecretButton = (Button) findViewById(R.id.secretQuestion);
+        // Context
         mContext = this;
 
-        // Set up the key value database
+        // Set key value store
         keyValueDB = new KeyValueDB();
 
-        // Verify whether the secret question is set
-        // If the secret is not set, hide the forgot password button
-        try {
-            if (keyValueDB.getSecretQuestion(mContext) == null || keyValueDB.getSecretAnswer(mContext) == null) {
-                mSecretButton.setVisibility(View.GONE);
-            }
-        } catch (Exception e) {
-            // Log failure
-            Log.d(LOG_TAG, e.getMessage());
-        }
+        // Set up the UI
+        mPasswordView = (EditText) findViewById(R.id.password);
+        mClearPrefsButton = (Button) findViewById(R.id.clear_prefs_button);
 
         // Set up the login form
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -81,15 +77,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Fill in secret answer when password is forgotten
-        // Activity will not finish in order to let the user to go back
-        mSecretButton.setOnClickListener(new OnClickListener() {
+        // Clear prefs button, only when dev mode is enabled
+        if (!getIntent().getBooleanExtra("DEVMODE", false)) {
+            mClearPrefsButton.setVisibility(View.GONE);
+        }
+
+        mClearPrefsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Start activity to provide secret
-                Intent intent = new Intent();
-                intent.setClassName(mContext, PACKAGE_NAME + "." + SECRET_ACTIVITY);
-                startActivity(intent);
+                keyValueDB.clearSharedPreference(mContext);
+
+                // Proceed to main activity
+                startActivity(MAIN_ACTIVITY, false);
             }
         });
 
@@ -118,30 +117,29 @@ public class LoginActivity extends AppCompatActivity {
             mPasswordView.setError(null);
 
             // Store values at the time of the login attempt
-            String password = mPasswordView.getText().toString();
+            mPassword = mPasswordView.getText().toString();
 
             boolean cancel = false;
             View focusView = null;
 
-            // Check if password field is empty
-            if (!TextUtils.isEmpty(password)) {
+            // Check if mPassword field is empty
+            if (TextUtils.isEmpty(mPassword)) {
                 mPasswordView.setError(getString(R.string.error_field_required));
                 focusView = mPasswordView;
                 cancel = true;
             }
 
-            // Check if provided password is the same as stored one
-            // Encrypt provided password
-            StringEncryptor e = new StringEncryptor();
-            String encryptedPassword = e.encrypt(password);
+            // Check if provided mPassword is correct
+            // TODO: create a better way without storing the mPassword
+            LoginHashCreator lhc = new LoginHashCreator();
+            String currentHash = lhc.getLoginHash(mContext, mPassword);
+            String verificationHash = keyValueDB.getVerificationPasswordHash(mContext);
+            Log.d(LOG_TAG, currentHash);
+            Log.d(LOG_TAG, verificationHash);
+            boolean correctPassword = (currentHash.equals(verificationHash));
 
-            // Retrieve stored encrypted password
-            String storedPassword = keyValueDB.getPassword(mContext);
-
-            // Check if passwords are the same
-            if (encryptedPassword.equals(storedPassword)) {
-                cancel = false;
-            } else {
+            // If hash is not correct, display a warning
+            if (!correctPassword) {
                 mPasswordView.setError(getString(R.string.error_login_wrong_password));
                 focusView = mPasswordView;
                 cancel = true;
@@ -149,15 +147,18 @@ public class LoginActivity extends AppCompatActivity {
 
             if (cancel) {
                 // There was an error; don't attempt login and focus
-                // password form field with an error
+                // mPassword form field with an error
                 focusView.requestFocus();
 
-                // Clear password field
+                // Clear mPassword field
                 mPasswordView.setText(null);
 
                 // Log error
                 Log.d(LOG_TAG, "Form validation went wrong");
-            } else {
+            } else if (correctPassword) {
+                // Log success
+                Log.d(LOG_TAG, "Form validation went smooth");
+
                 // Let the user know he is logged in
                 Toast.makeText(getApplicationContext(), getString(R.string.success_login_general)
                         + ". " + getString(R.string.greeting_general) + ", " + keyValueDB.getUsername(mContext)
@@ -170,10 +171,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(LOG_TAG, "Proceed to: " + NOTES_ACTIVITY);
 
                 // Proceed to notes activity
-                Intent intent = new Intent();
-                intent.setClassName(mContext, PACKAGE_NAME + "." + NOTES_ACTIVITY);
-                startActivity(intent);
-                finish();
+                startActivity(NOTES_ACTIVITY, true);
             }
         } catch (Exception e) {
             // Let the user know he cannot login
@@ -182,6 +180,24 @@ public class LoginActivity extends AppCompatActivity {
             // Log error
             Log.d(LOG_TAG, e.getMessage());
         }
+    }
+
+    /**
+     * Method to start an activity.
+     * With the boolean providePassword it is possible
+     * to determine whether to send the password to the next intent.
+     * Current activity will finish by all means.
+     * @param activityName
+     * @param providePassword
+     */
+    private void startActivity(@NonNull String activityName, @NonNull boolean providePassword) {
+        Intent intent = new Intent();
+        if (providePassword) {
+            intent.putExtra("PASSWORD", mPassword);
+        }
+        intent.setClassName(mContext, PACKAGE_NAME + "." + activityName);
+        startActivity(intent);
+        finish();
     }
 
     /**

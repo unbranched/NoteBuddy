@@ -1,5 +1,6 @@
 package nl.yoerinijs.notebuddy.files;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.io.File;
@@ -21,6 +22,7 @@ public class DirectoryReader {
      * @return
      * @throws PatternSyntaxException
      */
+    @Nullable
     public static ArrayList<String> getFileNames(final String folder, final int sort) throws PatternSyntaxException
     {
         ArrayList<String> storedData = new ArrayList<String>();

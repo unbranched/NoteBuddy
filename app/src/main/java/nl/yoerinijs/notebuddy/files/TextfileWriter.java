@@ -5,8 +5,7 @@ import android.util.Log;
 
 import java.io.FileOutputStream;
 
-import nl.yoerinijs.notebuddy.security.SaltGenerator;
-import nl.yoerinijs.notebuddy.security.TextCryptor;
+import nl.yoerinijs.notebuddy.security.EncryptionHandler;
 
 /**
  * A class responsible for writing text files.
@@ -15,15 +14,14 @@ public class TextfileWriter {
 
     private static final String LOG_TAG = "Textfile Writer";
 
-    public void writeFile(Context context, String fileName, String fileContent) {
+    public void writeFile(Context context, String fileName, String fileContent, String password) {
         FileOutputStream fos;
         try {
             // Encrypt the note
-            TextCryptor sf = new TextCryptor();
-            SaltGenerator sg = new SaltGenerator();
-            String salt = sg.getSalt(context);
-            String encryptedFileContent = sf.encryptFile(fileContent, salt);
+            EncryptionHandler tc = new EncryptionHandler();
+            String encryptedFileContent = tc.encryptFile(fileContent, password, context);
 
+            // Log encrypted value
             Log.d(LOG_TAG, "Encrypted: " + encryptedFileContent);
 
             // Write text to file

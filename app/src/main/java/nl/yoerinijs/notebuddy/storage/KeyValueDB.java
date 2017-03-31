@@ -3,24 +3,27 @@ package nl.yoerinijs.notebuddy.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.security.NoSuchAlgorithmException;
-import nl.yoerinijs.notebuddy.security.StringEncryptor;
+
+import nl.yoerinijs.notebuddy.security.EncryptionHandler;
 
 /**
  * A class that holds all methods related to Android's Shared Preferences
  */
 public class KeyValueDB {
 
-    public static final String PREFS_NAME = "NoteBuddyPrefs";
-    public static final String KEY_USERNAME = "username_scrt_key";
-    public static final String KEY_PASSWORD = "password_scrt_key";
-    public static final String KEY_SALT = "salt_scrt_key";
-    public static final String KEY_SECRET_QUESTION = "secret_question_scrt_key";
-    public static final String KEY_SECRET_ANWER = "secret_answer_scrt_key";
-    public static final String KEY_SETUP = "setup_scrt_key";
-    public static final String VALUE_SETUP = "set_scrt_value";
+    private static final String PREFS_NAME = "NoteBuddyPrefs";
+    private static final String KEY_USERNAME = "username_scrt_key";
+    private static final String KEY_DERIVED_SALT = "salt_derived_scrt_key";
+    private static final String KEY_MASTER_SALT = "salt_master_scrt_key";
+    private static final String KEY_SETUP = "setup_scrt_key";
+    private static final String KEY_RANDOM_PASSWORD_STRING = "random_password_string_scrt_key";
+    private static final String KEY_VERIFICATION_PASSWORD_HASH = "verification_password_hash_scrt_key";
+    private static final String VALUE_SETUP = "set_scrt_value";
     private static final String LOG_TAG = "Key Value DB";
 
     public KeyValueDB() {
@@ -28,165 +31,122 @@ public class KeyValueDB {
     }
 
     /**
-     * Set salt method
+     * Method to store random password string
+     * @param context
+     * @param encryptedSample
+     * @throws NoSuchAlgorithmException
+     */
+    public void setRandomPasswordString(@NonNull Context context, @NonNull String encryptedSample) throws NoSuchAlgorithmException {
+        setValue(context, KEY_RANDOM_PASSWORD_STRING, encryptedSample, false);
+    }
+
+    /**
+     * Method to retrieve random password string
+     * @param context
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    public String getRandomPasswordString(@NonNull Context context) throws NoSuchAlgorithmException {
+        return getValue(context, KEY_RANDOM_PASSWORD_STRING);
+    }
+
+    /**
+     * Method to set hash for password verification
+     * @param context
+     * @param verificationPasswordHash
+     * @throws NoSuchAlgorithmException
+     */
+    public void setVerificationPasswordHash(@NonNull Context context, @NonNull String verificationPasswordHash) throws NoSuchAlgorithmException {
+        setValue(context, KEY_VERIFICATION_PASSWORD_HASH, verificationPasswordHash, false);
+    }
+
+    /**
+     * Method to get hash for password verification
+     * @param context
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    public String getVerificationPasswordHash(@Nullable Context context) throws NoSuchAlgorithmException {
+        return getValue(context, KEY_VERIFICATION_PASSWORD_HASH);
+    }
+
+    /**
+     * Method to set salt for derived key
      * @param context
      * @param salt
      * @throws NoSuchAlgorithmException
      */
-    public void setSalt(Context context, String salt) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Set salt");
-        setValue(context, KEY_SALT, salt, true);
+    public void setDerivedKeySalt(@NonNull Context context, @NonNull String salt) throws NoSuchAlgorithmException {
+        setValue(context, KEY_DERIVED_SALT, salt, false);
     }
 
     /**
-     * Get salt method
+     * Method to retrieve salt for derived key
      * @param context
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String getSalt(Context context) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Get salt");
-        return getValue(context, KEY_SALT);
+    public String getDerivedKeySalt(@NonNull Context context) throws NoSuchAlgorithmException {
+        return getValue(context, KEY_DERIVED_SALT);
     }
 
     /**
-     * Set setup status method
+     * Method to set salt for master key
+     * @param context
+     * @param salt
+     * @throws NoSuchAlgorithmException
+     */
+    public void setMasterKeySalt(@NonNull Context context, @NonNull String salt) throws NoSuchAlgorithmException {
+        setValue(context, KEY_MASTER_SALT, salt, false);
+    }
+
+    /**
+     * Method to get salt for master key
+     * @param context
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
+    public String getMasterKeySalt(@NonNull Context context) throws NoSuchAlgorithmException {
+        return getValue(context, KEY_MASTER_SALT);
+    }
+
+    /**
+     * Method to set setup status
      * @param context
      * @throws NoSuchAlgorithmException
      */
-    public void setSetup(Context context) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Set setup status");
+    public void setSetup(@NonNull Context context) throws NoSuchAlgorithmException {
         setValue(context, KEY_SETUP, VALUE_SETUP, true);
     }
 
     /**
-     * Get setup status method
+     * Method to get setup status
      * @param context
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String getSetup(Context context) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Get setup status");
+    public String getSetup(@NonNull Context context) throws NoSuchAlgorithmException {
         return getValue(context, KEY_SETUP);
     }
 
     /**
-     * Set username method
+     * Method to set username
      * @param context
      * @param value
      * @throws NoSuchAlgorithmException
      */
-    public void setUsername(Context context, String value) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Set username");
+    public void setUsername(@NonNull Context context, @NonNull String value) throws NoSuchAlgorithmException {
         setValue(context, KEY_USERNAME, value, false);
     }
 
     /**
-     * Get username method
+     * Method to retrieve username
      * @param context
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String getUsername(Context context) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Get username");
+    public String getUsername(@NonNull Context context) throws NoSuchAlgorithmException {
         return getValue(context, KEY_USERNAME);
-    }
-
-    /**
-     * Set secret question method
-     * @param context
-     * @param value
-     * @throws NoSuchAlgorithmException
-     */
-    public void setSecretQuestion(Context context, String value) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Set secret question");
-        setValue(context, KEY_SECRET_QUESTION, value, false);
-    }
-
-    /**
-     * Get secret question method
-     * @param context
-     * @return
-     * @throws NoSuchAlgorithmException
-     */
-    public String getSecretQuestion(Context context) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Get secret question");
-        return getValue(context, KEY_SECRET_QUESTION);
-    }
-
-    /**
-     * Delete secret question method
-     * @param context
-     * @throws NoSuchAlgorithmException
-     */
-    public void deleteSecretQuestion(Context context) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Delete secret question");
-        deleteValue(context, KEY_SECRET_QUESTION);
-    }
-
-    /**
-     * Set secret answer method
-     * @param context
-     * @param value
-     * @throws NoSuchAlgorithmException
-     */
-    public void setSecretAnswer(Context context, String value) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Set secret answer");
-        setValue(context, KEY_SECRET_ANWER, value.toLowerCase(), true);
-    }
-
-    /**
-     * Get secret answer method
-     * @param context
-     * @return
-     * @throws NoSuchAlgorithmException
-     */
-    public String getSecretAnswer(Context context) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Get secret answer");
-        return getValue(context, KEY_SECRET_ANWER);
-    }
-
-    /**
-     * Delete secret answer method
-     * @param context
-     * @throws NoSuchAlgorithmException
-     */
-    public void deleteSecretAnswer(Context context) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Delete secret answer");
-        deleteValue(context, KEY_SECRET_ANWER);
-    }
-
-    /**
-     * Set password method
-     * @param context
-     * @param value
-     * @throws NoSuchAlgorithmException
-     */
-    public void setPassword(Context context, String value) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Set password");
-        setValue(context, KEY_PASSWORD, value, true);
-    }
-
-    /**
-     * Get password method
-     * @param context
-     * @return
-     * @throws NoSuchAlgorithmException
-     */
-    public String getPassword(Context context) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Get password");
-        return getValue(context, KEY_PASSWORD);
-    }
-
-    /**
-     * Method to delete credentials only
-     * @param context
-     * @throws NoSuchAlgorithmException
-     */
-    public void deleteCredentials(Context context) throws NoSuchAlgorithmException {
-        Log.d(LOG_TAG, "Delete credentials");
-        deleteValue(context, KEY_USERNAME);
-        deleteValue(context, KEY_PASSWORD);
     }
 
     /**
@@ -196,14 +156,17 @@ public class KeyValueDB {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    private String getValue(Context context, String key) throws NoSuchAlgorithmException {
+    private String getValue(@NonNull Context context, @NonNull String key) throws NoSuchAlgorithmException {
         SharedPreferences settings;
         String text;
 
         settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
-        StringEncryptor e = new StringEncryptor();
-        text = settings.getString(e.encrypt(key), null);
+        EncryptionHandler eh = new EncryptionHandler();
+        text = settings.getString(eh.hashString(key), null);
+
+        // Log success
+        Log.d(LOG_TAG, "Value retrieved");
 
         return text;
     }
@@ -216,25 +179,28 @@ public class KeyValueDB {
      * @param secure
      * @throws NoSuchAlgorithmException
      */
-    private void setValue(Context context, String key, String value, Boolean secure) throws NoSuchAlgorithmException {
+    private void setValue(@NonNull Context context, @NonNull String key, @NonNull String value, @NonNull Boolean secure) throws NoSuchAlgorithmException {
         SharedPreferences settings;
         Editor editor;
-        StringEncryptor e = new StringEncryptor();
+        EncryptionHandler eh = new EncryptionHandler();
 
         settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         editor = settings.edit();
 
         // Check whether the value must encrypted as well
         if (secure) {
-            String encryptedKey = e.encrypt(key);
-            String encryptedValue = e.encrypt(value);
+            String encryptedKey = eh.hashString(key);
+            String encryptedValue = eh.hashString(value);
             editor.putString(encryptedKey, encryptedValue);
         } else {
-            String encryptedKey = e.encrypt(key);
+            String encryptedKey = eh.hashString(key);
             editor.putString(encryptedKey, value);
         }
 
         editor.commit();
+
+        // Log success
+        Log.d(LOG_TAG, "Value set");
     }
 
     /**
@@ -243,7 +209,7 @@ public class KeyValueDB {
      * @param key
      * @throws NoSuchAlgorithmException
      */
-    private void deleteValue(Context context, String key) throws NoSuchAlgorithmException {
+    private void deleteValue(@NonNull Context context, @NonNull String key) throws NoSuchAlgorithmException {
         SharedPreferences settings;
         Editor editor;
 
@@ -252,13 +218,16 @@ public class KeyValueDB {
 
         editor.remove(key);
         editor.apply();
+
+        // Log success
+        Log.d(LOG_TAG, "Value deleted");
     }
 
     /**
      * Clear Shared Preferences method
      * @param context
      */
-    public void clearSharedPreference(Context context) {
+    public void clearSharedPreference(@NonNull Context context) {
         SharedPreferences settings;
         Editor editor;
 
@@ -267,5 +236,8 @@ public class KeyValueDB {
 
         editor.clear();
         editor.commit();
+
+        // Log success
+        Log.d(LOG_TAG, "Cleared shared prefs");
     }
 }

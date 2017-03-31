@@ -41,25 +41,15 @@
     <string name="dialog_question_deny">いいえ</string>
     <string name="dialog_answer_yes">はい</string>
     <string name="dialog_answer_cancel">キャンセル</string>
-    <string name="dialog_title_delete_credentials">資格情報を削除</string>
-    <string name="dialog_question_delete_credentials">資格情報を削除してもよろしいですか? ノートは削除されません。</string>
     <string name="dialog_title_note_exists">ノートはすでに存在します</string>
     <string name="dialog_question_overwrite_note">既存のノートを上書きしてもよろしいですか?</string>
-    <string name="dialog_title_delete_notes">既存のノートをすべて削除</string>
-    <string name="dialog_question_delete_notes">保存されたノートをすべて削除してもよろしいですか?</string>
     <string name="dialog_title_delete_note">ノートを削除</string>
     <string name="dialog_question_delete_note">このノートを削除してもよろしいですか?</string>
     <string name="dialog_title_delete_everything">ノート、秘密の質問、資格情報を削除</string>
     <string name="dialog_question_delete_everything">すべて削除してもよろしいですか?</string>
-    <string name="dialog_title_setup_secret">すでに秘密があります</string>
-    <string name="dialog_question_setup_secret">現在のものを削除して新しいものを作成しますか?</string>
 
     <!-- String related to menu -->
     <string name="menu_lock">ロック</string>
-    <string name="menu_secret">秘密の質問</string>
-    <string name="menu_remove_notes">すべてのノートを削除</string>
-    <string name="menu_reset_credentials">資格情報をリセット</string>
-    <string name="menu_kill">Kill スイッチ</string>
     <string name="menu_credits">クレジット</string>
 
     <!-- Strings related to login -->
@@ -73,23 +63,8 @@
     <string name="error_invalid_password">このパスワードは短すぎます</string>
     <string name="error_incorrect_password">このパスワードは間違っています</string>
     <string name="error_field_required">この項目は必須です</string>
-    <string name="prompt_email">メールアドレス</string>
     <string name="action_sign_in">サインインまたは登録</string>
     <string name="action_sign_in_short">サインイン</string>
-    <string name="error_invalid_email">このメールアドレスは無効です</string>
-    <string name="title_activity_provide_secret">秘密を入力</string>
-
-    <!-- Strings related to secret question -->
-    <string name="title_activity_setup_secret_question">秘密の質問</string>
-    <string name="secret_intro">秘密の質問は、パスワードを無くしたときにログインするために使用することができます</string>
-    <string name="prompt_secret">あなたの秘密の質問</string>
-    <string name="prompt_secret_answer">あなたの答え</string>
-    <string name="error_invalid_secret_question">この質問は短すぎます</string>
-    <string name="error_invalid_secret_answer">この答えは短すぎます</string>
-    <string name="error_invalid_answer">答えが間違っています</string>
-    <string name="error_retrieving_question">質問を取得できません</string>
-    <string name="success_valid_question">秘密の質問を作成しました</string>
-    <string name="success_valid_answer">答えが正しいです。 セキュリティを向上させるために、資格情報をリセットして新しい秘密を設定してください</string>
 
     <!-- Strings related to adding or editing a note -->
     <string name="prompt_note_title">タイトル</string>

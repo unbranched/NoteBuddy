@@ -4,20 +4,19 @@ import android.content.Context;
 import android.util.Log;
 
 /**
- * Created by Yoeri on 11-3-2017.
+ * This class checks if a file exists already.
  */
-
 public class FileChecker {
 
     private static final String LOG_TAG = "File Checker";
 
-    public Boolean fileExists(String location, String fileName, Context context) {
+    public Boolean fileExists(String location, String fileName, String password, Context context) {
         // Log input
         Log.d(LOG_TAG, "Location: " + location + ". Filename: " + fileName);
 
         // Verify if file exists
         TextfileReader t = new TextfileReader();
-        String textContent =  t.getText(location, fileName, context);
+        String textContent =  t.getText(location, fileName, password, context);
         if (textContent.equals("empty") || textContent.equals("") || textContent == null) {
 
             // Log failure

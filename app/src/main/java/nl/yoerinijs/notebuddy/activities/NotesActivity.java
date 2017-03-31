@@ -3,8 +3,9 @@ package nl.yoerinijs.notebuddy.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -21,7 +22,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +30,6 @@ import nl.yoerinijs.notebuddy.R;
 import nl.yoerinijs.notebuddy.files.DirectoryReader;
 import nl.yoerinijs.notebuddy.files.TextfileReader;
 import nl.yoerinijs.notebuddy.files.TextfileRemover;
-import nl.yoerinijs.notebuddy.security.SaltGenerator;
 import nl.yoerinijs.notebuddy.storage.KeyValueDB;
 
 /**
@@ -44,9 +43,7 @@ public class NotesActivity extends AppCompatActivity
     private static final String LOGIN_ACTIVITY = "LoginActivity";
     private static final String CREDITS_ACTIVITY = "CreditsActivity";
     private static final String EDIT_NOTE_ACTIVITY = "EditNoteActivity";
-    private static final String NOTES_ACTIVITY = "NotesActivity";
     private static final String SETUP_ACTIVITY = "SetupActivity";
-    private static final String SETUP_SECRET_ACTIVITY = "SetupSecretActivity";
     private static final String LOG_TAG = "Notes Activity";
 
     // UI references
@@ -54,38 +51,35 @@ public class NotesActivity extends AppCompatActivity
     private Context mContext;
 
     // Commonly used variables
-    private String location;
-    private KeyValueDB keyValueDB;
+    private String mLocation;
+    private String mPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
 
-        // Set up the notes screen
+        // Context
         mContext = this;
+
+        // Set up the notes screen
         final ListView listNotes = (ListView) findViewById(R.id.listNotes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Set up a random salt if it is not set
-        // Salt is needed for encrypting and decrypting the notes
-        SaltGenerator sg = new SaltGenerator();
-        sg.getSalt(mContext);
-
-        // Set up key value storage
-        keyValueDB = new KeyValueDB();
+        // Get mPassword from Login activity.
+        // Password is needed to derivate a secret key for encrypting and decrypting the data.
+        mPassword = getIntent().getStringExtra("PASSWORD");
 
         // Get absolute internal storage path
-        location = getFilesDir().getAbsolutePath();
-
-        // Log path
-        Log.d(LOG_TAG, "Location: " + location);
+        // Log the path as well
+        mLocation = getFilesDir().getAbsolutePath();
+        Log.d(LOG_TAG, "Location: " + mLocation);
 
         // Retrieve files from internal storage
         DirectoryReader dr = new DirectoryReader();
         try {
-            mNoteNames = dr.getFileNames(location, 0);
+            mNoteNames = dr.getFileNames(mLocation, 0);
             if (mNoteNames != null) {
                 final StableArrayAdapter adapter = new StableArrayAdapter(this, android.R.layout.simple_list_item_1, mNoteNames);
                 listNotes.setAdapter(adapter);
@@ -108,7 +102,7 @@ public class NotesActivity extends AppCompatActivity
 
                 // Get text from selected note name
                 TextfileReader t = new TextfileReader();
-                String note = t.getText(location, selectedNoteTitle, mContext);
+                String note = t.getText(mLocation, selectedNoteTitle, mPassword, mContext);
 
                 // Start activity to edit the note
                 // Pass note and selected note name
@@ -154,97 +148,21 @@ public class NotesActivity extends AppCompatActivity
             // Proceed to credits activity
             startActvitiy(CREDITS_ACTIVITY, false, null, null);
 
-        // Erase existing notes item
+        // Erase item
         } else if (id == R.id.nav_erase) {
-            // Display warning dialog
-            new AlertDialog.Builder(mContext)
-                    .setTitle(getString(R.string.dialog_title_delete_notes))
-                    .setMessage(getString(R.string.dialog_question_delete_notes))
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Log delete notes
-                            Log.d(LOG_TAG, "Delete notes");
-
-                            // Delete notes
-                            TextfileRemover tr = new TextfileRemover();
-                            tr.deleteAllFiles(location);
-
-                            // Notify user and ourselves
-                            Toast.makeText(getApplicationContext(), getString(R.string.success_deleted) + ".", Toast.LENGTH_SHORT).show();
-                            Log.d(LOG_TAG, "Notes deleted");
-
-                            // Go to notes activity
-                            startActvitiy(NOTES_ACTIVITY, true, null, null);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Log notes not deleted
-                            Log.d(LOG_TAG, "Notes not deleted");
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-
-        // Erase credentials and secret note item
-        } else if (id == R.id.nav_credentials) {
-            // Display warning dialog
-            new AlertDialog.Builder(mContext)
-                    .setTitle(getString(R.string.dialog_title_delete_credentials))
-                    .setMessage(getString(R.string.dialog_question_delete_credentials))
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Log delete notes
-                            Log.d(LOG_TAG, "Delete credentials");
-
-                            // Response variables
-                            String message;
-                            String logMessage;
-
-                            // Try to delete credentials
-                            try {
-                                keyValueDB.deleteCredentials(mContext);
-                                message = getString(R.string.success_deleted);
-                                logMessage = "Credentials deleted";
-                            } catch (NoSuchAlgorithmException n) {
-                                message = getString(R.string.error_cannot_delete);
-                                logMessage = "Cannot delete credentials";
-                            }
-
-                            // Provide response to the user and to ourselves
-                            Toast.makeText(getApplicationContext(), message + ".", Toast.LENGTH_SHORT).show();
-                            Log.d(LOG_TAG, logMessage);
-
-                            // Go to notes activity
-                            startActvitiy(SETUP_ACTIVITY, true, null, null);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // Log credentials not deleted
-                            Log.d(LOG_TAG, "Credentials not deleted");
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
-
-        // Kill switch item
-        } else if (id == R.id.nav_kill) {
             // Display warning dialog
             new AlertDialog.Builder(mContext)
                     .setTitle(getString(R.string.dialog_title_delete_everything))
                     .setMessage(getString(R.string.dialog_question_delete_everything))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // Log delete notes
-                            Log.d(LOG_TAG, "Delete credentials");
-
                             // Delete all settings
+                            KeyValueDB keyValueDB = new KeyValueDB();
                             keyValueDB.clearSharedPreference(mContext);
 
                             // Delete notes
                             TextfileRemover tr = new TextfileRemover();
-                            tr.deleteAllFiles(location);
+                            tr.deleteAllFiles(mLocation);
 
                             // Notify user and ourselves
                             Toast.makeText(getApplicationContext(), getString(R.string.success_deleted) + ".", Toast.LENGTH_SHORT).show();
@@ -267,11 +185,6 @@ public class NotesActivity extends AppCompatActivity
         } else if (id == R.id.nav_lock) {
             // Proceed to main activity to force login
             startActvitiy(LOGIN_ACTIVITY, true, null, null);
-
-        // Secret item
-        } else if (id == R.id.nav_secret) {
-            // Proceed to setup secret activity
-            startActvitiy(SETUP_SECRET_ACTIVITY, false, null, null);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -287,7 +200,7 @@ public class NotesActivity extends AppCompatActivity
      * @param note
      * @param selectedNoteName
      */
-    private void startActvitiy(String activity, Boolean finish, String note, String selectedNoteName) {
+    private void startActvitiy(@NonNull String activity, @NonNull Boolean finish, @Nullable String note, @Nullable String selectedNoteName) {
         // Log activity
         Log.d(LOG_TAG, "Proceed to " + activity);
 
@@ -295,12 +208,16 @@ public class NotesActivity extends AppCompatActivity
         Intent intent = new Intent();
         intent.setClassName(mContext, PACKAGE_NAME + "." + activity);
 
-        // Check if a note and a note name are given
-        // If true, add them to the activity
+        // Check if a note and a note name are given.
+        // If true, add them to the activity.
+        // Add provided mPassword as well for key derivation.
         if (note != null && selectedNoteName != null) {
             intent.putExtra("SELECTED_NOTE", note);
             intent.putExtra("SELECTED_NOTE_FILENAME", selectedNoteName);
         }
+
+        // Add provided mPassword as well for key derivation.
+        intent.putExtra("PASSWORD", mPassword);
 
         // Start activity
         startActivity(intent);

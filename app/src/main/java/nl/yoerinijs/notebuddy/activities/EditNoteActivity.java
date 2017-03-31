@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -41,16 +43,23 @@ public class EditNoteActivity extends AppCompatActivity {
     private EditText mNoteBody;
     private Context mContext;
     private View mFocusView;
-    private String location;
+
+    // Commonly used variables
+    private String mLocation;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
 
+        // Context
+        mContext = this;
+
         // Set up the UI
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mFocusView = null;
 
         mSaveButton = (FloatingActionButton) findViewById(R.id.saveButton);
         mBackButton = (FloatingActionButton) findViewById(R.id.backButton);
@@ -58,14 +67,15 @@ public class EditNoteActivity extends AppCompatActivity {
         mShareButton = (FloatingActionButton) findViewById(R.id.shareButton);
         mNoteTitle = (EditText) findViewById(R.id.noteTitle);
         mNoteBody = (EditText) findViewById(R.id.noteText);
-        mContext = this;
-        mFocusView = null;
+
+        // Get password from Login activity.
+        // Password is needed to derivate a secret key for encrypting and decrypting the data.
+        password = getIntent().getStringExtra("PASSWORD");
 
         // Get absolute internal storage path
-        location = getFilesDir().getAbsolutePath();
-
-        // Log path
-        Log.d(LOG_TAG, "Location: " + location);
+        // Log location as well
+        mLocation = getFilesDir().getAbsolutePath();
+        Log.d(LOG_TAG, "Location: " + mLocation);
 
         // Get note and note name
         final String note = getIntent().getStringExtra("SELECTED_NOTE");
@@ -104,7 +114,7 @@ public class EditNoteActivity extends AppCompatActivity {
                     // Verify whether file already exists
                     // If file exists, display warning dialog
                     FileChecker fc = new FileChecker();
-                    if (fc.fileExists(location, noteTitle, mContext)) {
+                    if (fc.fileExists(mLocation, noteTitle, password, mContext)) {
                         new AlertDialog.Builder(mContext)
                                 .setTitle(getString(R.string.dialog_title_note_exists))
                                 .setMessage(getString(R.string.dialog_question_overwrite_note))
@@ -174,7 +184,7 @@ public class EditNoteActivity extends AppCompatActivity {
                 TextfileRemover tr = new TextfileRemover();
                 try {
                     // Display warning dialog
-                    if (tr.deleteFile(location, noteFileName) == true) {
+                    if (tr.deleteFile(mLocation, noteFileName) == true) {
                         new AlertDialog.Builder(mContext)
                                 .setTitle(getString(R.string.dialog_title_delete_note))
                                 .setMessage(getString(R.string.dialog_question_delete_note))
@@ -220,7 +230,8 @@ public class EditNoteActivity extends AppCompatActivity {
      * @param noteBody
      * @return
      */
-    private boolean onSave(String noteTitle, String noteBody) {
+    @NonNull
+    private boolean onSave(@Nullable String noteTitle, @Nullable String noteBody) {
         boolean error = false;
 
         // Check note title
@@ -257,11 +268,11 @@ public class EditNoteActivity extends AppCompatActivity {
      * @param noteTitle
      * @param noteBody
      */
-    private void writeNote(String noteTitle, String noteBody){
+    private void writeNote(@NonNull String noteTitle, @NonNull String noteBody){
         // Write note
         // Logs will be handled by the TextfileWriter class
         TextfileWriter t = new TextfileWriter();
-        t.writeFile(mContext, noteTitle, noteBody);
+        t.writeFile(mContext, noteTitle, noteBody, password);
 
         // Notify user
         Toast.makeText(getApplicationContext(), getString(R.string.success_saved) + ".", Toast.LENGTH_SHORT).show();
@@ -277,6 +288,7 @@ public class EditNoteActivity extends AppCompatActivity {
         // Construct activity
         Intent intent = new Intent();
         intent.setClassName(mContext, PACKAGE_NAME + "." + NOTES_ACTIVITY);
+        intent.putExtra("PASSWORD", password);
 
         // Start activity
         startActivity(intent);

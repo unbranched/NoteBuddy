@@ -58,7 +58,7 @@
                     android:imeActionLabel="@string/action_login"
                     android:imeOptions="actionUnspecified"
                     android:maxLines="1"
-                    android:inputType="numberPassword" />
+                    android:inputType="textPassword" />
 
             </android.support.design.widget.TextInputLayout>
 

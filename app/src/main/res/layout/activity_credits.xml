@@ -15,7 +15,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/creditsView"
-        android:layout_height="430dp" />
+        android:autoLink="web"
+        android:scrollIndicators="right"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:layout_height="match_parent"
+        android:textColorLink="@color/colorPrimary"
+        android:layout_marginBottom="55dp" />
 
     <Button
         android:text="@string/action_back"

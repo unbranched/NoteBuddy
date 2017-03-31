@@ -27,7 +27,7 @@
     <!-- Actions -->
     <string name="action_try_again">Try again</string>
     <string name="action_provide_user">Fill in a username</string>
-    <string name="action_provide_password">Fill in a password (must be numerical)</string>
+    <string name="action_provide_password">Fill in a password</string>
     <string name="action_reset">Reset</string>
     <string name="action_back">Back</string>
 
@@ -41,25 +41,19 @@
     <string name="dialog_question_deny">No</string>
     <string name="dialog_answer_yes">Yes</string>
     <string name="dialog_answer_cancel">Cancel</string>
-    <string name="dialog_title_delete_credentials">Delete credentials</string>
-    <string name="dialog_question_delete_credentials">Are you sure to delete your credentials? Your notes will not be deleted.</string>
     <string name="dialog_title_note_exists">Note already exists</string>
     <string name="dialog_question_overwrite_note">Are you sure to overwrite the existing note?</string>
-    <string name="dialog_title_delete_notes">Delete all existing notes</string>
-    <string name="dialog_question_delete_notes">Are you sure to delete all saved notes?</string>
     <string name="dialog_title_delete_note">Delete note</string>
     <string name="dialog_question_delete_note">Are you sure to delete this note?</string>
-    <string name="dialog_title_delete_everything">Delete notes, secret question and credentials</string>
+    <string name="dialog_title_delete_everything">Delete notes and credentials</string>
     <string name="dialog_question_delete_everything">Are you sure to delete everything?</string>
-    <string name="dialog_title_setup_secret">You have a secret already</string>
-    <string name="dialog_question_setup_secret">Want to delete the current one and create a new one?</string>
+
+    <!-- String related to dev mode -->
+    <string name="dev_clear_shared_preferences">Clear shared prefs</string>
 
     <!-- String related to menu -->
     <string name="menu_lock">Lock</string>
-    <string name="menu_secret">Secret question</string>
-    <string name="menu_remove_notes">Remove all notes</string>
-    <string name="menu_reset_credentials">Reset credentials</string>
-    <string name="menu_kill">Kill switch</string>
+    <string name="menu_remove_everything">Delete all</string>
     <string name="menu_credits">Credits</string>
 
     <!-- Strings related to login -->
@@ -68,34 +62,19 @@
     <string name="prompt_password_forgotten">Forgot password</string>
     <string name="action_register">Register</string>
     <string name="action_login">Login</string>
-    <string name="action_complete">Ready!</string>
+    <string name="action_complete">Done!</string>
     <string name="error_invalid_username">This username is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="prompt_email">Email</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="title_activity_provide_secret">Provide Secret</string>
-
-    <!-- Strings related to secret question -->
-    <string name="title_activity_setup_secret_question">Secret Question</string>
-    <string name="secret_intro">A secret question can be used in order to login when the password is lost</string>
-    <string name="prompt_secret">Your secret question</string>
-    <string name="prompt_secret_answer">Your answer</string>
-    <string name="error_invalid_secret_question">This question is too short</string>
-    <string name="error_invalid_secret_answer">This answer is too short</string>
-    <string name="error_invalid_answer">Answer is incorrect</string>
-    <string name="error_retrieving_question">Cannot retrieve question</string>
-    <string name="success_valid_question">Secret question created</string>
-    <string name="success_valid_answer">Answer is correct. In order to increase security, reset your credentials and set up a new secret</string>
 
     <!-- Strings related to adding or editing a note -->
     <string name="prompt_note_title">Title</string>
     <string name="prompt_note_body">Note</string>
-    <string name="error_invalid_note_title">Note title is invalid</string>
-    <string name="error_invalid_note_body">Note is invalid</string>
+    <string name="error_invalid_note_title">Note title is invalid. Must be bigger than 3 characters</string>
+    <string name="error_invalid_note_body">Note is invalid. This field may not be blank</string>
 
     <!-- Strings related to navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>

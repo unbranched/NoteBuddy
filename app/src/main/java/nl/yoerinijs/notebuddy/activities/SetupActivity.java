@@ -22,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import nl.yoerinijs.notebuddy.R;
+import nl.yoerinijs.notebuddy.security.LoginHashCreator;
+import nl.yoerinijs.notebuddy.security.SaltHandler;
 import nl.yoerinijs.notebuddy.storage.KeyValueDB;
 import nl.yoerinijs.notebuddy.validators.PasswordValidator;
 import nl.yoerinijs.notebuddy.validators.UsernameValidator;
@@ -85,6 +87,7 @@ public class SetupActivity extends AppCompatActivity {
      * and no actual login attempt is made.
      */
     private void attemptRegistration() {
+
         // Reset errors
         mUsernameView.setError(null);
         mPasswordView.setError(null);
@@ -124,22 +127,31 @@ public class SetupActivity extends AppCompatActivity {
             // Log error
             Log.d(LOG_TAG, "Form validation went wrong");
         } else {
-            // Log success
-            Log.d(LOG_TAG, "Form validation succeeded");
 
+            // Yeah, form validation went smooth.
             // Save username and password to shared preferences
             KeyValueDB keyValueDB = new KeyValueDB();
             try {
-                keyValueDB.setPassword(mContext, password);
                 keyValueDB.setUsername(mContext, username);
+
+                // Generate salts and store them for later use
+                SaltHandler sg = new SaltHandler();
+                sg.setSalt(mContext);
+
+                // Encrypt example string that will be used in the Login Activity to verify whether one may login
+                // TODO: Think of a better solution
+                LoginHashCreator lhc = new LoginHashCreator();
+                keyValueDB.setVerificationPasswordHash(mContext, lhc.getLoginHash(mContext, password));
 
                 // Show a progress spinner, and kick off a background task to
                 // perform the user registration attempt
                 showProgress(true);
 
                 // Proceed to notes activity
+                // Pass the user password in order to use key derivation
                 Intent intent = new Intent();
                 intent.setClassName(mContext, PACKAGE_NAME + "." + NOTES_ACTIVITY);
+                intent.putExtra("PASSWORD", password);
                 startActivity(intent);
                 finish();
 

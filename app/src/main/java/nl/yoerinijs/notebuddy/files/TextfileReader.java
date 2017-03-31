@@ -7,8 +7,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
-import nl.yoerinijs.notebuddy.security.SaltGenerator;
-import nl.yoerinijs.notebuddy.security.TextCryptor;
+import nl.yoerinijs.notebuddy.security.EncryptionHandler;
 
 /**
  * This class reads a text file
@@ -24,8 +23,8 @@ public class TextfileReader {
      * @param context
      * @return
      */
-    public String getText(String location, String fileName, Context context){
-        return readFile(location, fileName, context);
+    public String getText(String location, String fileName, String password, Context context){
+        return readFile(location, fileName, password, context);
     }
 
     /**
@@ -35,7 +34,7 @@ public class TextfileReader {
      * @param context
      * @return
      */
-    private String readFile(String location, String fileName, Context context) {
+    private String readFile(String location, String fileName, String password, Context context) {
         File file = new File(location, fileName);
         StringBuilder encryptedText = new StringBuilder();
         String decryptedText = "";
@@ -52,10 +51,8 @@ public class TextfileReader {
             br.close();
 
             // Next, decrypt the text file
-            TextCryptor sf = new TextCryptor();
-            SaltGenerator sg = new SaltGenerator();
-            String salt = sg.getSalt(context);
-            decryptedText = sf.decryptFile(encryptedText.toString(), salt);
+            EncryptionHandler sf = new EncryptionHandler();
+            decryptedText = sf.decryptFile(encryptedText.toString(), password, context);
 
             // Log success
             Log.d(LOG_TAG, "Decrypted text: " +  decryptedText);

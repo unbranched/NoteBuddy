@@ -1,6 +1,7 @@
 package nl.yoerinijs.notebuddy.helpers;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.security.NoSuchAlgorithmException;
@@ -23,7 +24,7 @@ public class ActivityChoser {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String determineActivity(Context context) throws NoSuchAlgorithmException {
+    public String determineActivity(@NonNull Context context) throws NoSuchAlgorithmException {
         Log.d(LOG_TAG, "Check which activity to use");
         String activity;
         LoginChecker l = new LoginChecker();

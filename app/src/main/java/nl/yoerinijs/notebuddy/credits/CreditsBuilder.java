@@ -2,10 +2,11 @@ package nl.yoerinijs.notebuddy.credits;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 /**
- * A class for creating a credits string
+ * A class for creating credits
  */
 public class CreditsBuilder {
 
@@ -15,7 +16,7 @@ public class CreditsBuilder {
      * Credits getter
      * @return
      */
-    public String getCredits(Context context) {
+    public String getCredits(@NonNull Context context) {
         return createCredits(context);
     }
 
@@ -23,7 +24,7 @@ public class CreditsBuilder {
      * A method for creating the credits
      * @return
      */
-    private String createCredits(Context context) {
+    private String createCredits(@NonNull Context context) {
         StringBuilder sb = new StringBuilder();
 
         // General message
@@ -43,14 +44,23 @@ public class CreditsBuilder {
         // General thank you message
         sb.append("This program uses various sources in order to work properly. The following people and institutions will be acknowledged for their work:\n\n");
 
-        // Android Studio Code credit
-        sb.append(setFormat("Android Studio Code", "Google", "https://developer.android.com/studio/index.html"));
-
         // Java AES Crypto
         sb.append(setFormat("Java AES Crypto", "Isaac Potoczny-Jones", "https://github.com/tozny/java-aes-crypto/"));
 
         // Icon credit
-        sb.append(setFormat("NoteBuddy Icon", "Freepik", "http://www.flaticon.com/free-icon/notes_129492/"));
+        sb.append(setFormat("NoteBuddy Icon", "Mohammad Roqib", "https://store.kde.org/p/1012528/"));
+
+        // Commit message
+        sb.append("The following people have contributed to this FOSS project:\n\n");
+
+        // Advise contributors
+        sb.append(setFormat("Security advise", "Vanitasvitae", "https://github.com/vanitasvitae"));
+
+        // Documentation contributors
+        sb.append(setFormat("Documentation", "Poussinou", "https://github.com/Poussinou"));
+
+        // Translation contributors
+        sb.append(setFormat("Japanese translation", "Naofum", "https://github.com/naofum"));
 
         return sb.toString();
     }
@@ -62,7 +72,7 @@ public class CreditsBuilder {
      * @param url
      * @return
      */
-    private String setFormat(String title, String author, String url) {
+    private String setFormat(@NonNull String title, @NonNull String author, @NonNull String url) {
         return String.format("%s\n%s\n%s\n\n", title, author, url);
     }
 }
