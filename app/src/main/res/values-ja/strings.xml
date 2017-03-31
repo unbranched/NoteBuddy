@@ -48,9 +48,13 @@
     <string name="dialog_title_delete_everything">ノート、秘密の質問、資格情報を削除</string>
     <string name="dialog_question_delete_everything">すべて削除してもよろしいですか?</string>
 
+    <!-- String related to dev mode -->
+    <string name="dev_clear_shared_preferences">Clear shared prefs</string>
+
     <!-- String related to menu -->
-    <string name="menu_lock">ロック</string>
-    <string name="menu_credits">クレジット</string>
+    <string name="menu_lock">Lock</string>
+    <string name="menu_remove_everything">Delete all</string>
+    <string name="menu_credits">Credits</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">ユーザー名</string>
