@@ -19,7 +19,8 @@ NoteBuddy was a project to learn how to code in Android. However, due the fact l
 - Create a better way for validating the login password.
 
 # Changes
-- Version 1.1.0: enhanced encryption based on key derivation. To strengthen security, it is decided to delete the forgotton password functionality. See [this issue](https://github.com/YoeriNijs/NoteBuddy/issues/1). Furthermore, code cleaned;
+- Version 1.1.1: Bugfix and Dutch translation added
+- Version 1.1.0: enhanced encryption based on key derivation. To strengthen security, it is decided to delete the forgotten password functionality. See [this issue](https://github.com/YoeriNijs/NoteBuddy/issues/1). Furthermore, code cleaned and added Japanese translation;
 - Version 1.0.1: due a bug it was possible that one was not able to login. Fixed;
 - Version 1.0.0: Initial release.
 

@@ -1,0 +1,85 @@
+<resources>
+    <!--Activities-->
+    <string name="app_name">NoteBuddy</string>
+    <string name="title_activity_notes">Jouw NoteBuddy</string>
+    <string name="title_activity_login">Inloggen</string>
+    <string name="title_activity_setup">Setup</string>
+    <string name="title_activity_create_note">Notitie</string>
+
+    <!-- System information -->
+    <string name="error_starting_app">Kan de applicatie niet starten</string>
+    <string name="error_general">Er ging iets fout</string>
+    <string name="error_login_wrong_password">Het wachtwoord is onjuist</string>
+    <string name="error_login_general">Kan niet inloggen</string>
+    <string name="error_storing_password">Kan het wachtwoord niet opslaan</string>
+    <string name="error_no_permission">Geen toestemming om dit te doen</string>
+    <string name="error_cannot_save">Kan het bestand niet opslaan</string>
+    <string name="error_cannot_read_files">Kan de bestanden niet lezen</string>
+    <string name="error_cannot_delete">Kan niet verwijderen</string>
+    <string name="success_login_general">Ingelogd</string>
+    <string name="success_saved">Opgeslagen</string>
+    <string name="success_changed">Veranderd</string>
+    <string name="success_deleted">Verwijderd</string>
+    <string name="success_setup_general">Setup voltooid</string>
+    <string name="settings_deleted">Instellingen verwijderd</string>
+    <string name="file_deleted">Bestand verwijderd</string>
+
+    <!-- Actions -->
+    <string name="action_try_again">Probeer opnieuw</string>
+    <string name="action_provide_user">Vul een gebruikersnaam in</string>
+    <string name="action_provide_password">Vul een wachtwoord in</string>
+    <string name="action_reset">Resetten</string>
+    <string name="action_back">Terug</string>
+
+    <!-- Greetings -->
+    <string name="greeting_general">Hoi</string>
+    <string name="greeting_username">Ingelogd als</string>
+
+    <!-- Dialog -->
+    <string name="dialog_question_general">Weet je het zeker?</string>
+    <string name="dialog_question_confirm">Ja</string>
+    <string name="dialog_question_deny">Nee</string>
+    <string name="dialog_answer_yes">Ja</string>
+    <string name="dialog_answer_cancel">Annuleren</string>
+    <string name="dialog_title_note_exists">Notitie met deze naam bestaat al</string>
+    <string name="dialog_question_overwrite_note">Weet je zeker dat je de bestaande notitie wilt overschrijven?</string>
+    <string name="dialog_title_delete_note">Verwijder notitie</string>
+    <string name="dialog_question_delete_note">Weet je zeker dat je deze notitie wilt verwijderen?</string>
+    <string name="dialog_title_delete_everything">Verwijder notities en inloggegevens</string>
+    <string name="dialog_question_delete_everything">Weet je zeker dat je alles wilt verwijderen?</string>
+
+    <!-- String related to dev mode -->
+    <string name="dev_clear_shared_preferences">Verwijder shared preferences</string>
+
+    <!-- String related to menu -->
+    <string name="menu_lock">Vergrendelen</string>
+    <string name="menu_remove_everything">Alles verwijderen</string>
+    <string name="menu_credits">Credits</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Gebruikersnaam</string>
+    <string name="prompt_password">Wachtwoord</string>
+    <string name="action_register">Registreren</string>
+    <string name="action_login">Inloggen</string>
+    <string name="action_complete">Klaar!</string>
+    <string name="error_invalid_username">Deze gebruikersnaam is ongeldig</string>
+    <string name="error_invalid_password">Dit wachtwoord is te kort</string>
+    <string name="error_incorrect_password">Dit wachtwoord is ongeldig</string>
+    <string name="error_field_required">Dit veld is verplicht</string>
+    <string name="action_sign_in">Log in of registreer</string>
+    <string name="action_sign_in_short">Inloggen</string>
+
+    <!-- Strings related to adding or editing a note -->
+    <string name="prompt_note_title">Titel</string>
+    <string name="prompt_note_body">Notitie</string>
+    <string name="error_invalid_note_title">Titel is ongeldig. Deze moet langer zijn dan drie tekens</string>
+    <string name="error_invalid_note_body">Notitie is ongeldig. Hij mag niet leeg zijn</string>
+
+    <!-- Strings related to navigation drawer -->
+    <string name="navigation_drawer_open">Open navigatie</string>
+    <string name="navigation_drawer_close">Sluit navigatie</string>
+
+    <!-- Strings related to settings -->
+    <string name="action_settings">Instellingen</string>
+    <string name="title_activity_settings">Instellingen</string>
+</resources>

@@ -59,7 +59,6 @@
     <!-- Strings related to login -->
     <string name="prompt_username">ユーザー名</string>
     <string name="prompt_password">パスワード</string>
-    <string name="prompt_password_forgotten">パスワードを忘れた</string>
     <string name="action_register">登録</string>
     <string name="action_login">ログイン</string>
     <string name="action_complete">準備完了!</string>

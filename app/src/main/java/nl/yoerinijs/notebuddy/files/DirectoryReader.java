@@ -13,6 +13,7 @@ import java.util.regex.PatternSyntaxException;
  */
 public class DirectoryReader {
 
+    private static final String ACTIVITIES_PACKAGE = "notebuddy";
     private static final String LOG_TAG = "Directory Reader";
 
     /**
@@ -37,8 +38,13 @@ public class DirectoryReader {
             return null;
         }
         for (int i = 0; i < files.length; i++) {
-            storedData.add(files[i]);
+            // Some users report that NoteBuddy in some cases displays full activity paths (e.g. nl.yoerinijs.notebuddy.activities.MainActivity).
+            // Therefore, it will be checked here whether the file contains certain words in order to filter them out.
+            if(!files[i].contains("notebuddy") && !files[i].contains("yoerinijs")) {
+                storedData.add(files[i]);
+            }
         }
+
         if (storedData != null) {
             if (storedData.size() == 0) {
                 return null;
