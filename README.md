@@ -21,7 +21,7 @@ NoteBuddy was a project to learn how to code in Android. However, due the fact l
 - Come up with the possibility to hash keys in Android's in shared preferences.
 
 # Changes
-- Version 1.1.2: One can now send plain text directly to NoteBuddy. Furthermore two bugs fixed. Primarily, a bug that prevents users with Android API leven < 24 to login. Lastly, in some cases it was possible to go back to the previous activity, even when the user had locked the session;
+- Version 1.1.2: One can now send plain text directly to NoteBuddy. Furthermore two bugs fixed. Primarily, a bug that prevents users with Android API level < 24 to login. Lastly, in some cases it was possible to go back to the previous activity, even when the user had locked the session;
 - Version 1.1.1: Bugfix and Dutch translation added;
 - Version 1.1.0: enhanced encryption based on key derivation. To strengthen security, it is decided to delete the forgotten password functionality. See [this issue](https://github.com/YoeriNijs/NoteBuddy/issues/1). Furthermore, code cleaned and added Japanese translation;
 - Version 1.0.1: due a bug it was possible that one was not able to login. Fixed;
