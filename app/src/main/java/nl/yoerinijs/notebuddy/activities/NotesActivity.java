@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -70,6 +71,16 @@ public class NotesActivity extends AppCompatActivity
         // Get mPassword from Login activity.
         // Password is needed to derivate a secret key for encrypting and decrypting the data.
         mPassword = getIntent().getStringExtra("PASSWORD");
+
+        // Check whether NoteBuddy is receiving incoming text. If so, skip everything and go to EditNoteActivity instantly
+        if (getIntent().getStringExtra("TEXTTOSEND") != null) {
+            if (!getIntent().getStringExtra("TEXTTOSEND").isEmpty()) {
+                String note = getIntent().getStringExtra("TEXTTOSEND");
+                Calendar c = Calendar.getInstance();
+                final String noteTitle = getString(R.string.title_for_external_note) + " (" + c.get(Calendar.DAY_OF_MONTH) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.YEAR) + ")";
+                startActvitiy(EDIT_NOTE_ACTIVITY, true, note, noteTitle);
+            }
+        }
 
         // Get absolute internal storage path
         // Log the path as well

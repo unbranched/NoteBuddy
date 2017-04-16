@@ -1,6 +1,7 @@
 package nl.yoerinijs.notebuddy.activities;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,8 @@ import nl.yoerinijs.notebuddy.helpers.ActivityChoser;
 public class MainActivity extends AppCompatActivity {
 
     private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
+    private static final String LOGIN_ACTIVITY = "LoginActivity";
+    private static final String NOTES_ACTIVITY = "NotesActivity";
     private static final String LOG_TAG = "Main Activity";
 
     private boolean devMode;
@@ -66,11 +69,37 @@ public class MainActivity extends AppCompatActivity {
         intent.setClassName(this, activity);
         intent.putExtra("DEVMODE", devMode);
 
+        String textToSend = getPossibleTextByOtherApps();
+        if (textToSend != null && !textToSend.isEmpty()) {
+            if (activity.contains(NOTES_ACTIVITY) || activity.contains(LOGIN_ACTIVITY)) {
+                Log.d(LOG_TAG, "Send incoming text to next activity...");
+                intent.putExtra("TEXTTOSEND", textToSend);
+            }
+        }
+
         // Start activity
         startActivity(intent);
         finish();
 
         // Log whether the user must follow the setup or must login
         Log.d(LOG_TAG, "Proceed to: " + activity);
+    }
+
+    /**
+     * Check if another app is sending plain text. Returns full string with text when true, otherwise empty string.
+     * @return
+     */
+    @NonNull
+    private String getPossibleTextByOtherApps() {
+        Intent intent = getIntent();
+        if (Intent.ACTION_SEND.equals(intent.getAction()) && "text/plain".equals(intent.getType())) {
+            String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+            if (sharedText != null) {
+                Log.d(LOG_TAG, "Incoming text: " + sharedText);
+                return sharedText;
+            }
+        }
+        Log.d(LOG_TAG, "No incoming text");
+        return "";
     }
 }

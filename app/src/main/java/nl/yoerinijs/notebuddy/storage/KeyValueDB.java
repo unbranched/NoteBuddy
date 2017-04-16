@@ -3,6 +3,7 @@ package nl.yoerinijs.notebuddy.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -17,13 +18,13 @@ import nl.yoerinijs.notebuddy.security.EncryptionHandler;
 public class KeyValueDB {
 
     private static final String PREFS_NAME = "NoteBuddyPrefs";
-    private static final String KEY_USERNAME = "username_scrt_key";
-    private static final String KEY_DERIVED_SALT = "salt_derived_scrt_key";
-    private static final String KEY_MASTER_SALT = "salt_master_scrt_key";
-    private static final String KEY_SETUP = "setup_scrt_key";
-    private static final String KEY_RANDOM_PASSWORD_STRING = "random_password_string_scrt_key";
-    private static final String KEY_VERIFICATION_PASSWORD_HASH = "verification_password_hash_scrt_key";
-    private static final String VALUE_SETUP = "set_scrt_value";
+    private static final String KEY_USERNAME = "username_key";
+    private static final String KEY_DERIVED_SALT = "salt_derived_key";
+    private static final String KEY_MASTER_SALT = "salt_master_key";
+    private static final String KEY_SETUP = "setup_key";
+    private static final String VALUE_SETUP = "setup_value";
+    private static final String KEY_RANDOM_PASSWORD_STRING = "random_password_string_key";
+    private static final String KEY_VERIFICATION_PASSWORD_HASH = "verification_password_hash_key";
     private static final String LOG_TAG = "Key Value DB";
 
     public KeyValueDB() {
@@ -66,7 +67,7 @@ public class KeyValueDB {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String getVerificationPasswordHash(@Nullable Context context) throws NoSuchAlgorithmException {
+    public String getVerificationPasswordHash(@NonNull Context context) throws NoSuchAlgorithmException {
         return getValue(context, KEY_VERIFICATION_PASSWORD_HASH);
     }
 
@@ -157,13 +158,14 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     private String getValue(@NonNull Context context, @NonNull String key) throws NoSuchAlgorithmException {
-        SharedPreferences settings;
+        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String text;
-
-        settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-
-        EncryptionHandler eh = new EncryptionHandler();
-        text = settings.getString(eh.hashString(key), null);
+        if (isVersionNougatOrHigher()) {
+            EncryptionHandler eh = new EncryptionHandler();
+            text = settings.getString(eh.hashString(key), null);
+        } else {
+            text = settings.getString(key, null);
+        }
 
         // Log success
         Log.d(LOG_TAG, "Value retrieved");
@@ -180,23 +182,20 @@ public class KeyValueDB {
      * @throws NoSuchAlgorithmException
      */
     private void setValue(@NonNull Context context, @NonNull String key, @NonNull String value, @NonNull Boolean secure) throws NoSuchAlgorithmException {
-        SharedPreferences settings;
-        Editor editor;
-        EncryptionHandler eh = new EncryptionHandler();
+        SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        Editor editor = settings.edit();
 
-        settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        editor = settings.edit();
-
-        // Check whether the value must encrypted as well
-        if (secure) {
-            String encryptedKey = eh.hashString(key);
-            String encryptedValue = eh.hashString(value);
-            editor.putString(encryptedKey, encryptedValue);
-        } else {
-            String encryptedKey = eh.hashString(key);
-            editor.putString(encryptedKey, value);
+        // Check if current Android version is Nougat or higher. If so, hash key and hash value, if needed.
+        // Otherwise, use the raw key and value due to limitations by previous Android versions. Albeit this is not ideal, it is not really insecure due the fact
+        // notes are encrypted by an unknown password provided by the user. Nevertheless, it is possible to see the current keys.
+        // TODO: create a way so keys are always encrypted.
+        if (isVersionNougatOrHigher()) {
+            EncryptionHandler eh = new EncryptionHandler();
+            key = eh.hashString(key);
+            value = secure ? eh.hashString(value) : value;
         }
 
+        editor.putString(key, value);
         editor.commit();
 
         // Log success
@@ -239,5 +238,14 @@ public class KeyValueDB {
 
         // Log success
         Log.d(LOG_TAG, "Cleared shared prefs");
+    }
+
+    /**
+     * Returns true if the current Android version is Nougat or higher.
+     * @return
+     */
+    @NonNull
+    private boolean isVersionNougatOrHigher() {
+        return android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
     }
 }

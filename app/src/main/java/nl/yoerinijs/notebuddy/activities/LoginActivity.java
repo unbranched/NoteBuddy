@@ -134,8 +134,8 @@ public class LoginActivity extends AppCompatActivity {
             LoginHashCreator lhc = new LoginHashCreator();
             String currentHash = lhc.getLoginHash(mContext, mPassword);
             String verificationHash = keyValueDB.getVerificationPasswordHash(mContext);
-            Log.d(LOG_TAG, currentHash);
-            Log.d(LOG_TAG, verificationHash);
+            Log.d(LOG_TAG, "Current hash: " + currentHash);
+            Log.d(LOG_TAG, "Verification hash: " + verificationHash);
             boolean correctPassword = (currentHash.equals(verificationHash));
 
             // If hash is not correct, display a warning
@@ -192,9 +192,20 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void startActivity(@NonNull String activityName, @NonNull boolean providePassword) {
         Intent intent = new Intent();
+
+        // Verify whether password must be send to next activity
         if (providePassword) {
             intent.putExtra("PASSWORD", mPassword);
         }
+
+        // Verify whether to send incoming text by other Android app to next activity
+        // See Main Activity for text handling
+        if (getIntent().getStringExtra("TEXTTOSEND") != null) {
+            if (!getIntent().getStringExtra("TEXTTOSEND").isEmpty()) {
+                intent.putExtra("TEXTTOSEND", getIntent().getStringExtra("TEXTTOSEND"));
+            }
+        }
+
         intent.setClassName(mContext, PACKAGE_NAME + "." + activityName);
         startActivity(intent);
         finish();

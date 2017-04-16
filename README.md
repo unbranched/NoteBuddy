@@ -3,7 +3,7 @@ A simple Android application for storing encrypted notes. The notes are encrypte
 
 It is important to note that, when one deletes the account, all notes will be deleted automatically. Moreover, when one forgots the password, it should be impossible to read the notes. In that case, it is needed to reinstall the app.
 
-To use NoteBuddy, one must setup a simple user account (username and password with more than five chars) in order to login. All settings are stored encrypted in Android's Shared Preferences for now. The idea is to work with a SQlite database on the long term.
+To use NoteBuddy, one must setup a simple user account (username and password with more than five chars) in order to login. All settings are stored in Android's Shared Preferences for now. The idea is to work with a SQlite database on the long term.
 
 <a href="https://f-droid.org/repository/browse/?fdid=nl.yoerinijs.notebuddy" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"/></a> 
@@ -17,9 +17,11 @@ NoteBuddy was a project to learn how to code in Android. However, due the fact l
 - Do some code reviewing;
 - Add some (external) back-up functionality;
 - The possibility to work with multiple user accounts;
-- Create a better way for validating the login password.
+- Create a better way for validating the login password;
+- Come up with the possibility to hash keys in Android's in shared preferences.
 
 # Changes
+- Version 1.1.2: One can now send plain text directly to NoteBuddy. Furthermore two bugs fixed. Primarily, a bug that prevents users with Android API leven < 24 to login. Lastly, in some cases it was possible to go back to the previous activity, even when the user had locked the session;
 - Version 1.1.1: Bugfix and Dutch translation added;
 - Version 1.1.0: enhanced encryption based on key derivation. To strengthen security, it is decided to delete the forgotten password functionality. See [this issue](https://github.com/YoeriNijs/NoteBuddy/issues/1). Furthermore, code cleaned and added Japanese translation;
 - Version 1.0.1: due a bug it was possible that one was not able to login. Fixed;

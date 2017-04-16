@@ -51,6 +51,9 @@
     <!-- String related to dev mode -->
     <string name="dev_clear_shared_preferences">Clear shared prefs</string>
 
+    <!-- String related to text from other apps -->
+    <string name="title_for_external_note">Note</string>
+
     <!-- String related to menu -->
     <string name="menu_lock">Lock</string>
     <string name="menu_remove_everything">Delete all</string>

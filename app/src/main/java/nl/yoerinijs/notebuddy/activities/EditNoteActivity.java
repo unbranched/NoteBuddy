@@ -154,8 +154,8 @@ public class EditNoteActivity extends AppCompatActivity {
                 // Log action
                 Log.d(LOG_TAG, "Go back");
 
-                // Finish this activity
-                finish();
+                // Finish this activity and go to Notes Activity
+                startNotesActivity();
             }
         });
 

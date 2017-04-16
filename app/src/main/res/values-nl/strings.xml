@@ -51,6 +51,9 @@
     <!-- String related to dev mode -->
     <string name="dev_clear_shared_preferences">Verwijder shared preferences</string>
 
+    <!-- String related to text from other apps -->
+    <string name="title_for_external_note">Mijn notitie van</string>
+
     <!-- String related to menu -->
     <string name="menu_lock">Vergrendelen</string>
     <string name="menu_remove_everything">Alles verwijderen</string>
