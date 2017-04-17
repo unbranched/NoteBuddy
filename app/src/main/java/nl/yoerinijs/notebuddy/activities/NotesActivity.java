@@ -117,7 +117,7 @@ public class NotesActivity extends AppCompatActivity
 
                 // Start activity to edit the note
                 // Pass note and selected note name
-                startActvitiy(EDIT_NOTE_ACTIVITY, false, note, selectedNoteTitle);
+                startActvitiy(EDIT_NOTE_ACTIVITY, true, note, selectedNoteTitle);
             }
         });
 
@@ -127,7 +127,7 @@ public class NotesActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 // Proceed to add note activity
-                startActvitiy(EDIT_NOTE_ACTIVITY, false, null, null);
+                startActvitiy(EDIT_NOTE_ACTIVITY, true, null, null);
             }
         });
 

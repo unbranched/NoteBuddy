@@ -1,6 +1,7 @@
 package nl.yoerinijs.notebuddy.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,11 +17,14 @@ import nl.yoerinijs.notebuddy.credits.CreditsBuilder;
  */
 public class CreditsActivity extends AppCompatActivity {
 
+    private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
+    private static final String NOTES_ACTIVITY = "NotesActivity";
     private static final String LOG_TAG = "Credits Activity";
 
     TextView mTextView;
     Button mButton;
     Context mContext;
+    private String mPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +33,10 @@ public class CreditsActivity extends AppCompatActivity {
 
         // Set context
         mContext = this;
+
+        // Due the fact all activities will be closed for security reasons,
+        // the password will be set to pass it back later to the NotesActivity.
+        mPassword = getIntent().getStringExtra("PASSWORD");
 
         // Log credit activity
         Log.d(LOG_TAG, "Display credits");
@@ -44,9 +52,19 @@ public class CreditsActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                finish();
+                toNotesActivity();
             }
         });
+    }
 
+    /**
+     * Go to Notes Activity and close current activity.
+     */
+    private void toNotesActivity() {
+        Intent intent = new Intent();
+        intent.putExtra("PASSWORD", mPassword);
+        intent.setClassName(mContext, PACKAGE_NAME + "." + NOTES_ACTIVITY);
+        startActivity(intent);
+        finish();
     }
 }
