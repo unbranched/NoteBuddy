@@ -17,11 +17,11 @@ NoteBuddy was a project to learn how to code in Android. However, due the fact l
 - Do some code reviewing;
 - Add some (external) back-up functionality;
 - The possibility to work with multiple user accounts;
-- Create a better way for validating the login password;
 - Come up with the possibility to hash keys in Android's in shared preferences.
 
 # Changes
-- Version 1.1.3: Bugfix.
+- Version 1.1.4: When one changes the note name, the note with the old name will be deleted automatically. Furthermore, password validation is improved. <b>Warning:</b> when updating to this version, all previously stored notes are not accessible anymore;
+- Version 1.1.3: Bugfix;
 - Version 1.1.2: One can now send plain text directly to NoteBuddy. Furthermore two bugs fixed. Primarily, a bug that prevents users with Android API level < 24 to login. Lastly, in some cases it was possible to go back to the previous activity, even when the user had locked the session;
 - Version 1.1.1: Bugfix and Dutch translation added;
 - Version 1.1.0: enhanced encryption based on key derivation. To strengthen security, it is decided to delete the forgotten password functionality. See [this issue](https://github.com/YoeriNijs/NoteBuddy/issues/1). Furthermore, code cleaned and added Japanese translation;

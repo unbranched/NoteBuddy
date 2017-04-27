@@ -110,8 +110,8 @@ public class EditNoteActivity extends AppCompatActivity {
                 final String noteBody = mNoteBody.getText().toString();
 
                 // Validate input
-                if (onSave(noteTitle, noteBody) == false) {
-                    // Verify whether file already exists
+                if (!onSave(noteTitle, noteBody)) {
+                    // Verify whether file with current note title already exists
                     // If file exists, display warning dialog
                     FileChecker fc = new FileChecker();
                     if (fc.fileExists(mLocation, noteTitle, password, mContext)) {
@@ -121,10 +121,7 @@ public class EditNoteActivity extends AppCompatActivity {
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         // Save note
-                                        writeNote(noteTitle, noteBody);
-
-                                        // Proceed to notes activity
-                                        startNotesActivity();
+                                        writeNote(noteTitle, noteFileName, noteBody);
                                     }
                                 })
                                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -137,11 +134,7 @@ public class EditNoteActivity extends AppCompatActivity {
                                 .show();
                     } else {
                         // File does not exist, so it can be saved without problems
-                        // Save note
-                        writeNote(noteTitle, noteBody);
-
-                        // Proceed to notes activity
-                        startNotesActivity();
+                        writeNote(noteTitle, noteFileName, noteBody);
                     }
                 }
             }
@@ -181,41 +174,39 @@ public class EditNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Delete the note
-                TextfileRemover tr = new TextfileRemover();
                 try {
                     // Display warning dialog
-                    if (tr.deleteFile(mLocation, noteFileName) == true) {
-                        new AlertDialog.Builder(mContext)
-                                .setTitle(getString(R.string.dialog_title_delete_note))
-                                .setMessage(getString(R.string.dialog_question_delete_note))
-                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // Let the user know that the file is deleted successfully
-                                        String successMessage = getString(R.string.success_deleted);
-                                        Toast.makeText(getApplicationContext(), successMessage + ". ", Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(mContext)
+                            .setTitle(getString(R.string.dialog_title_delete_note))
+                            .setMessage(getString(R.string.dialog_question_delete_note))
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
 
-                                        // Log success
-                                        Log.d(LOG_TAG, successMessage);
+                                    // Try to delete the file
+                                    TextfileRemover tr = new TextfileRemover();
+                                    String deleteMessage = tr.deleteFile(mLocation, noteFileName) ? getString(R.string.success_deleted) : getString(R.string.error_cannot_delete);
 
-                                        // Proceed to notes activity
-                                        startNotesActivity();
-                                    }
-                                })
-                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // Log that note will not deleted
-                                        Log.d(LOG_TAG, "Cancelled. Note not deleted");
-                                    }
-                                })
-                                .setIcon(android.R.drawable.ic_dialog_alert)
-                                .show();
-                    } else {
-                        throw new IOException();
-                    }
+                                    // When file is deleted, the deleteMessage will hold the success_deleted string. If an error occurred, the error_cannot_delete string will be displayed.
+                                    Toast.makeText(getApplicationContext(), deleteMessage + ". ", Toast.LENGTH_SHORT).show();
+
+                                    // Log result
+                                    Log.d(LOG_TAG, deleteMessage);
+
+                                    // Proceed to notes activity
+                                    startNotesActivity();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // Log that note will not deleted
+                                    Log.d(LOG_TAG, "Cancelled. Note not deleted");
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
                 } catch (Exception e) {
                     // Let the user know that the file cannot deleted
-                    String errorMessage = getString(R.string.error_cannot_delete);
-                    Toast.makeText(getApplicationContext(), errorMessage + ". ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.error_cannot_delete) + ". ", Toast.LENGTH_SHORT).show();
 
                     // Log failure
                     Log.d(LOG_TAG, e.getMessage());
@@ -264,18 +255,31 @@ public class EditNoteActivity extends AppCompatActivity {
     }
 
     /**
-     * Write note
-     * @param noteTitle
+     * Write note. Should delete a note when the current note title is not the same as the old note title (i.e. title is changed).
+     * @param currentNoteTile
+     * @param oldNoteTitle
      * @param noteBody
      */
-    private void writeNote(@NonNull String noteTitle, @NonNull String noteBody){
+    private void writeNote(@NonNull String currentNoteTile, @Nullable String oldNoteTitle, @NonNull String noteBody){
         // Write note
         // Logs will be handled by the TextfileWriter class
         TextfileWriter t = new TextfileWriter();
-        t.writeFile(mContext, noteTitle, noteBody, password);
+        t.writeFile(mContext, currentNoteTile, noteBody, password);
+
+        // If the current note title is not the same as the old note title,
+        // delete the file with the old note title
+        if(null != oldNoteTitle) {
+            if(!currentNoteTile.equalsIgnoreCase(oldNoteTitle)) {
+                TextfileRemover tr = new TextfileRemover();
+                tr.deleteFile(mLocation, oldNoteTitle);
+            }
+        }
 
         // Notify user
         Toast.makeText(getApplicationContext(), getString(R.string.success_saved) + ".", Toast.LENGTH_SHORT).show();
+
+        // Proceed to notes activity
+        startNotesActivity();
     }
 
     /**
@@ -296,5 +300,4 @@ public class EditNoteActivity extends AppCompatActivity {
         // Close activity for security purposes
         finish();
     }
-
 }
