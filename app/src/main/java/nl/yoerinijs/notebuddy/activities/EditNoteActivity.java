@@ -270,6 +270,9 @@ public class EditNoteActivity extends AppCompatActivity {
         // ask if the note with the old title should be deleted
         if(null != oldNoteTitle) {
             if(!currentNoteTile.equalsIgnoreCase(oldNoteTitle)) {
+                // Log that note title is changed
+                Log.d(LOG_TAG, "Note title is changed");
+
                 new AlertDialog.Builder(mContext)
                         .setTitle(getString(R.string.dialog_title_old_note))
                         .setMessage(getString(R.string.dialog_question_delete_old_note))
@@ -294,7 +297,16 @@ public class EditNoteActivity extends AppCompatActivity {
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
+            } else {
+                // Log that note title is not changed
+                Log.d(LOG_TAG, "Note title not changed");
+
+                // Continue
+                postWriting();
             }
+        } else {
+            // Continue
+            postWriting();
         }
     }
 
@@ -302,6 +314,9 @@ public class EditNoteActivity extends AppCompatActivity {
      * This method holds everything related to post writing.
      */
     private void postWriting() {
+        // Log post writing
+        Log.d(LOG_TAG, "Post writing");
+
         // Notify user
         Toast.makeText(getApplicationContext(), getString(R.string.success_saved) + ".", Toast.LENGTH_SHORT).show();
 
