@@ -43,6 +43,8 @@
     <string name="dialog_answer_cancel">キャンセル</string>
     <string name="dialog_title_note_exists">ノートはすでに存在します</string>
     <string name="dialog_question_overwrite_note">既存のノートを上書きしてもよろしいですか?</string>
+    <string name="dialog_title_old_note">Delete old note</string>
+    <string name="dialog_question_delete_old_note">Because the note title has changed, this note will be saved as a new one. Delete the previously stored note?</string>
     <string name="dialog_title_delete_note">ノートを削除</string>
     <string name="dialog_question_delete_note">このノートを削除してもよろしいですか?</string>
     <string name="dialog_title_delete_everything">ノート、秘密の質問、資格情報を削除</string>

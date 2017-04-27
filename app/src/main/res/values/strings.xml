@@ -43,6 +43,8 @@
     <string name="dialog_answer_cancel">Cancel</string>
     <string name="dialog_title_note_exists">Note already exists</string>
     <string name="dialog_question_overwrite_note">Are you sure to overwrite the existing note?</string>
+    <string name="dialog_title_old_note">Delete old note</string>
+    <string name="dialog_question_delete_old_note">Because the note title has changed, this note will be saved as a new one. Delete the previously stored note?</string>
     <string name="dialog_title_delete_note">Delete note</string>
     <string name="dialog_question_delete_note">Are you sure to delete this note?</string>
     <string name="dialog_title_delete_everything">Delete notes and credentials</string>

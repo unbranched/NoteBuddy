@@ -260,21 +260,48 @@ public class EditNoteActivity extends AppCompatActivity {
      * @param oldNoteTitle
      * @param noteBody
      */
-    private void writeNote(@NonNull String currentNoteTile, @Nullable String oldNoteTitle, @NonNull String noteBody){
+    private void writeNote(@NonNull String currentNoteTile, @Nullable final String oldNoteTitle, @NonNull String noteBody){
         // Write note
         // Logs will be handled by the TextfileWriter class
         TextfileWriter t = new TextfileWriter();
         t.writeFile(mContext, currentNoteTile, noteBody, password);
 
         // If the current note title is not the same as the old note title,
-        // delete the file with the old note title
+        // ask if the note with the old title should be deleted
         if(null != oldNoteTitle) {
             if(!currentNoteTile.equalsIgnoreCase(oldNoteTitle)) {
-                TextfileRemover tr = new TextfileRemover();
-                tr.deleteFile(mLocation, oldNoteTitle);
+                new AlertDialog.Builder(mContext)
+                        .setTitle(getString(R.string.dialog_title_old_note))
+                        .setMessage(getString(R.string.dialog_question_delete_old_note))
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Try to delete note with old tile
+                                TextfileRemover tr = new TextfileRemover();
+                                tr.deleteFile(mLocation, oldNoteTitle);
+
+                                // Continue
+                                postWriting();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Log that old note is not deleted
+                                Log.d(LOG_TAG, "Old note not deleted");
+
+                                // Continue
+                                postWriting();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
         }
+    }
 
+    /**
+     * This method holds everything related to post writing.
+     */
+    private void postWriting() {
         // Notify user
         Toast.makeText(getApplicationContext(), getString(R.string.success_saved) + ".", Toast.LENGTH_SHORT).show();
 
