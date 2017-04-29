@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Enable or disable dev mode
         // Dev mode can be used to test the application more convenient
-        devMode = false;
+        devMode = true;
 
         // Log that the program has started
         String devModeEnabled = (devMode) ? "is enabled" : "is disabled";

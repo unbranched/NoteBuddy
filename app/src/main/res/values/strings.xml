@@ -16,6 +16,7 @@
     <string name="error_cannot_save">Cannot save file</string>
     <string name="error_cannot_read_files">Cannot read files</string>
     <string name="error_cannot_delete">Cannot delete</string>
+    <string name="error_nothing_to_delete">Nothing to delete</string>
     <string name="success_login_general">Logged in</string>
     <string name="success_saved">Saved</string>
     <string name="success_changed">Changed</string>
@@ -59,6 +60,8 @@
     <string name="dialog_answer_decrypt">Decrypted</string>
     <string name="dialog_title_delete_all_notes">Delete all notes</string>
     <string name="dialog_question_delete_all_notes">Are you sure to delete all notes?</string>
+    <string name="dialog_title_delete_ext_storage">Clear external storage</string>
+    <string name="dialog_question_delete_ext_storage">Are you sure to delete all files in</string>
 
     <!-- String related to dev mode -->
     <string name="dev_clear_shared_preferences">Clear shared prefs</string>
@@ -73,6 +76,9 @@
     <string name="backup_decrypted">Decrypted</string>
     <string name="backup_number_created_singular">Note is backed up successfully</string>
     <string name="backup_number_created_plural">Notes are backed up successfully</string>
+    <string name="backup_ext_cleared">External backup storage cleared</string>
+    <string name="backup_number_deleted_singular">File is deleted successfully</string>
+    <string name="backup_number_deleted_plural">Files are deleted successfully</string>
 
     <!-- Strings related to importing external notes -->
     <string name="import_success">External notes imported successfully</string>
@@ -84,8 +90,9 @@
     <string name="menu_remove_everything">Reset NoteBuddy</string>
     <string name="menu_credits">Credits</string>
     <string name="menu_backup">Create backup</string>
-    <string name="menu_import">Import external notes</string>
+    <string name="menu_import">Import backed up notes</string>
     <string name="menu_clear">Delete all notes</string>
+    <string name="menu_clear_ext">Clear backup storage</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>

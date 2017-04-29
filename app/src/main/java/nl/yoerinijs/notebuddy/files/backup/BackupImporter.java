@@ -41,7 +41,7 @@ public class BackupImporter {
         }
 
         // Verify if there are external notes
-        if(getNumberOfFilesInDir() <= 0) {
+        if(getNumberOfFilesInDir(context) <= 0) {
             return false;
         }
 
@@ -59,10 +59,16 @@ public class BackupImporter {
      * Returns the number of notes in external dir
      * @return
      */
-    private int getNumberOfFilesInDir() {
-        mBackupLocationString = mBackupStorageHandler.getBackupDirectory().toString();
+    private int getNumberOfFilesInDir(Context context) {
+        // Request reading and writing permissions
+        mBackupStorageHandler.requestWritingPermissions(context);
+
+        // Set backup location string
+        mBackupLocationString = mBackupStorageHandler.getBackupDirectory();
+
+        // Read external files
         mDirectoryReader = new DirectoryReader();
-        ArrayList<String> listOfNoteNames = mDirectoryReader.getFileNames(mBackupLocationString, 0);
+        final ArrayList<String> listOfNoteNames = mDirectoryReader.getFileNames(mBackupLocationString, 0);
         return null == listOfNoteNames ? 0 : listOfNoteNames.size();
     }
 
@@ -73,6 +79,10 @@ public class BackupImporter {
     private ArrayList<String> getExternalNotes() {
         ArrayList<String> cleanListOfExternalNotes = new ArrayList<>();
         final ArrayList<String> listOfExternalFiles = mDirectoryReader.getFileNames(mBackupLocationString, 0);
+
+        if(null == listOfExternalFiles) {
+            return cleanListOfExternalNotes;
+        }
 
         // Only select the files with the right file extension
         for(int i = 0; i < listOfExternalFiles.size(); i++) {

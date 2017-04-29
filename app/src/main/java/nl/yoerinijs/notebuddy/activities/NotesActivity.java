@@ -31,6 +31,7 @@ import java.util.List;
 import nl.yoerinijs.notebuddy.R;
 import nl.yoerinijs.notebuddy.files.backup.BackupCreator;
 import nl.yoerinijs.notebuddy.files.backup.BackupImporter;
+import nl.yoerinijs.notebuddy.files.backup.BackupStorageHandler;
 import nl.yoerinijs.notebuddy.files.misc.DirectoryReader;
 import nl.yoerinijs.notebuddy.files.text.TextfileReader;
 import nl.yoerinijs.notebuddy.files.text.TextfileRemover;
@@ -262,11 +263,69 @@ public class NotesActivity extends AppCompatActivity
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+
+        // Clear backup storage item
+        } else if (id == R.id.nav_clear_ext) {
+            final BackupStorageHandler backupStorageHandler = new BackupStorageHandler();
+
+            // Request permissions to delete files
+            backupStorageHandler.requestWritingPermissions(mContext);
+
+            // Only show dialog if permissions are granted
+            if(backupStorageHandler.isExternalStorageWritable()) {
+                new AlertDialog.Builder(mContext)
+                        .setTitle(getString(R.string.dialog_title_delete_ext_storage))
+                        .setMessage(getString(R.string.dialog_question_delete_ext_storage) + ": " + backupStorageHandler.getBackupDirectory() + "?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    // Check if there are files to delete
+                                    if(!backupStorageHandler.isStorageDirEmpty(mContext)) {
+                                        // Get number of files
+                                        final int numberOfFiles = backupStorageHandler.getNumberOfFilesInStorageDir(mContext);
+
+                                        // Clear the files
+                                        backupStorageHandler.clearStorageDir(mContext);
+
+                                        // Display result
+                                        provideBackupClearedResult(numberOfFiles);
+                                    } else {
+                                        // Nothing to delete, notify user and ourselves
+                                        Toast.makeText(getApplicationContext(), getString(R.string.error_nothing_to_delete) + ".", Toast.LENGTH_LONG).show();
+                                        Log.d(LOG_TAG, "Nothing to delete...");
+                                    }
+                                } catch (Exception e) {
+                                    // Something went wrong. Notify user and ourselves
+                                    Toast.makeText(getApplicationContext(), getString(R.string.error_cannot_delete) + ". " +  getString(R.string.error_general) + ".", Toast.LENGTH_LONG).show();
+                                    Log.d(LOG_TAG, e.getMessage());
+                                }
+
+                                // Go to notes activity
+                                startActvitiy(NOTES_ACTIVITY, true, null, null);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Log that notes are not deleted
+                                Log.d(LOG_TAG, "External storage not cleared");
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void provideBackupClearedResult(int numberOfFilesInDir) {
+        // Notify user and ourselves
+        Toast.makeText(getApplicationContext(), getString(R.string.backup_ext_cleared) + ".", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), numberOfFilesInDir == 1 ? numberOfFilesInDir + " " + getString(R.string.backup_number_deleted_singular).toLowerCase() + "." :
+                numberOfFilesInDir + " " + getString(R.string.backup_number_deleted_plural).toLowerCase() + "." , Toast.LENGTH_LONG).show();
+        Log.d(LOG_TAG, "All external files deleted");
     }
 
     /**

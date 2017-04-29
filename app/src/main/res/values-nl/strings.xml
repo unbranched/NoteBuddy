@@ -16,6 +16,7 @@
     <string name="error_cannot_save">Kan het bestand niet opslaan</string>
     <string name="error_cannot_read_files">Kan de bestanden niet lezen</string>
     <string name="error_cannot_delete">Kan niet verwijderen</string>
+    <string name="error_nothing_to_delete">Er is niets om te verwijderen</string>
     <string name="success_login_general">Ingelogd</string>
     <string name="success_saved">Opgeslagen</string>
     <string name="success_changed">Veranderd</string>
@@ -59,6 +60,8 @@
     <string name="dialog_answer_decrypt">Onversleuteld</string>
     <string name="dialog_title_delete_all_notes">Verwijder alle notities</string>
     <string name="dialog_question_delete_all_notes">Weet je zeker dat je alle notities wil verwijderen?</string>
+    <string name="dialog_title_delete_ext_storage">Back-upruimte opschonen</string>
+    <string name="dialog_question_delete_ext_storage">Weet je zeker dat je alle bestanden wilt verwijderen in</string>
 
     <!-- String related to dev mode -->
     <string name="dev_clear_shared_preferences">Verwijder shared preferences</string>
@@ -73,6 +76,9 @@
     <string name="backup_decrypted">Niet versleuteld</string>
     <string name="backup_number_created_singular">Notitie is succesvol geback-upt</string>
     <string name="backup_number_created_plural">Notities zijn succesvol geback-upt</string>
+    <string name="backup_ext_cleared">Externe back-upruimte opgeschoond</string>
+    <string name="backup_number_deleted_singular">Bestand is succesvol verwijderd</string>
+    <string name="backup_number_deleted_plural">Bestanden zijn succesvol verwijderd</string>
 
     <!-- Strings related to importing external notes -->
     <string name="import_success">Externe notities zijn succesvol geïmporteerd</string>
@@ -84,8 +90,9 @@
     <string name="menu_remove_everything">NoteBuddy resetten</string>
     <string name="menu_credits">Credits</string>
     <string name="menu_backup">Back-up maken</string>
-    <string name="menu_import">Importeer notities</string>
+    <string name="menu_import">Importeer geback-upte notities</string>
     <string name="menu_clear">Verwijder alle notities</string>
+    <string name="menu_clear_ext">Schoon back-upruimte op</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">Gebruikersnaam</string>
