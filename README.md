@@ -23,7 +23,7 @@ NoteBuddy was a project to learn how to code in Android. However, due the fact l
 - Better check for password hash. 
 
 # Changes
-- Version 1.2.0: Major improvements added. Primarily, the initial version of some external back-up functionality is introduced. It has been chosen to simply copy the notes encrypted or not, and not to support Google, Dropbox, or whatsoever due to privacy concerns. Users can copy the notes to external backup services themselves, if wanted. Secondly, the setup now validates the password, so it should be impossible to make a mistake. Lastly, some dialog language is changed;
+- Version 1.2.0: Major improvements added. Primarily, the initial version of some external back-up functionality is introduced. It has been chosen to simply copy the encrypted or decrypted notes, and not to support Google, Dropbox, or whatsoever due to privacy concerns. Users can copy the notes to external backup services themselves, if wanted. Secondly, the setup now validates the password, so it should be impossible to make a mistake. Lastly, some dialog language is changed and a new introduction text is added to the NotesActivity;
 - Version 1.1.4: When one changes the note name, the note with the old name will be deleted automatically. Furthermore, password validation is improved. <b>Warning:</b> when updating to this version, all previously stored notes are not accessible anymore;
 - Version 1.1.3: Bugfix;
 - Version 1.1.2: One can now send plain text directly to NoteBuddy. Furthermore two bugs fixed. Primarily, a bug that prevents users with Android API level < 24 to login. Lastly, in some cases it was possible to go back to the previous activity, even when the user had locked the session;
