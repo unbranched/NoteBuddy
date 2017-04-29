@@ -48,7 +48,7 @@ public class CreditsBuilder {
         sb.append(setFormat("Java AES Crypto", "Isaac Potoczny-Jones", "https://github.com/tozny/java-aes-crypto/"));
 
         // Icon credit
-        sb.append(setFormat("NoteBuddy Icon", "Mohammad Roqib", "https://store.kde.org/p/1012528/"));
+        sb.append(setFormat("NoteBuddy Icon", "DinosoftLabs/Flaticon (Flaticon Basic License)", "http://www.flaticon.com/free-icon/notepad_345743"));
 
         // Commit message
         sb.append("The following people have contributed to this FOSS project:\n\n");

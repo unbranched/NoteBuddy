@@ -7,7 +7,7 @@ android {
         applicationId "nl.yoerinijs.notebuddy"
         minSdkVersion 23
         targetSdkVersion 25
-        versionCode 11
+        versionCode 12
         versionName "1.2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
