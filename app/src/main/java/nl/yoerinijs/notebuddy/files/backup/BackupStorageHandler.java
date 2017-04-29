@@ -74,7 +74,7 @@ public class BackupStorageHandler {
      * @param context
      * @return
      */
-    public void clearStorageDir(Context context)  {
+    public void clearStorageDir(@NonNull Context context)  {
         final TextfileRemover textfileRemover = new TextfileRemover();
         try {
             textfileRemover.deleteAllFiles(getStorageDir(context).toString());
@@ -89,7 +89,7 @@ public class BackupStorageHandler {
      * @return
      * @throws Exception
      */
-    public boolean isStorageDirEmpty(Context context) throws Exception {
+    public boolean isStorageDirEmpty(@NonNull Context context) throws Exception {
         return getNumberOfFilesInStorageDir(context) <= 0 ? true : false;
     }
 
@@ -99,7 +99,7 @@ public class BackupStorageHandler {
      * @return
      * @throws Exception
      */
-    public int getNumberOfFilesInStorageDir(Context context) throws Exception {
+    public int getNumberOfFilesInStorageDir(@NonNull Context context) throws Exception {
         final DirectoryReader directoryReader = new DirectoryReader();
         ArrayList<String> filesInStorageDir = directoryReader.getFileNames(getStorageDir(context).toString(), 0);
         if(null == filesInStorageDir) {
