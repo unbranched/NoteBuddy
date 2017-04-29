@@ -28,12 +28,14 @@
     <string name="action_try_again">Try again</string>
     <string name="action_provide_user">Fill in a username</string>
     <string name="action_provide_password">Fill in a password</string>
+    <string name="action_provide_password_check">Fill in the password again</string>
     <string name="action_reset">Reset</string>
     <string name="action_back">Back</string>
 
     <!-- Greetings -->
     <string name="greeting_general">Hi</string>
     <string name="greeting_username">Logged in as</string>
+    <string name="greeting_intro">Brr, it is quite empty in here. Time to add a note?</string>
 
     <!-- Dialog -->
     <string name="dialog_question_general">Are you sure?</string>
@@ -45,10 +47,18 @@
     <string name="dialog_question_overwrite_note">Are you sure to overwrite the existing note?</string>
     <string name="dialog_title_old_note">Delete old note</string>
     <string name="dialog_question_delete_old_note">Because the note title has changed, this note will be saved as a new one. Delete the previously stored note?</string>
+    <string name="dialog_answer_delete_old_note">Delete</string>
+    <string name="dialog_answer_keep_old_note">Keep</string>
     <string name="dialog_title_delete_note">Delete note</string>
     <string name="dialog_question_delete_note">Are you sure to delete this note?</string>
     <string name="dialog_title_delete_everything">Delete notes and credentials</string>
     <string name="dialog_question_delete_everything">Are you sure to delete everything?</string>
+    <string name="dialog_title_store_encrypted">Encrypt or decrypt</string>
+    <string name="dialog_question_store_encrypted">Want to store the external notes encrypted or decrypted?</string>
+    <string name="dialog_answer_encrypt">Encrypted</string>
+    <string name="dialog_answer_decrypt">Decrypted</string>
+    <string name="dialog_title_delete_all_notes">Delete all notes</string>
+    <string name="dialog_question_delete_all_notes">Are you sure to delete all notes?</string>
 
     <!-- String related to dev mode -->
     <string name="dev_clear_shared_preferences">Clear shared prefs</string>
@@ -56,10 +66,26 @@
     <!-- String related to text from other apps -->
     <string name="title_for_external_note">Note</string>
 
+    <!-- Strings related to backup -->
+    <string name="backup_success">Notes copied successfully in</string>
+    <string name="backup_error">Cannot create notes backup. Maybe there are no notes to backup</string>
+    <string name="backup_encrypted">Encrypted</string>
+    <string name="backup_decrypted">Decrypted</string>
+    <string name="backup_number_created_singular">Note is backed up successfully</string>
+    <string name="backup_number_created_plural">Notes are backed up successfully</string>
+
+    <!-- Strings related to importing external notes -->
+    <string name="import_success">External notes imported successfully</string>
+    <string name="import_error">Cannot import external notes. Maybe there are none</string>
+    <string name="import_info">Importing external notes may take a while. Please wait</string>
+
     <!-- String related to menu -->
     <string name="menu_lock">Lock</string>
-    <string name="menu_remove_everything">Delete all</string>
+    <string name="menu_remove_everything">Reset NoteBuddy</string>
     <string name="menu_credits">Credits</string>
+    <string name="menu_backup">Create backup</string>
+    <string name="menu_import">Import external notes</string>
+    <string name="menu_clear">Delete all notes</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>
@@ -69,6 +95,7 @@
     <string name="action_complete">Done!</string>
     <string name="error_invalid_username">This username is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_password_check">Passwords are not the same</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="action_sign_in">Sign in or register</string>

@@ -28,12 +28,14 @@
     <string name="action_try_again">もう一度やり直す</string>
     <string name="action_provide_user">ユーザー名を入力</string>
     <string name="action_provide_password">パスワードを入力 (数字にする必要があります)</string>
+    <string name="action_provide_password_check">Fill in the password again</string>
     <string name="action_reset">リセット</string>
     <string name="action_back">戻る</string>
 
     <!-- Greetings -->
     <string name="greeting_general">こんにちは</string>
     <string name="greeting_username">ログイン</string>
+    <string name="greeting_intro">Brr, it is quite empty in here. Time to add a note?</string>
 
     <!-- Dialog -->
     <string name="dialog_question_general">よろしいですか?</string>
@@ -45,10 +47,18 @@
     <string name="dialog_question_overwrite_note">既存のノートを上書きしてもよろしいですか?</string>
     <string name="dialog_title_old_note">Delete old note</string>
     <string name="dialog_question_delete_old_note">Because the note title has changed, this note will be saved as a new one. Delete the previously stored note?</string>
+    <string name="dialog_answer_delete_old_note">Delete</string>
+    <string name="dialog_answer_keep_old_note">Keep</string>
     <string name="dialog_title_delete_note">ノートを削除</string>
     <string name="dialog_question_delete_note">このノートを削除してもよろしいですか?</string>
     <string name="dialog_title_delete_everything">ノート、秘密の質問、資格情報を削除</string>
     <string name="dialog_question_delete_everything">すべて削除してもよろしいですか?</string>
+    <string name="dialog_title_store_encrypted">Encrypt or decrypt</string>
+    <string name="dialog_question_store_encrypted">Want to store the external notes encrypted or decrypted?</string>
+    <string name="dialog_answer_encrypt">Encrypted</string>
+    <string name="dialog_answer_decrypt">Decrypted</string>
+    <string name="dialog_title_delete_all_notes">Delete all notes</string>
+    <string name="dialog_question_delete_all_notes">Are you sure to delete all notes?</string>
 
     <!-- String related to dev mode -->
     <string name="dev_clear_shared_preferences">Clear shared prefs</string>
@@ -56,10 +66,26 @@
     <!-- String related to text from other apps -->
     <string name="title_for_external_note">Note</string>
 
+    <!-- Strings related to backup -->
+    <string name="backup_success">Notes copied successfully in</string>
+    <string name="backup_error">Cannot create notes backup. Maybe there are no notes to backup</string>
+    <string name="backup_encrypted">Encrypted</string>
+    <string name="backup_decrypted">Decrypted</string>
+    <string name="backup_number_created_singular">Note is backed up successfully</string>
+    <string name="backup_number_created_plural">Notes are backed up successfully</string>
+
+    <!-- Strings related to importing external notes -->
+    <string name="import_success">External notes imported successfully</string>
+    <string name="import_error">Cannot import external notes. Maybe there are none</string>
+    <string name="import_info">Importing external notes may take a while. Please wait</string>
+
     <!-- String related to menu -->
     <string name="menu_lock">Lock</string>
-    <string name="menu_remove_everything">Delete all</string>
+    <string name="menu_remove_everything">Reset NoteBuddy</string>
     <string name="menu_credits">Credits</string>
+    <string name="menu_backup">Create backup</string>
+    <string name="menu_import">Import external notes</string>
+    <string name="menu_clear">Delete all notes</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">ユーザー名</string>
@@ -69,6 +95,7 @@
     <string name="action_complete">準備完了!</string>
     <string name="error_invalid_username">このユーザー名は無効です</string>
     <string name="error_invalid_password">このパスワードは短すぎます</string>
+    <string name="error_invalid_password_check">Passwords are not the same</string>
     <string name="error_incorrect_password">このパスワードは間違っています</string>
     <string name="error_field_required">この項目は必須です</string>
     <string name="action_sign_in">サインインまたは登録</string>

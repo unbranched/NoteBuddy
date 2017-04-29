@@ -40,4 +40,12 @@
         android:headerDividersEnabled="false"
         android:footerDividersEnabled="false" />
 
+    <TextView
+        android:text="@string/greeting_intro"
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center"
+        android:id="@+id/introText"
+        android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
 </android.support.design.widget.CoordinatorLayout>

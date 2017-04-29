@@ -41,6 +41,7 @@ public class SetupActivity extends AppCompatActivity {
     // UI references
     private AutoCompleteTextView mUsernameView;
     private EditText mPasswordView;
+    private EditText mPasswordCheckView;
     private Button mRegisterButton;
     private View mProgressView;
     private View mLoginFormView;
@@ -56,7 +57,6 @@ public class SetupActivity extends AppCompatActivity {
 
         // Set up the form
         mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
-
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -68,6 +68,7 @@ public class SetupActivity extends AppCompatActivity {
                 return false;
             }
         });
+        mPasswordCheckView = (EditText) findViewById(R.id.passwordCheck);
 
         mRegisterButton = (Button)findViewById(R.id.register_button);
         mRegisterButton.setOnClickListener(new OnClickListener() {
@@ -95,6 +96,7 @@ public class SetupActivity extends AppCompatActivity {
         // Store values at the time of the login attempt
         String username = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String passwordCheck = mPasswordCheckView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -104,6 +106,13 @@ public class SetupActivity extends AppCompatActivity {
         if (!pv.isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
+            cancel = true;
+        }
+
+        // Check for a valid check password
+        if(!password.equals(passwordCheck)) {
+            mPasswordCheckView.setError(getString(R.string.error_invalid_password_check));
+            focusView = mPasswordCheckView;
             cancel = true;
         }
 

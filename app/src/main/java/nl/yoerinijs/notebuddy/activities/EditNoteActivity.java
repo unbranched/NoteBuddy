@@ -15,12 +15,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.IOException;
-
 import nl.yoerinijs.notebuddy.R;
-import nl.yoerinijs.notebuddy.files.FileChecker;
-import nl.yoerinijs.notebuddy.files.TextfileRemover;
-import nl.yoerinijs.notebuddy.files.TextfileWriter;
+import nl.yoerinijs.notebuddy.files.misc.FileChecker;
+import nl.yoerinijs.notebuddy.files.text.TextfileRemover;
+import nl.yoerinijs.notebuddy.files.text.TextfileWriter;
 import nl.yoerinijs.notebuddy.validators.NoteBodyValidator;
 import nl.yoerinijs.notebuddy.validators.NoteTitleValidator;
 
@@ -179,7 +177,7 @@ public class EditNoteActivity extends AppCompatActivity {
                     new AlertDialog.Builder(mContext)
                             .setTitle(getString(R.string.dialog_title_delete_note))
                             .setMessage(getString(R.string.dialog_question_delete_note))
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            .setPositiveButton(getString(R.string.dialog_question_confirm), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
 
                                     // Try to delete the file
@@ -196,7 +194,7 @@ public class EditNoteActivity extends AppCompatActivity {
                                     startNotesActivity();
                                 }
                             })
-                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            .setNegativeButton(getString(R.string.dialog_question_deny), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     // Log that note will not deleted
                                     Log.d(LOG_TAG, "Cancelled. Note not deleted");
@@ -276,7 +274,7 @@ public class EditNoteActivity extends AppCompatActivity {
                 new AlertDialog.Builder(mContext)
                         .setTitle(getString(R.string.dialog_title_old_note))
                         .setMessage(getString(R.string.dialog_question_delete_old_note))
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        .setPositiveButton(getString(R.string.dialog_answer_delete_old_note), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Try to delete note with old tile
                                 TextfileRemover tr = new TextfileRemover();
@@ -286,7 +284,7 @@ public class EditNoteActivity extends AppCompatActivity {
                                 postWriting();
                             }
                         })
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getString(R.string.dialog_answer_keep_old_note), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 // Log that old note is not deleted
                                 Log.d(LOG_TAG, "Old note not deleted");

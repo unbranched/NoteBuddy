@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -28,9 +29,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import nl.yoerinijs.notebuddy.R;
-import nl.yoerinijs.notebuddy.files.DirectoryReader;
-import nl.yoerinijs.notebuddy.files.TextfileReader;
-import nl.yoerinijs.notebuddy.files.TextfileRemover;
+import nl.yoerinijs.notebuddy.files.backup.BackupCreator;
+import nl.yoerinijs.notebuddy.files.backup.BackupImporter;
+import nl.yoerinijs.notebuddy.files.misc.DirectoryReader;
+import nl.yoerinijs.notebuddy.files.text.TextfileReader;
+import nl.yoerinijs.notebuddy.files.text.TextfileRemover;
 import nl.yoerinijs.notebuddy.storage.KeyValueDB;
 
 /**
@@ -41,6 +44,7 @@ public class NotesActivity extends AppCompatActivity
 
     // Final variables
     private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
+    private static final String NOTES_ACTIVITY = "NotesActivity";
     private static final String LOGIN_ACTIVITY = "LoginActivity";
     private static final String CREDITS_ACTIVITY = "CreditsActivity";
     private static final String EDIT_NOTE_ACTIVITY = "EditNoteActivity";
@@ -64,6 +68,7 @@ public class NotesActivity extends AppCompatActivity
         mContext = this;
 
         // Set up the notes screen
+        final TextView introText = (TextView) findViewById(R.id.introText);
         final ListView listNotes = (ListView) findViewById(R.id.listNotes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,7 +96,10 @@ public class NotesActivity extends AppCompatActivity
         DirectoryReader dr = new DirectoryReader();
         try {
             mNoteNames = dr.getFileNames(mLocation, 0);
-            if (mNoteNames != null) {
+            if(mNoteNames != null) {
+                if(mNoteNames.size() > 0) {
+                    introText.setVisibility(View.GONE);
+                }
                 final StableArrayAdapter adapter = new StableArrayAdapter(this, android.R.layout.simple_list_item_1, mNoteNames);
                 listNotes.setAdapter(adapter);
             }
@@ -113,7 +121,7 @@ public class NotesActivity extends AppCompatActivity
 
                 // Get text from selected note name
                 TextfileReader t = new TextfileReader();
-                String note = t.getText(mLocation, selectedNoteTitle, mPassword, mContext);
+                String note = t.getText(mLocation, selectedNoteTitle, mPassword, mContext, true);
 
                 // Start activity to edit the note
                 // Pass note and selected note name
@@ -196,11 +204,98 @@ public class NotesActivity extends AppCompatActivity
         } else if (id == R.id.nav_lock) {
             // Proceed to main activity to force login
             startActvitiy(LOGIN_ACTIVITY, true, null, null);
+
+        // Backup notes item
+        } else if (id == R.id.nav_backup) {
+            final BackupCreator backupCreator = new BackupCreator();
+
+            // Ask user if backup must be backed up encrypted or decrypted
+            new AlertDialog.Builder(mContext)
+                    .setTitle(getString(R.string.dialog_title_store_encrypted))
+                    .setMessage(getString(R.string.dialog_question_store_encrypted))
+                    .setPositiveButton(getString(R.string.dialog_answer_encrypt), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            provideBackupResult(backupCreator, backupCreator.isBackupCreated(mLocation, mPassword, mContext, false), true);
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.dialog_answer_decrypt), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            provideBackupResult(backupCreator, backupCreator.isBackupCreated(mLocation, mPassword, mContext, true), false);
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
+        // Import notes item
+        } else if (id == R.id.nav_import) {
+            // Importing may take a while, because possible encrypted notes must be decrypted first. Thus, notify the user
+            Toast.makeText(getApplicationContext(), getString(R.string.import_info) + ".", Toast.LENGTH_SHORT).show();
+
+            // Now, let's import those beautiful notes
+            final BackupImporter backupImporter = new BackupImporter();
+            provideImportResult(backupImporter.areNotesImported(mPassword, mContext));
+
+        // Delete all notes item
+        } else if (id == R.id.nav_clear) {
+            new AlertDialog.Builder(mContext)
+                    .setTitle(getString(R.string.dialog_title_delete_all_notes))
+                    .setMessage(getString(R.string.dialog_question_delete_all_notes))
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Delete notes
+                            TextfileRemover tr = new TextfileRemover();
+                            tr.deleteAllFiles(mLocation);
+
+                            // Notify user and ourselves
+                            Toast.makeText(getApplicationContext(), getString(R.string.success_deleted) + ".", Toast.LENGTH_SHORT).show();
+                            Log.d(LOG_TAG, "All notes deleted");
+
+                            // Go to notes activity
+                            startActvitiy(NOTES_ACTIVITY, true, null, null);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Log that notes are not deleted
+                            Log.d(LOG_TAG, "Notes not deleted");
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Notifies user and ourselves of backup result
+     * @param isBackupCreated
+     */
+    private void provideBackupResult(BackupCreator backupCreator, boolean isBackupCreated, boolean areNotesEncrypted) {
+        final String notesEncrypted = areNotesEncrypted ? "(" + getString(R.string.backup_encrypted).toLowerCase() + ")" : "(" + getString(R.string.backup_decrypted).toLowerCase() + ")";
+        Toast.makeText(getApplicationContext(), isBackupCreated ? getString(R.string.backup_success) + " " + backupCreator.getBackupLocation() + " " + notesEncrypted : getString(R.string.backup_error) + ".", Toast.LENGTH_LONG).show();
+        if(isBackupCreated) {
+            final int numberOfNotes = backupCreator.getNumberOfNotes();
+            Toast.makeText(getApplicationContext(), numberOfNotes + " " + (numberOfNotes <= 1 ? getString(R.string.backup_number_created_singular).toLowerCase() + "." : getString(R.string.backup_number_created_plural).toLowerCase() + "."), Toast.LENGTH_LONG).show();
+        }
+        Log.d(LOG_TAG, "Backup is " + (isBackupCreated ? "created successfully" : "not created"));
+    }
+
+    /**
+     * Notifies user and ourselves of import result
+     * @param areNotesImported
+     */
+    private void provideImportResult(Boolean areNotesImported) {
+        final String resultMessage = areNotesImported ? getString(R.string.import_success) : getString(R.string.import_error);
+        Toast.makeText(getApplicationContext(), resultMessage + ".", Toast.LENGTH_LONG).show();
+        Log.d(LOG_TAG, resultMessage);
+
+        // If notes are imported, start the NotesActivity again (i.e. refresh the activity) in order to see the latest notes
+        if(areNotesImported) {
+            startActvitiy(NOTES_ACTIVITY, true, null, null);
+        }
     }
 
     /**

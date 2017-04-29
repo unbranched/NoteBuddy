@@ -28,12 +28,14 @@
     <string name="action_try_again">Probeer opnieuw</string>
     <string name="action_provide_user">Vul een gebruikersnaam in</string>
     <string name="action_provide_password">Vul een wachtwoord in</string>
+    <string name="action_provide_password_check">Vul het wachtwoord opnieuw in</string>
     <string name="action_reset">Resetten</string>
     <string name="action_back">Terug</string>
 
     <!-- Greetings -->
     <string name="greeting_general">Hoi</string>
     <string name="greeting_username">Ingelogd als</string>
+    <string name="greeting_intro">Brr, het is maar kaal hier. Tijd om een notitie toe te voegen?</string>
 
     <!-- Dialog -->
     <string name="dialog_question_general">Weet je het zeker?</string>
@@ -45,10 +47,18 @@
     <string name="dialog_question_overwrite_note">Weet je zeker dat je de bestaande notitie wilt overschrijven?</string>
     <string name="dialog_title_old_note">Verwijder oude notitie</string>
     <string name="dialog_question_delete_old_note">Notitienaam is veranderd. Daarom wordt deze notitie apart opgeslagen. Wil je de oude notitie verwijderen?</string>
+    <string name="dialog_answer_delete_old_note">Verwijderen</string>
+    <string name="dialog_answer_keep_old_note">Behouden</string>
     <string name="dialog_title_delete_note">Verwijder notitie</string>
     <string name="dialog_question_delete_note">Weet je zeker dat je deze notitie wilt verwijderen?</string>
     <string name="dialog_title_delete_everything">Verwijder notities en inloggegevens</string>
     <string name="dialog_question_delete_everything">Weet je zeker dat je alles wilt verwijderen?</string>
+    <string name="dialog_title_store_encrypted">Versleutelen of niet versleutelen</string>
+    <string name="dialog_question_store_encrypted">Wil je de back-upnotities versleuteld of onversleuteld opslaan?</string>
+    <string name="dialog_answer_encrypt">Versleuteld</string>
+    <string name="dialog_answer_decrypt">Onversleuteld</string>
+    <string name="dialog_title_delete_all_notes">Verwijder alle notities</string>
+    <string name="dialog_question_delete_all_notes">Weet je zeker dat je alle notities wil verwijderen?</string>
 
     <!-- String related to dev mode -->
     <string name="dev_clear_shared_preferences">Verwijder shared preferences</string>
@@ -56,10 +66,26 @@
     <!-- String related to text from other apps -->
     <string name="title_for_external_note">Notitie</string>
 
+    <!-- Strings related to backup -->
+    <string name="backup_success">Back-up van notities is succesvol aangemaakt in</string>
+    <string name="backup_error">Kan geen back-up van notities maken. Misschien zijn er geen notities om te back-uppen</string>
+    <string name="backup_encrypted">Versleuteld</string>
+    <string name="backup_decrypted">Niet versleuteld</string>
+    <string name="backup_number_created_singular">Notitie is succesvol geback-upt</string>
+    <string name="backup_number_created_plural">Notities zijn succesvol geback-upt</string>
+
+    <!-- Strings related to importing external notes -->
+    <string name="import_success">Externe notities zijn succesvol geïmporteerd</string>
+    <string name="import_error">Kan externe notities niet importeren. Misschien zijn er geen</string>
+    <string name="import_info">Het importeren kan even duren. Een moment geduld</string>
+
     <!-- String related to menu -->
     <string name="menu_lock">Vergrendelen</string>
-    <string name="menu_remove_everything">Alles verwijderen</string>
+    <string name="menu_remove_everything">NoteBuddy resetten</string>
     <string name="menu_credits">Credits</string>
+    <string name="menu_backup">Back-up maken</string>
+    <string name="menu_import">Importeer notities</string>
+    <string name="menu_clear">Verwijder alle notities</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">Gebruikersnaam</string>
@@ -69,6 +95,7 @@
     <string name="action_complete">Klaar!</string>
     <string name="error_invalid_username">Deze gebruikersnaam is ongeldig</string>
     <string name="error_invalid_password">Dit wachtwoord is te kort</string>
+    <string name="error_invalid_password_check">Wachtwoorden zijn niet hetzelfde</string>
     <string name="error_incorrect_password">Dit wachtwoord is ongeldig</string>
     <string name="error_field_required">Dit veld is verplicht</string>
     <string name="action_sign_in">Log in of registreer</string>
