@@ -23,6 +23,7 @@ NoteBuddy was a project to learn how to code in Android. However, due the fact l
 - Better check for password hash. 
 
 # Changes
+- Version 1.2.2: Fixed a bug that prevented to backup files correctly;
 - Version 1.2.1: Bugfix and possibility added to clear external backup storage, so it is not necessary to use another file browser to do this;
 - Version 1.2.0: Major improvements added. Primarily, the initial version of some external back-up functionality is introduced. It has been chosen to simply copy the encrypted or decrypted notes, and not to support Google, Dropbox, or whatsoever due to privacy concerns. Users can copy the notes to external backup services themselves, if wanted. Secondly, the setup now validates the password, so it should be impossible to make a mistake. Lastly, some dialog language is changed and a new introduction text is added to the NotesActivity;
 - Version 1.1.4: When one changes the note name, the note with the old name will be deleted automatically. Furthermore, password validation is improved. <b>Warning:</b> when updating to this version, all previously stored notes are not accessible anymore;

@@ -90,7 +90,7 @@
     <string name="menu_remove_everything">NoteBuddy resetten</string>
     <string name="menu_credits">Credits</string>
     <string name="menu_backup">Back-up maken</string>
-    <string name="menu_import">Importeer geback-upte notities</string>
+    <string name="menu_import">Importeer back-up</string>
     <string name="menu_clear">Verwijder alle notities</string>
     <string name="menu_clear_ext">Schoon back-upruimte op</string>
 

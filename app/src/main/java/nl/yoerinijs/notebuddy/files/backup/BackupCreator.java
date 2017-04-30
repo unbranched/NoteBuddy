@@ -109,11 +109,11 @@ public class BackupCreator {
         final File documentsStorageDir = mBackupStorageHandler.getStorageDir(context);
         final TextfileReader textfileReader = new TextfileReader();
         final TextfileWriter textfileWriter = new TextfileWriter();
-        StringBuilder sb = new StringBuilder();
         for(String storedFile : storedFiles) {
             File file = new File(documentsStorageDir + "/" + storedFile + "." + BACKUP_FILE_EXT);
 
             // Check if user wants to decrypt the notes
+            StringBuilder sb = new StringBuilder();
             if(decryptNotes) {
                 // User wants to decrypt, thus, 'true' is passed to the TextfileReader to decrypt the note
                 sb.append(textfileReader.getText(locationPath, storedFile, password, context, true));
