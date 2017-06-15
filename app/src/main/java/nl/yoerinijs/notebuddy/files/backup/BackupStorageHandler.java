@@ -8,10 +8,8 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import nl.yoerinijs.notebuddy.files.misc.DirectoryReader;
 import nl.yoerinijs.notebuddy.files.text.TextfileRemover;
@@ -21,7 +19,6 @@ import nl.yoerinijs.notebuddy.files.text.TextfileRemover;
  */
 public class BackupStorageHandler {
 
-    private static final String LOG_TAG = "BackupStorageHandler";
     private final static String BACKUP_DIRECTORY = "NoteBuddy";
 
     /**
@@ -57,16 +54,8 @@ public class BackupStorageHandler {
      * @throws Exception
      */
     public File getStorageDir(@NonNull Context context) throws Exception {
-        // Check if NoteBuddy has the correct permissions
         requestWritingPermissions(context);
-
-        // Get the directory
-        File docsFolder = new File(getBackupDirectory());
-        if (!docsFolder.exists()) {
-            final String present = docsFolder.mkdirs() ? "present" : "not present";
-            Log.d(LOG_TAG, "Document storage is " + present);
-        }
-        return docsFolder;
+        return new File(getBackupDirectory());
     }
 
     /**
@@ -74,13 +63,9 @@ public class BackupStorageHandler {
      * @param context
      * @return
      */
-    public void clearStorageDir(@NonNull Context context)  {
-        final TextfileRemover textfileRemover = new TextfileRemover();
-        try {
-            textfileRemover.deleteAllFiles(getStorageDir(context).toString());
-        } catch (Exception e) {
-            Log.d(LOG_TAG, e.getMessage());
-        }
+    public void clearStorageDir(@NonNull Context context) throws Exception  {
+        TextfileRemover textfileRemover = new TextfileRemover();
+        textfileRemover.deleteAllFiles(getStorageDir(context).toString());
     }
 
     /**
@@ -90,7 +75,7 @@ public class BackupStorageHandler {
      * @throws Exception
      */
     public boolean isStorageDirEmpty(@NonNull Context context) throws Exception {
-        return getNumberOfFilesInStorageDir(context) <= 0 ? true : false;
+        return getNumberOfFilesInStorageDir(context) <= 0;
     }
 
     /**
@@ -100,11 +85,6 @@ public class BackupStorageHandler {
      * @throws Exception
      */
     public int getNumberOfFilesInStorageDir(@NonNull Context context) throws Exception {
-        final DirectoryReader directoryReader = new DirectoryReader();
-        ArrayList<String> filesInStorageDir = directoryReader.getFileNames(getStorageDir(context).toString(), 0);
-        if(null == filesInStorageDir) {
-            return 0;
-        }
-        return filesInStorageDir.size();
+        return null == DirectoryReader.getFileNames(getStorageDir(context).toString(), 0) ? 0 : DirectoryReader.getFileNames(getStorageDir(context).toString(), 0).size();
     }
 }

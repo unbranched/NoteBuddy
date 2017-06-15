@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,53 +32,53 @@ import nl.yoerinijs.notebuddy.validators.UsernameValidator;
  */
 public class SetupActivity extends AppCompatActivity {
 
-    // Activity references
     private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
-    private static final String NOTES_ACTIVITY = "NotesActivity";
-    private static final String LOG_TAG = "Setup Activity";
 
-    // UI references
-    private AutoCompleteTextView mUsernameView;
-    private EditText mPasswordView;
-    private EditText mPasswordCheckView;
-    private Button mRegisterButton;
-    private View mProgressView;
-    private View mLoginFormView;
-    private Context mContext;
+    private static final String NOTES_ACTIVITY = "NotesActivity";
+
+    private final Context m_context = this;
+
+    private AutoCompleteTextView m_username;
+
+    private EditText m_passwordView;
+
+    private EditText m_passwordCheckView;
+
+    private Button m_registerButton;
+
+    private View m_progressView;
+
+    private View m_loginFormView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setup);
 
-        // Context
-        mContext = this;
-
-        // Set up the form
-        mUsernameView = (AutoCompleteTextView) findViewById(R.id.username);
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        m_username = (AutoCompleteTextView) findViewById(R.id.username);
+        m_passwordView = (EditText) findViewById(R.id.password);
+        m_passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                if(id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptRegistration();
                     return true;
                 }
                 return false;
             }
         });
-        mPasswordCheckView = (EditText) findViewById(R.id.passwordCheck);
+        m_passwordCheckView = (EditText) findViewById(R.id.passwordCheck);
 
-        mRegisterButton = (Button)findViewById(R.id.register_button);
-        mRegisterButton.setOnClickListener(new OnClickListener() {
+        m_registerButton = (Button)findViewById(R.id.register_button);
+        m_registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptRegistration();
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        m_loginFormView = findViewById(R.id.login_form);
+        m_progressView = findViewById(R.id.login_progress);
     }
 
     /**
@@ -89,89 +88,50 @@ public class SetupActivity extends AppCompatActivity {
      */
     private void attemptRegistration() {
 
-        // Reset errors
-        mUsernameView.setError(null);
-        mPasswordView.setError(null);
+        m_username.setError(null);
+        m_passwordView.setError(null);
 
-        // Store values at the time of the login attempt
-        String username = mUsernameView.getText().toString();
-        String password = mPasswordView.getText().toString();
-        String passwordCheck = mPasswordCheckView.getText().toString();
+        String username = m_username.getText().toString();
+        String password = m_passwordView.getText().toString();
+        String passwordCheck = m_passwordCheckView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password
-        PasswordValidator pv = new PasswordValidator();
-        if (!pv.isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+        if(!PasswordValidator.isPasswordValid(password)) {
+            m_passwordView.setError(getString(R.string.error_invalid_password));
+            focusView = m_passwordView;
             cancel = true;
         }
-
-        // Check for a valid check password
         if(!password.equals(passwordCheck)) {
-            mPasswordCheckView.setError(getString(R.string.error_invalid_password_check));
-            focusView = mPasswordCheckView;
+            m_passwordCheckView.setError(getString(R.string.error_invalid_password_check));
+            focusView = m_passwordCheckView;
             cancel = true;
         }
-
-        // Check for a valid username
-        UsernameValidator uv = new UsernameValidator();
-        if (TextUtils.isEmpty(username)) {
-            mUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mUsernameView;
+        if(TextUtils.isEmpty(username)) {
+            m_username.setError(getString(R.string.error_field_required));
+            focusView = m_username;
             cancel = true;
-        } else if (!uv.isUsernameValid(username)) {
-            mUsernameView.setError(getString(R.string.error_invalid_username));
-            focusView = mUsernameView;
+        } else if(!UsernameValidator.isUsernameValid(username)) {
+            m_username.setError(getString(R.string.error_invalid_username));
+            focusView = m_username;
             cancel = true;
         }
-
-        if (cancel) {
-            // There was an error; don't attempt registration and focus the first
-            // form field with an error
+        if(cancel) {
             focusView.requestFocus();
-
-            // Log error
-            Log.d(LOG_TAG, "Form validation went wrong");
         } else {
-
-            // Yeah, form validation went smooth.
-            // Save username and password to shared preferences
-            KeyValueDB keyValueDB = new KeyValueDB();
             try {
-                keyValueDB.setUsername(mContext, username);
-
-                // Generate salts and store them for later use
-                SaltHandler sg = new SaltHandler();
-                sg.setSalt(mContext);
-
-                // Encrypt example string that will be used in the Login Activity to verify whether one may login
-                // TODO: Think of a better solution
-                LoginHashCreator lhc = new LoginHashCreator();
-                keyValueDB.setVerificationPasswordHash(mContext, lhc.getLoginHash(mContext, password));
-
-                // Show a progress spinner, and kick off a background task to
-                // perform the user registration attempt
+                KeyValueDB.setUsername(m_context, username);
+                SaltHandler.setSalt(m_context);
+                KeyValueDB.setVerificationPasswordHash(m_context, LoginHashCreator.getLoginHash(m_context, password));
                 showProgress(true);
-
-                // Proceed to notes activity
-                // Pass the user password in order to use key derivation
                 Intent intent = new Intent();
-                intent.setClassName(mContext, PACKAGE_NAME + "." + NOTES_ACTIVITY);
-                intent.putExtra("PASSWORD", password);
+                intent.setClassName(m_context, PACKAGE_NAME + "." + NOTES_ACTIVITY);
+                intent.putExtra(LoginActivity.KEY_PASSWORD, password);
                 startActivity(intent);
                 finish();
-
-                // Log new activity
-                Log.d(LOG_TAG, "Go to: " + NOTES_ACTIVITY);
             } catch (Exception e) {
-                // Let the user know something went wrong
                 Toast.makeText(getApplicationContext(), getString(R.string.error_cannot_save) + ". ", Toast.LENGTH_SHORT).show();
-
-                // There was an exception; log exception
-                Log.d(LOG_TAG, e.getMessage());
             }
         }
     }
@@ -181,34 +141,27 @@ public class SetupActivity extends AppCompatActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+            m_loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            m_loginFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    m_loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
+            m_progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            m_progressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    m_progressView.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            m_progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            m_loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 }

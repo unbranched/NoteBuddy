@@ -2,10 +2,12 @@ package nl.yoerinijs.notebuddy.files.backup;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
+
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import nl.yoerinijs.notebuddy.files.misc.DirectoryReader;
 import nl.yoerinijs.notebuddy.files.text.TextfileReader;
@@ -17,14 +19,13 @@ import nl.yoerinijs.notebuddy.files.text.TextfileWriter;
  */
 public class BackupImporter {
 
-    private final static String LOG_TAG = "BackupImporter";
     private final static String TEMP_NAME = "TEMP";
 
-    private BackupStorageHandler mBackupStorageHandler;
-    private DirectoryReader mDirectoryReader;
-    private String mBackupLocationString;
-    private BackupCreator mBackupCreator;
-    private String mBackupFileExt;
+    private static String m_backupLocationString;
+
+    private BackupStorageHandler m_backupStorageHandler = new BackupStorageHandler();
+
+    private BackupCreator m_backupCreator = new BackupCreator();
 
     /**
      * Imports external notes. Returns true if everything went well.
@@ -33,24 +34,15 @@ public class BackupImporter {
      * @return
      */
     public boolean areNotesImported(@NonNull String password, @NonNull Context context) {
-        mBackupStorageHandler = new BackupStorageHandler();
-
-        // Check if NoteBuddy obtained the read and write permissions
-        if(!mBackupStorageHandler.isExternalStorageWritable()) {
+        if(!m_backupStorageHandler.isExternalStorageWritable()) {
             return false;
         }
-
-        // Verify if there are external notes
         if(getNumberOfFilesInDir(context) <= 0) {
             return false;
         }
-
-        // Try to import the notes
         try {
             return areNotesImported(context, password);
         } catch (Exception e) {
-            // Log exception
-            Log.d(LOG_TAG, e.getMessage());
             return false;
         }
     }
@@ -60,33 +52,23 @@ public class BackupImporter {
      * @return
      */
     private int getNumberOfFilesInDir(Context context) {
-        // Request reading and writing permissions
-        mBackupStorageHandler.requestWritingPermissions(context);
-
-        // Set backup location string
-        mBackupLocationString = mBackupStorageHandler.getBackupDirectory();
-
-        // Read external files
-        mDirectoryReader = new DirectoryReader();
-        final ArrayList<String> listOfNoteNames = mDirectoryReader.getFileNames(mBackupLocationString, 0);
-        return null == listOfNoteNames ? 0 : listOfNoteNames.size();
+        m_backupStorageHandler.requestWritingPermissions(context);
+        m_backupLocationString = m_backupStorageHandler.getBackupDirectory();
+        return null == DirectoryReader.getFileNames(m_backupLocationString, 0) ? 0 : DirectoryReader.getFileNames(m_backupLocationString, 0).size();
     }
 
     /**
      * Returns a list of all external notes
      * @return
      */
-    private ArrayList<String> getExternalNotes() {
-        ArrayList<String> cleanListOfExternalNotes = new ArrayList<>();
-        final ArrayList<String> listOfExternalFiles = mDirectoryReader.getFileNames(mBackupLocationString, 0);
-
+    private List<String> getExternalNotes() {
+        List<String> cleanListOfExternalNotes = new ArrayList<>();
+        final List<String> listOfExternalFiles = DirectoryReader.getFileNames(m_backupLocationString, 0);
         if(null == listOfExternalFiles) {
             return cleanListOfExternalNotes;
         }
-
-        // Only select the files with the right file extension
         for(int i = 0; i < listOfExternalFiles.size(); i++) {
-            if(listOfExternalFiles.get(i).contains("." + mBackupFileExt)) {
+            if(listOfExternalFiles.get(i).contains("." + BackupCreator.BACKUP_FILE_EXT)) {
                 cleanListOfExternalNotes.add(listOfExternalFiles.get(i));
             }
         }
@@ -101,45 +83,27 @@ public class BackupImporter {
      * @throws Exception
      */
     private boolean areNotesImported(@NonNull Context context, @NonNull String password) throws Exception {
-        mBackupCreator = new BackupCreator();
-        mBackupFileExt = mBackupCreator.getBackupFileExt();
-
-        // Get external note names. If there are none, return false
-        final ArrayList<String> externalNotes = getExternalNotes();
+        final List<String> externalNotes = getExternalNotes();
         if(externalNotes == null || externalNotes.size() <= 0) {
             return false;
         }
 
-        // Now, let's import those notes!
-        final TextfileReader textfileReader = new TextfileReader();
-        final TextfileWriter textfileWriter = new TextfileWriter();
-        final TextfileRemover textfileRemover = new TextfileRemover();
+        TextfileReader textfileReader = new TextfileReader();
+        TextfileWriter textfileWriter = new TextfileWriter();
+        TextfileRemover textfileRemover = new TextfileRemover();
         for(String noteName : externalNotes) {
-            String noteContent = textfileReader.getText(mBackupLocationString, noteName, password, context, false);
-
-            // Check if note is not empty
+            String noteContent = textfileReader.getText(m_backupLocationString, noteName, password, context, false);
             if(!noteContent.isEmpty()) {
-
-                // Check if note is encrypted. If so, create a temporarily file, remove NoteBuddy's encrypted file mark,
-                // and add the clean content to the note content local variable. Finally, remove the temporarily file to
-                // keep the user's external storage decently.
-                // If note is not encrypted, then copy the content raw.
                 if(isEncrypted(noteContent)) {
-                    final File backupLocation = mBackupStorageHandler.getStorageDir(context);
                     final String tempNoteName = getTempNoteName(noteName);
-                    textfileWriter.writeExternalFile(new File(backupLocation + "/" + tempNoteName), cleanNoteContent(noteContent));
-                    noteContent = textfileReader.getText(mBackupLocationString, tempNoteName, password, context, true);
-                    textfileRemover.deleteFile(mBackupLocationString, tempNoteName);
+                    textfileWriter.writeExternalFile(new File(m_backupStorageHandler.getStorageDir(context) + "/" + tempNoteName), cleanNoteContent(noteContent));
+                    noteContent = textfileReader.getText(m_backupLocationString, tempNoteName, password, context, true);
+                    textfileRemover.deleteFile(m_backupLocationString, tempNoteName);
                 }
             }
-
-            // Before NoteBuddy copies the note, it removes the file extension from the external note file name.
-            // The file name is considered as the note name in NoteBuddy.
-            if(noteName.contains(mBackupFileExt)) {
-                noteName = noteName.replace("." + mBackupFileExt, "");
+            if(noteName.contains(BackupCreator.BACKUP_FILE_EXT)) {
+                noteName = noteName.replace("." + BackupCreator.BACKUP_FILE_EXT, "");
             }
-
-            // Finally, NoteBuddy can write the note to his own storage \0/
             textfileWriter.writeFile(context, noteName, noteContent, password);
         }
         return true;
@@ -151,7 +115,7 @@ public class BackupImporter {
      * @return
      */
     private String getTempNoteName(@NonNull String noteName) {
-        return noteName.replace("." + mBackupFileExt, "") + "_" + TEMP_NAME + "." + mBackupFileExt;
+        return noteName.replace("." + BackupCreator.BACKUP_FILE_EXT, "") + "_" + TEMP_NAME + "." + BackupCreator.BACKUP_FILE_EXT;
     }
 
     /**
@@ -161,7 +125,7 @@ public class BackupImporter {
      * @return
      */
     private boolean isEncrypted(@NonNull String noteContent) {
-        final char[] encryptedBegin = mBackupCreator.getBeginEncryptedFile().toCharArray();
+        final char[] encryptedBegin = m_backupCreator.getBeginEncryptedFile().toCharArray();
         final char[] noteContentArray = noteContent.toCharArray();
         if(noteContentArray[0] == encryptedBegin[0]) {
             if(noteContentArray[1] == encryptedBegin[1]) {
@@ -183,6 +147,6 @@ public class BackupImporter {
      * @return
      */
     private String cleanNoteContent(@NonNull String noteContent) {
-        return noteContent.replace(mBackupCreator.getBeginEncryptedFile(), "");
+        return noteContent.replace(m_backupCreator.getBeginEncryptedFile(), "");
     }
 }

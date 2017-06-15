@@ -14,32 +14,20 @@ import static nl.yoerinijs.notebuddy.security.AesCbcWithIntegrity.saltString;
  */
 public class SaltHandler {
 
-    public void setSalt(@NonNull Context context) throws Exception {
-        KeyValueDB k = new KeyValueDB();
-        if (k.getDerivedKeySalt(context) == null || k.getMasterKeySalt(context) == null) {
-            // Generate salt for derived key
-            String derivedKeySalt = saltString(generateSalt());
-
-            // Store salt for derived key
-            k.setDerivedKeySalt(context, derivedKeySalt);
-
-            // Generate salt for master key
-            String masterKeySalt = saltString(generateSalt());
-
-            // Store salt for master key
-            k.setMasterKeySalt(context, masterKeySalt);
+    public static void setSalt(@NonNull Context context) throws Exception {
+        if (null == KeyValueDB.getDerivedKeySalt(context) || null == KeyValueDB.getMasterKeySalt(context)) {
+            KeyValueDB.setDerivedKeySalt(context, saltString(generateSalt()));
+            KeyValueDB.setMasterKeySalt(context, saltString(generateSalt()));
         }
     }
 
     @Nullable
-    public String getDerivedKeySalt(@NonNull Context context) throws Exception {
-        KeyValueDB k = new KeyValueDB();
-        return k.getDerivedKeySalt(context);
+    public static String getDerivedKeySalt(@NonNull Context context) throws Exception {
+        return KeyValueDB.getDerivedKeySalt(context);
     }
 
     @Nullable
-    public String getMasterKeySalt(@NonNull Context context) throws Exception {
-        KeyValueDB k = new KeyValueDB();
-        return k.getMasterKeySalt(context);
+    public static String getMasterKeySalt(@NonNull Context context) throws Exception {
+        return KeyValueDB.getMasterKeySalt(context);
     }
 }

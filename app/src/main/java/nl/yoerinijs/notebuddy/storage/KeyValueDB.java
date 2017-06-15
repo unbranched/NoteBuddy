@@ -37,7 +37,7 @@ public class KeyValueDB {
      * @param encryptedSample
      * @throws NoSuchAlgorithmException
      */
-    public void setRandomPasswordString(@NonNull Context context, @NonNull String encryptedSample) throws NoSuchAlgorithmException {
+    public static void setRandomPasswordString(@NonNull Context context, @NonNull String encryptedSample) throws NoSuchAlgorithmException {
         setValue(context, KEY_RANDOM_PASSWORD_STRING, encryptedSample, false);
     }
 
@@ -47,7 +47,7 @@ public class KeyValueDB {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String getRandomPasswordString(@NonNull Context context) throws NoSuchAlgorithmException {
+    public static String getRandomPasswordString(@NonNull Context context) throws NoSuchAlgorithmException {
         return getValue(context, KEY_RANDOM_PASSWORD_STRING);
     }
 
@@ -57,7 +57,7 @@ public class KeyValueDB {
      * @param verificationPasswordHash
      * @throws NoSuchAlgorithmException
      */
-    public void setVerificationPasswordHash(@NonNull Context context, @NonNull String verificationPasswordHash) throws NoSuchAlgorithmException {
+    public static void setVerificationPasswordHash(@NonNull Context context, @NonNull String verificationPasswordHash) throws NoSuchAlgorithmException {
         setValue(context, KEY_VERIFICATION_PASSWORD_HASH, verificationPasswordHash, false);
     }
 
@@ -67,7 +67,7 @@ public class KeyValueDB {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String getVerificationPasswordHash(@NonNull Context context) throws NoSuchAlgorithmException {
+    public static String getVerificationPasswordHash(@NonNull Context context) throws NoSuchAlgorithmException {
         return getValue(context, KEY_VERIFICATION_PASSWORD_HASH);
     }
 
@@ -77,7 +77,7 @@ public class KeyValueDB {
      * @param salt
      * @throws NoSuchAlgorithmException
      */
-    public void setDerivedKeySalt(@NonNull Context context, @NonNull String salt) throws NoSuchAlgorithmException {
+    public static void setDerivedKeySalt(@NonNull Context context, @NonNull String salt) throws NoSuchAlgorithmException {
         setValue(context, KEY_DERIVED_SALT, salt, false);
     }
 
@@ -87,7 +87,7 @@ public class KeyValueDB {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String getDerivedKeySalt(@NonNull Context context) throws NoSuchAlgorithmException {
+    public static String getDerivedKeySalt(@NonNull Context context) throws NoSuchAlgorithmException {
         return getValue(context, KEY_DERIVED_SALT);
     }
 
@@ -97,7 +97,7 @@ public class KeyValueDB {
      * @param salt
      * @throws NoSuchAlgorithmException
      */
-    public void setMasterKeySalt(@NonNull Context context, @NonNull String salt) throws NoSuchAlgorithmException {
+    public static void setMasterKeySalt(@NonNull Context context, @NonNull String salt) throws NoSuchAlgorithmException {
         setValue(context, KEY_MASTER_SALT, salt, false);
     }
 
@@ -107,7 +107,7 @@ public class KeyValueDB {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String getMasterKeySalt(@NonNull Context context) throws NoSuchAlgorithmException {
+    public static String getMasterKeySalt(@NonNull Context context) throws NoSuchAlgorithmException {
         return getValue(context, KEY_MASTER_SALT);
     }
 
@@ -116,7 +116,7 @@ public class KeyValueDB {
      * @param context
      * @throws NoSuchAlgorithmException
      */
-    public void setSetup(@NonNull Context context) throws NoSuchAlgorithmException {
+    public static void setSetup(@NonNull Context context) throws NoSuchAlgorithmException {
         setValue(context, KEY_SETUP, VALUE_SETUP, true);
     }
 
@@ -126,7 +126,7 @@ public class KeyValueDB {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String getSetup(@NonNull Context context) throws NoSuchAlgorithmException {
+    public static String getSetup(@NonNull Context context) throws NoSuchAlgorithmException {
         return getValue(context, KEY_SETUP);
     }
 
@@ -136,7 +136,7 @@ public class KeyValueDB {
      * @param value
      * @throws NoSuchAlgorithmException
      */
-    public void setUsername(@NonNull Context context, @NonNull String value) throws NoSuchAlgorithmException {
+    public static void setUsername(@NonNull Context context, @NonNull String value) throws NoSuchAlgorithmException {
         setValue(context, KEY_USERNAME, value, false);
     }
 
@@ -146,7 +146,7 @@ public class KeyValueDB {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String getUsername(@NonNull Context context) throws NoSuchAlgorithmException {
+    public static String getUsername(@NonNull Context context) throws NoSuchAlgorithmException {
         return getValue(context, KEY_USERNAME);
     }
 
@@ -157,7 +157,7 @@ public class KeyValueDB {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    private String getValue(@NonNull Context context, @NonNull String key) throws NoSuchAlgorithmException {
+    private static String getValue(@NonNull Context context, @NonNull String key) throws NoSuchAlgorithmException {
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String text;
         if (isVersionNougatOrHigher()) {
@@ -181,7 +181,7 @@ public class KeyValueDB {
      * @param secure
      * @throws NoSuchAlgorithmException
      */
-    private void setValue(@NonNull Context context, @NonNull String key, @NonNull String value, @NonNull Boolean secure) throws NoSuchAlgorithmException {
+    private static void setValue(@NonNull Context context, @NonNull String key, @NonNull String value, @NonNull Boolean secure) throws NoSuchAlgorithmException {
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         Editor editor = settings.edit();
 
@@ -208,7 +208,7 @@ public class KeyValueDB {
      * @param key
      * @throws NoSuchAlgorithmException
      */
-    private void deleteValue(@NonNull Context context, @NonNull String key) throws NoSuchAlgorithmException {
+    private static void deleteValue(@NonNull Context context, @NonNull String key) throws NoSuchAlgorithmException {
         SharedPreferences settings;
         Editor editor;
 
@@ -226,7 +226,7 @@ public class KeyValueDB {
      * Clear Shared Preferences method
      * @param context
      */
-    public void clearSharedPreference(@NonNull Context context) {
+    public static void clearSharedPreference(@NonNull Context context) {
         SharedPreferences settings;
         Editor editor;
 
@@ -245,7 +245,7 @@ public class KeyValueDB {
      * @return
      */
     @NonNull
-    private boolean isVersionNougatOrHigher() {
+    private static boolean isVersionNougatOrHigher() {
         return android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
     }
 }

@@ -26,7 +26,7 @@ public class LoginHashCreator {
      * @return
      * @throws Exception
      */
-    public String getLoginHash(@NonNull Context context, @NonNull String password) throws Exception {
+    public static String getLoginHash(@NonNull Context context, @NonNull String password) throws Exception {
         String randomPasswordString = createRandomPasswordString(context);
         String subPassword = createSubPassword(password);
         EncryptionHandler eh = new EncryptionHandler();
@@ -40,7 +40,7 @@ public class LoginHashCreator {
      * @param password
      * @return
      */
-    private String createSubPassword(@NonNull String password) {
+    private static String createSubPassword(@NonNull String password) {
 
         // For every char of the password string, subtract some information
         // and create a unique string of 0's and 1's
@@ -69,7 +69,7 @@ public class LoginHashCreator {
      * @param passwordLength
      * @return
      */
-    private int changePasswordLength(int passwordLength) {
+    private static int changePasswordLength(int passwordLength) {
         return passwordLength >= 8 ? 0 : 1;
     }
 
@@ -78,7 +78,7 @@ public class LoginHashCreator {
      * @param subString
      * @return
      */
-    private int substringMaskWithAlphabetA(String subString) {
+    private static int substringMaskWithAlphabetA(String subString) {
         return isInPartOfAlphabet(subString) ? 0 : 1;
     }
 
@@ -87,7 +87,7 @@ public class LoginHashCreator {
      * @param subString
      * @return
      */
-    private int substringMaskWithAlphabetB(String subString) {
+    private static int substringMaskWithAlphabetB(String subString) {
         return isInFirstPartOfAlphabet(subString) ? 0 : 1;
     }
 
@@ -96,7 +96,7 @@ public class LoginHashCreator {
      * @param subString
      * @return
      */
-    private int substringMaskWithVowel(String subString) {
+    private static int substringMaskWithVowel(String subString) {
         return isVowel(subString) ? 0 : 1;
     }
 
@@ -105,7 +105,7 @@ public class LoginHashCreator {
      * @param substring
      * @return
      */
-    private boolean isVowel(final String substring) {
+    private static boolean isVowel(final String substring) {
         switch(substring.toLowerCase()) {
             case "a":
                 return true;
@@ -129,7 +129,7 @@ public class LoginHashCreator {
      * @param substring
      * @return
      */
-    private boolean isInPartOfAlphabet(final String substring) {
+    private static boolean isInPartOfAlphabet(final String substring) {
         final String[] partOfAlphabet = {"a", "c", "e", "g", "i", "k", "m", "o", "q", "s", "u", "w", "y"};
         for(String letter : partOfAlphabet) {
             if(letter.equalsIgnoreCase(substring)) {
@@ -144,7 +144,7 @@ public class LoginHashCreator {
      * @param substring
      * @return
      */
-    private boolean isInFirstPartOfAlphabet(final String substring) {
+    private static boolean isInFirstPartOfAlphabet(final String substring) {
         final String[] firstPartOfAlphabet = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"};
         for(String letter : firstPartOfAlphabet) {
             if(letter.equalsIgnoreCase(substring)) {
@@ -160,7 +160,7 @@ public class LoginHashCreator {
      * @return
      * @throws Exception
      */
-    private String createRandomPasswordString(@NonNull Context context) throws Exception {
+    private static String createRandomPasswordString(@NonNull Context context) throws Exception {
         KeyValueDB keyValueDB = new KeyValueDB();
         String randomPasswordString = keyValueDB.getRandomPasswordString(context);
         if (randomPasswordString == null) {
@@ -179,7 +179,7 @@ public class LoginHashCreator {
      * @param str
      * @return
      */
-    private String sortStringAlphabetically(@NonNull String str) {
+    private static String sortStringAlphabetically(@NonNull String str) {
         Character[] chars = new Character[str.length()];
         for (int i = 0; i < chars.length; i++)
             chars[i] = str.charAt(i);

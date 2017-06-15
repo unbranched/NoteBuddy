@@ -14,8 +14,6 @@ import nl.yoerinijs.notebuddy.security.EncryptionHandler;
  */
 public class TextfileReader {
 
-    private static final String LOG_TAG = "Textfile reader";
-
     /**
      * Text getter
      * @param location
@@ -35,34 +33,30 @@ public class TextfileReader {
      * @return
      */
     private String readFile(String location, String fileName, String password, Context context, boolean decrypt) {
-        File file = new File(location, fileName);
         StringBuilder encryptedText = new StringBuilder();
         String decryptedText = "";
-
-        // Try to read the encrypted file
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(new FileReader(new File(location, fileName)));
             String line;
-
             while ((line = br.readLine()) != null) {
                 encryptedText.append(line);
-                Log.d(LOG_TAG, encryptedText.toString());
             }
             br.close();
 
-            // Next, if selected, decrypt the text file
-            // Log decrypted text for debugging purposes
             if(decrypt) {
-                EncryptionHandler sf = new EncryptionHandler();
-                decryptedText = sf.decryptFile(encryptedText.toString(), password, context);
-                Log.d(LOG_TAG, "Decrypted text: " +  decryptedText);
+                decryptedText = EncryptionHandler.decryptFile(encryptedText.toString(), password, context);
             }
         } catch (Exception e) {
-            // Log failure
-            Log.d(LOG_TAG, e.getMessage());
+            // Something went wrong. Skip.
         }
-
-        // Return decrypted or encrypted text
         return decrypt ? decryptedText : encryptedText.toString();
+    }
+
+    public boolean fileExists(String location, String fileName, String password, Context context) {
+        String textContent = getText(location, fileName, password, context, true);
+        if("empty".equals(textContent) || "".equals(textContent) || null == textContent) {
+            return false;
+        }
+        return true;
     }
 }

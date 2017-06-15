@@ -15,28 +15,10 @@ import nl.yoerinijs.notebuddy.security.EncryptionHandler;
  */
 public class TextfileWriter {
 
-    private static final String LOG_TAG = "Textfile Writer";
-
-    public void writeFile(Context context, String fileName, String fileContent, String password) {
-        FileOutputStream fileOutputStream;
-        try {
-            // Encrypt the note
-            EncryptionHandler tc = new EncryptionHandler();
-            String encryptedFileContent = tc.encryptFile(fileContent, password, context);
-
-            // Log encrypted value
-            Log.d(LOG_TAG, "Encrypted: " + encryptedFileContent);
-
-            // Write text to file
-            writeFileContent(null, fileName, encryptedFileContent, context);
-
-            // Log success
-            Log.d(LOG_TAG, "Text written");
-        } catch (Exception e) {
-
-            // Log failure
-            Log.d(LOG_TAG, e.getMessage());
-        }
+    public void writeFile(Context context, String fileName, String fileContent, String password) throws Exception {
+        EncryptionHandler tc = new EncryptionHandler();
+        String encryptedFileContent = tc.encryptFile(fileContent, password, context);
+        writeFileContent(null, fileName, encryptedFileContent, context);
     }
 
     public void writeExternalFile(File file, String fileContent) throws Exception {

@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Build;
@@ -27,49 +26,42 @@ import nl.yoerinijs.notebuddy.security.LoginHashCreator;
 import nl.yoerinijs.notebuddy.storage.KeyValueDB;
 
 /**
- * A login screen that offers login via username and mPassword
+ * A login screen that offers login via username and m_password
  */
 public class LoginActivity extends AppCompatActivity {
 
-    // Activity references
+    public static final String KEY_PASSWORD = "password";
+
     private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
+
     private static final String NOTES_ACTIVITY = "NotesActivity";
+
     private static final String MAIN_ACTIVITY = "MainActivity";
-    private static final String LOG_TAG = "Login Activity";
 
-    // UI references
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
-    private Context mContext;
-    private Button mClearPrefsButton;
+    private final Context m_context = this;
 
-    // Key value storage
-    private KeyValueDB keyValueDB;
+    private EditText m_passwordView;
 
-    // Password
-    private String mPassword;
+    private View m_progressView;
+
+    private View m_loginFormView;
+
+    private Button m_clearPrefsButton;
+
+    private String m_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Context
-        mContext = this;
+        m_passwordView = (EditText) findViewById(R.id.password);
+        m_clearPrefsButton = (Button) findViewById(R.id.clear_prefs_button);
 
-        // Set key value store
-        keyValueDB = new KeyValueDB();
-
-        // Set up the UI
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mClearPrefsButton = (Button) findViewById(R.id.clear_prefs_button);
-
-        // Set up the login form
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        m_passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                if(id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
                 }
@@ -77,22 +69,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Clear prefs button, only when dev mode is enabled
-        if (!getIntent().getBooleanExtra("DEVMODE", false)) {
-            mClearPrefsButton.setVisibility(View.GONE);
+        if (!getIntent().getBooleanExtra(MainActivity.KEY_DEVMODE, false)) {
+            m_clearPrefsButton.setVisibility(View.GONE);
         }
 
-        mClearPrefsButton.setOnClickListener(new OnClickListener() {
+        m_clearPrefsButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                keyValueDB.clearSharedPreference(mContext);
-
-                // Proceed to main activity
+                KeyValueDB.clearSharedPreference(m_context);
                 startActivity(MAIN_ACTIVITY, false);
             }
         });
 
-        // Sign in button
         Button mSignInButton = (Button) findViewById(R.id.sign_in_button);
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -101,8 +89,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        m_loginFormView = findViewById(R.id.login_form);
+        m_progressView = findViewById(R.id.login_progress);
     }
 
     /**
@@ -111,74 +99,40 @@ public class LoginActivity extends AppCompatActivity {
      * and no actual login attempt is made.
      */
     private void attemptLogin() {
-
         try {
-            // Reset errors
-            mPasswordView.setError(null);
-
-            // Store values at the time of the login attempt
-            mPassword = mPasswordView.getText().toString();
-
+            m_passwordView.setError(null);
+            m_password = m_passwordView.getText().toString();
             boolean cancel = false;
             View focusView = null;
 
-            // Check if mPassword field is empty
-            if (TextUtils.isEmpty(mPassword)) {
-                mPasswordView.setError(getString(R.string.error_field_required));
-                focusView = mPasswordView;
+            if(TextUtils.isEmpty(m_password)) {
+                m_passwordView.setError(getString(R.string.error_field_required));
+                focusView = m_passwordView;
                 cancel = true;
             }
 
-            // Check if provided mPassword is correct
-            // TODO: create a better way without storing the mPassword
-            LoginHashCreator lhc = new LoginHashCreator();
-            String currentHash = lhc.getLoginHash(mContext, mPassword);
-            String verificationHash = keyValueDB.getVerificationPasswordHash(mContext);
-            Log.d(LOG_TAG, "Current hash: " + currentHash);
-            Log.d(LOG_TAG, "Verification hash: " + verificationHash);
+            String currentHash = LoginHashCreator.getLoginHash(m_context, m_password);
+            String verificationHash = KeyValueDB.getVerificationPasswordHash(m_context);
             boolean correctPassword = (currentHash.equals(verificationHash));
 
-            // If hash is not correct, display a warning
-            if (!correctPassword) {
-                mPasswordView.setError(getString(R.string.error_login_wrong_password));
-                focusView = mPasswordView;
+            if(!correctPassword) {
+                m_passwordView.setError(getString(R.string.error_login_wrong_password));
+                focusView = m_passwordView;
                 cancel = true;
             }
 
-            if (cancel) {
-                // There was an error; don't attempt login and focus
-                // mPassword form field with an error
+            if(cancel) {
                 focusView.requestFocus();
-
-                // Clear mPassword field
-                mPasswordView.setText(null);
-
-                // Log error
-                Log.d(LOG_TAG, "Form validation went wrong");
+                m_passwordView.setText(null);
             } else if (correctPassword) {
-                // Log success
-                Log.d(LOG_TAG, "Form validation went smooth");
-
-                // Let the user know he is logged in
                 Toast.makeText(getApplicationContext(), getString(R.string.success_login_general)
-                        + ". " + getString(R.string.greeting_general) + ", " + keyValueDB.getUsername(mContext)
+                        + ". " + getString(R.string.greeting_general) + ", " + KeyValueDB.getUsername(m_context)
                         + "!", Toast.LENGTH_SHORT).show();
-
-                // Show a progress spinner
                 showProgress(true);
-
-                // Log success
-                Log.d(LOG_TAG, "Proceed to: " + NOTES_ACTIVITY);
-
-                // Proceed to notes activity
                 startActivity(NOTES_ACTIVITY, true);
             }
         } catch (Exception e) {
-            // Let the user know he cannot login
             Toast.makeText(getApplicationContext(), getString(R.string.error_login_general) + ". " + getString(R.string.action_try_again) + ".", Toast.LENGTH_SHORT).show();
-
-            // Log error
-            Log.d(LOG_TAG, e.getMessage());
         }
     }
 
@@ -192,21 +146,15 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void startActivity(@NonNull String activityName, @NonNull boolean providePassword) {
         Intent intent = new Intent();
-
-        // Verify whether password must be send to next activity
-        if (providePassword) {
-            intent.putExtra("PASSWORD", mPassword);
+        if(providePassword) {
+            intent.putExtra(KEY_PASSWORD, m_password);
         }
-
-        // Verify whether to send incoming text by other Android app to next activity
-        // See Main Activity for text handling
-        if (getIntent().getStringExtra("TEXTTOSEND") != null) {
-            if (!getIntent().getStringExtra("TEXTTOSEND").isEmpty()) {
-                intent.putExtra("TEXTTOSEND", getIntent().getStringExtra("TEXTTOSEND"));
+        if(getIntent().getStringExtra(MainActivity.KEY_TEXT_TO_SEND) != null) {
+            if(!getIntent().getStringExtra(MainActivity.KEY_TEXT_TO_SEND).isEmpty()) {
+                intent.putExtra(MainActivity.KEY_TEXT_TO_SEND, getIntent().getStringExtra(MainActivity.KEY_TEXT_TO_SEND));
             }
         }
-
-        intent.setClassName(mContext, PACKAGE_NAME + "." + activityName);
+        intent.setClassName(m_context, PACKAGE_NAME + "." + activityName);
         startActivity(intent);
         finish();
     }
@@ -216,34 +164,29 @@ public class LoginActivity extends AppCompatActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+            m_loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            m_loginFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    m_loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
+            m_progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            m_progressView.animate().setDuration(shortAnimTime).alpha(
                     show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    m_progressView.setVisibility(show ? View.VISIBLE : View.GONE);
                 }
             });
         } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            m_progressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            m_loginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 }

@@ -2,10 +2,9 @@ package nl.yoerinijs.notebuddy.files.backup;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.List;
 
 import nl.yoerinijs.notebuddy.files.misc.DirectoryReader;
 import nl.yoerinijs.notebuddy.files.text.TextfileReader;
@@ -17,26 +16,18 @@ import nl.yoerinijs.notebuddy.files.text.TextfileWriter;
 public class BackupCreator {
 
     private final static String BEGIN_ENCRYPTED_FILE = "<enc>";
-    private final static String LOG_TAG = "BackupCreator";
-    private final static String BACKUP_FILE_EXT = "txt";
 
-    private BackupStorageHandler mBackupStorageHandler;
-    private int mNumberOfNotes;
+    public final static String BACKUP_FILE_EXT = "txt";
+
+    private static int m_numberOfNotes;
 
     /**
      * Get backup location
      * @return
      */
     public String getBackupLocation() {
-        return mBackupStorageHandler.getBackupDirectory();
-    }
-
-    /**
-     * Get backup file extension
-     * @return
-     */
-    public String getBackupFileExt() {
-        return BACKUP_FILE_EXT;
+        BackupStorageHandler b = new BackupStorageHandler();
+        return b.getBackupDirectory();
     }
 
     /**
@@ -53,7 +44,7 @@ public class BackupCreator {
      * @return
      */
     public int getNumberOfNotes() {
-        return mNumberOfNotes;
+        return m_numberOfNotes;
     }
 
     /**
@@ -65,19 +56,13 @@ public class BackupCreator {
      * @return
      */
     public boolean isBackupCreated(@NonNull String locationPath, @NonNull String password, @NonNull Context context, boolean decryptNotes) {
-        mBackupStorageHandler = new BackupStorageHandler();
-
-        // Check if the permission is granted to write to the external storage
-        if(!mBackupStorageHandler.isExternalStorageWritable()) {
+        BackupStorageHandler b = new BackupStorageHandler();
+        if(!b.isExternalStorageWritable()) {
             return false;
         }
-
-        // Try to create the backup. If something goes wrong, return false.
         try {
-            return isCreated(locationPath, password, context, decryptNotes);
+            return isCreated(locationPath, password, context, decryptNotes, b);
         } catch (Exception e) {
-            // Log exception
-            Log.d(LOG_TAG, e.getMessage());
             return false;
         }
     }
@@ -91,46 +76,31 @@ public class BackupCreator {
      * @return
      * @throws Exception
      */
-    private boolean isCreated(@NonNull String locationPath, @NonNull String password, @NonNull Context context, boolean decryptNotes) throws Exception {
-        ArrayList<String> storedFiles = DirectoryReader.getFileNames(locationPath, 0);
-
-        // Nullity check
+    private boolean isCreated(@NonNull String locationPath, @NonNull String password, @NonNull Context context, boolean decryptNotes, BackupStorageHandler b) throws Exception {
+        List<String> storedFiles = DirectoryReader.getFileNames(locationPath, 0);
         if(null == storedFiles) {
             return false;
         }
 
-        // Check if there are some notes to backup
-        mNumberOfNotes = storedFiles.size();
-        if(mNumberOfNotes <= 0) {
+        m_numberOfNotes = storedFiles.size();
+        if(m_numberOfNotes <= 0) {
             return false;
         }
 
-        // Now we can backup the notes
-        final File documentsStorageDir = mBackupStorageHandler.getStorageDir(context);
-        final TextfileReader textfileReader = new TextfileReader();
-        final TextfileWriter textfileWriter = new TextfileWriter();
         for(String storedFile : storedFiles) {
-            File file = new File(documentsStorageDir + "/" + storedFile + "." + BACKUP_FILE_EXT);
-
-            // Check if user wants to decrypt the notes
+            File file = new File(b.getStorageDir(context) + "/" + storedFile + "." + BACKUP_FILE_EXT);
             StringBuilder sb = new StringBuilder();
+            TextfileReader textfileReader = new TextfileReader();
             if(decryptNotes) {
-                // User wants to decrypt, thus, 'true' is passed to the TextfileReader to decrypt the note
                 sb.append(textfileReader.getText(locationPath, storedFile, password, context, true));
             } else {
-                // User wants to store the note encrypted. First, a mark is added to the text so NoteBuddy can later
-                // recognize the file as encrypted when the user wants to import it again
                 sb.append(BEGIN_ENCRYPTED_FILE);
-
-                // 'False' is passed to the TextfileReader to perform a raw copy
                 sb.append(textfileReader.getText(locationPath, storedFile, password, context, false));
             }
-
-            // Now, write the text to the external file
+            TextfileWriter textfileWriter = new TextfileWriter();
             textfileWriter.writeExternalFile(file, sb.toString());
         }
 
-        // Let user now everything went smooth
         return true;
     }
 }

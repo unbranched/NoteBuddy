@@ -10,13 +10,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import nl.yoerinijs.notebuddy.R;
-import nl.yoerinijs.notebuddy.files.misc.FileChecker;
+import nl.yoerinijs.notebuddy.files.text.TextfileReader;
 import nl.yoerinijs.notebuddy.files.text.TextfileRemover;
 import nl.yoerinijs.notebuddy.files.text.TextfileWriter;
 import nl.yoerinijs.notebuddy.validators.NoteBodyValidator;
@@ -27,187 +26,134 @@ import nl.yoerinijs.notebuddy.validators.NoteTitleValidator;
  */
 public class EditNoteActivity extends AppCompatActivity {
 
-    // Activity references
     private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
+
     private static final String NOTES_ACTIVITY = "NotesActivity";
-    private static final String LOG_TAG = "Edit Note Activity";
 
-    // UI references
-    private FloatingActionButton mBackButton;
-    private FloatingActionButton mSaveButton;
-    private FloatingActionButton mDeleteButton;
-    private FloatingActionButton mShareButton;
-    private EditText mNoteTitle;
-    private EditText mNoteBody;
-    private Context mContext;
-    private View mFocusView;
+    private final Context m_context = this;
 
-    // Commonly used variables
-    private String mLocation;
-    private String password;
+    private FloatingActionButton m_backButton;
+
+    private FloatingActionButton m_saveButton;
+
+    private FloatingActionButton m_deleteButton;
+
+    private FloatingActionButton m_shareButton;
+
+    private EditText m_noteTitle;
+
+    private EditText m_noteBody;
+
+    private View m_focusView;
+
+    private String m_location;
+
+    private String m_password;
+
+    private TextfileReader m_textFileReader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
 
-        // Context
-        mContext = this;
-
-        // Set up the UI
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mFocusView = null;
+        m_focusView = null;
 
-        mSaveButton = (FloatingActionButton) findViewById(R.id.saveButton);
-        mBackButton = (FloatingActionButton) findViewById(R.id.backButton);
-        mDeleteButton = (FloatingActionButton) findViewById(R.id.deleteButton);
-        mShareButton = (FloatingActionButton) findViewById(R.id.shareButton);
-        mNoteTitle = (EditText) findViewById(R.id.noteTitle);
-        mNoteBody = (EditText) findViewById(R.id.noteText);
+        m_saveButton = (FloatingActionButton) findViewById(R.id.saveButton);
+        m_backButton = (FloatingActionButton) findViewById(R.id.backButton);
+        m_deleteButton = (FloatingActionButton) findViewById(R.id.deleteButton);
+        m_shareButton = (FloatingActionButton) findViewById(R.id.shareButton);
+        m_noteTitle = (EditText) findViewById(R.id.noteTitle);
+        m_noteBody = (EditText) findViewById(R.id.noteText);
+        m_password = getIntent().getStringExtra(LoginActivity.KEY_PASSWORD);
+        m_location = getFilesDir().getAbsolutePath();
+        m_textFileReader = new TextfileReader();
 
-        // Get password from Login activity.
-        // Password is needed to derivate a secret key for encrypting and decrypting the data.
-        password = getIntent().getStringExtra("PASSWORD");
-
-        // Get absolute internal storage path
-        // Log location as well
-        mLocation = getFilesDir().getAbsolutePath();
-        Log.d(LOG_TAG, "Location: " + mLocation);
-
-        // Get note and note name
-        final String note = getIntent().getStringExtra("SELECTED_NOTE");
-        final String noteFileName = getIntent().getStringExtra("SELECTED_NOTE_FILENAME");
-
-        // Check if note and note name are null
-        if (note == null && noteFileName == null) {
-            // Then the user wants to create a note
-            // Thus, remove delete and share buttons from UI
-            mDeleteButton.setVisibility(View.GONE);
-            mShareButton.setVisibility(View.GONE);
-
-            // Log that user wants to create a note
-            Log.d(LOG_TAG, "Create new note");
+        final String note = getIntent().getStringExtra(NotesActivity.KEY_NOTE);
+        final String noteFileName = getIntent().getStringExtra(NotesActivity.KEY_NOTE_TITLE);
+        if (null == note && null == noteFileName) {
+            m_deleteButton.setVisibility(View.GONE);
+            m_shareButton.setVisibility(View.GONE);
         } else {
-            // Set note title
-            mNoteTitle.setText(noteFileName);
-
-            // Set note body
-            mNoteBody.setText(note);
-
-            // Log that user wants to edit a note
-            Log.d(LOG_TAG, "Edit existing note");
+            m_noteTitle.setText(noteFileName);
+            m_noteBody.setText(note);
         }
 
-        // Save button
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
+        m_saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Get note title and note body
-                final String noteTitle = mNoteTitle.getText().toString();
-                final String noteBody = mNoteBody.getText().toString();
-
-                // Validate input
-                if (!onSave(noteTitle, noteBody)) {
-                    // Verify whether file with current note title already exists
-                    // If file exists, display warning dialog
-                    FileChecker fc = new FileChecker();
-                    if (fc.fileExists(mLocation, noteTitle, password, mContext)) {
-                        new AlertDialog.Builder(mContext)
+                final String noteTitle = m_noteTitle.getText().toString();
+                final String noteBody = m_noteBody.getText().toString();
+                if(!onSave(noteTitle, noteBody)) {
+                    if(m_textFileReader.fileExists(m_location, noteTitle, m_password, m_context)) {
+                        new AlertDialog.Builder(m_context)
                                 .setTitle(getString(R.string.dialog_title_note_exists))
                                 .setMessage(getString(R.string.dialog_question_overwrite_note))
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        // Save note
                                         writeNote(noteTitle, noteFileName, noteBody);
                                     }
                                 })
                                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        // Log that note will not be overwritten
-                                        Log.d(LOG_TAG, "Cancelled. Note not overwritten");
+                                        return;
                                     }
                                 })
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .show();
                     } else {
-                        // File does not exist, so it can be saved without problems
                         writeNote(noteTitle, noteFileName, noteBody);
                     }
                 }
             }
         });
 
-        // Back button
-        mBackButton.setOnClickListener(new View.OnClickListener() {
+        m_backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Log action
-                Log.d(LOG_TAG, "Go back");
-
-                // Finish this activity and go to Notes Activity
                 startNotesActivity();
             }
         });
 
-        // Share button
-        mShareButton.setOnClickListener(new View.OnClickListener() {
+        m_shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Log action
-                Log.d(LOG_TAG, "Share note");
-
-                // Share note content
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, mNoteBody.getText().toString());
+                sendIntent.putExtra(Intent.EXTRA_TEXT, m_noteBody.getText().toString());
                 sendIntent.setType("text/plain");
                 startActivity(sendIntent);
             }
         });
 
-        // Delete button
-        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+        m_deleteButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // Delete the note
                 try {
-                    // Display warning dialog
-                    new AlertDialog.Builder(mContext)
+                    new AlertDialog.Builder(m_context)
                             .setTitle(getString(R.string.dialog_title_delete_note))
                             .setMessage(getString(R.string.dialog_question_delete_note))
                             .setPositiveButton(getString(R.string.dialog_question_confirm), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-
-                                    // Try to delete the file
-                                    TextfileRemover tr = new TextfileRemover();
-                                    String deleteMessage = tr.deleteFile(mLocation, noteFileName) ? getString(R.string.success_deleted) : getString(R.string.error_cannot_delete);
-
-                                    // When file is deleted, the deleteMessage will hold the success_deleted string. If an error occurred, the error_cannot_delete string will be displayed.
-                                    Toast.makeText(getApplicationContext(), deleteMessage + ". ", Toast.LENGTH_SHORT).show();
-
-                                    // Log result
-                                    Log.d(LOG_TAG, deleteMessage);
-
-                                    // Proceed to notes activity
+                                    TextfileRemover textfileRemover = new TextfileRemover();
+                                    Toast.makeText(getApplicationContext(), textfileRemover.deleteFile(m_location, noteFileName) ?
+                                            getString(R.string.success_deleted) : getString(R.string.error_cannot_delete) + ". ",
+                                            Toast.LENGTH_SHORT).show();
                                     startNotesActivity();
                                 }
                             })
                             .setNegativeButton(getString(R.string.dialog_question_deny), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    // Log that note will not deleted
-                                    Log.d(LOG_TAG, "Cancelled. Note not deleted");
+                                    return;
                                 }
                             })
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
                 } catch (Exception e) {
-                    // Let the user know that the file cannot deleted
                     Toast.makeText(getApplicationContext(), getString(R.string.error_cannot_delete) + ". ", Toast.LENGTH_SHORT).show();
-
-                    // Log failure
-                    Log.d(LOG_TAG, e.getMessage());
                 }
             }
         });
@@ -222,34 +168,20 @@ public class EditNoteActivity extends AppCompatActivity {
     @NonNull
     private boolean onSave(@Nullable String noteTitle, @Nullable String noteBody) {
         boolean error = false;
-
-        // Check note title
-        NoteTitleValidator ntv = new NoteTitleValidator();
-        if (!ntv.isNoteTitleValid(noteTitle)) {
-            mNoteTitle.setError(getString(R.string.error_invalid_note_title));
-            mFocusView = mNoteTitle;
+        if(!NoteTitleValidator.isNoteTitleValid(noteTitle)) {
+            m_noteTitle.setError(getString(R.string.error_invalid_note_title));
+            m_focusView = m_noteTitle;
             error = true;
         }
-
-        // Check note body
-        NoteBodyValidator nbv = new NoteBodyValidator();
-        if (!nbv.isNoteBodyValid(noteBody)) {
-            mNoteBody.setError(getString(R.string.error_invalid_note_body));
-            mFocusView = mNoteBody;
+        if(!NoteBodyValidator.isNoteBodyValid(noteBody)) {
+            m_noteBody.setError(getString(R.string.error_invalid_note_body));
+            m_focusView = m_noteBody;
             error = true;
         }
-
-        if (error) {
-            // There was an error; don't attempt saving and focus the first
-            // form field with an error
-            mFocusView.requestFocus();
-
-            // Log error
-            Log.d(LOG_TAG, "Note title and/or note body is invalid");
+        if(error) {
+            m_focusView.requestFocus();
         }
-
         return error;
-
     }
 
     /**
@@ -258,53 +190,37 @@ public class EditNoteActivity extends AppCompatActivity {
      * @param oldNoteTitle
      * @param noteBody
      */
-    private void writeNote(@NonNull String currentNoteTile, @Nullable final String oldNoteTitle, @NonNull String noteBody){
-        // Write note
-        // Logs will be handled by the TextfileWriter class
-        TextfileWriter t = new TextfileWriter();
-        t.writeFile(mContext, currentNoteTile, noteBody, password);
-
-        // If the current note title is not the same as the old note title,
-        // ask if the note with the old title should be deleted
-        if(null != oldNoteTitle) {
-            if(!currentNoteTile.equalsIgnoreCase(oldNoteTitle)) {
-                // Log that note title is changed
-                Log.d(LOG_TAG, "Note title is changed");
-
-                new AlertDialog.Builder(mContext)
-                        .setTitle(getString(R.string.dialog_title_old_note))
-                        .setMessage(getString(R.string.dialog_question_delete_old_note))
-                        .setPositiveButton(getString(R.string.dialog_answer_delete_old_note), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Try to delete note with old tile
-                                TextfileRemover tr = new TextfileRemover();
-                                tr.deleteFile(mLocation, oldNoteTitle);
-
-                                // Continue
-                                postWriting();
-                            }
-                        })
-                        .setNegativeButton(getString(R.string.dialog_answer_keep_old_note), new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Log that old note is not deleted
-                                Log.d(LOG_TAG, "Old note not deleted");
-
-                                // Continue
-                                postWriting();
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .show();
+    private void writeNote(@NonNull String currentNoteTile, @Nullable final String oldNoteTitle, @NonNull String noteBody) {
+        try {
+            TextfileWriter textfileWriter = new TextfileWriter();
+            textfileWriter.writeFile(m_context, currentNoteTile, noteBody, m_password);
+            if(null != oldNoteTitle) {
+                if(!currentNoteTile.equalsIgnoreCase(oldNoteTitle)) {
+                    new AlertDialog.Builder(m_context)
+                            .setTitle(getString(R.string.dialog_title_old_note))
+                            .setMessage(getString(R.string.dialog_question_delete_old_note))
+                            .setPositiveButton(getString(R.string.dialog_answer_delete_old_note), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    TextfileRemover textfileRemover = new TextfileRemover();
+                                    textfileRemover.deleteFile(m_location, oldNoteTitle);
+                                    postWriting();
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.dialog_answer_keep_old_note), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    postWriting();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                } else {
+                    postWriting();
+                }
             } else {
-                // Log that note title is not changed
-                Log.d(LOG_TAG, "Note title not changed");
-
-                // Continue
                 postWriting();
             }
-        } else {
-            // Continue
-            postWriting();
+        } catch (Exception e) {
+            // Something went wrong. Skip.
         }
     }
 
@@ -312,13 +228,7 @@ public class EditNoteActivity extends AppCompatActivity {
      * This method holds everything related to post writing.
      */
     private void postWriting() {
-        // Log post writing
-        Log.d(LOG_TAG, "Post writing");
-
-        // Notify user
         Toast.makeText(getApplicationContext(), getString(R.string.success_saved) + ".", Toast.LENGTH_SHORT).show();
-
-        // Proceed to notes activity
         startNotesActivity();
     }
 
@@ -326,18 +236,10 @@ public class EditNoteActivity extends AppCompatActivity {
      * A simple method to start the common notes activity
      */
     private void startNotesActivity() {
-        // Log activity
-        Log.d(LOG_TAG, "Proceed to " + NOTES_ACTIVITY);
-
-        // Construct activity
         Intent intent = new Intent();
-        intent.setClassName(mContext, PACKAGE_NAME + "." + NOTES_ACTIVITY);
-        intent.putExtra("PASSWORD", password);
-
-        // Start activity
+        intent.setClassName(m_context, PACKAGE_NAME + "." + NOTES_ACTIVITY);
+        intent.putExtra(LoginActivity.KEY_PASSWORD, m_password);
         startActivity(intent);
-
-        // Close activity for security purposes
         finish();
     }
 }

@@ -23,10 +23,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import nl.yoerinijs.notebuddy.R;
 import nl.yoerinijs.notebuddy.files.backup.BackupCreator;
@@ -43,104 +43,92 @@ import nl.yoerinijs.notebuddy.storage.KeyValueDB;
 public class NotesActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    // Final variables
+    public static final String KEY_NOTE = "selected";
+
+    public static final String KEY_NOTE_TITLE = "title";
+
     private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
+
     private static final String NOTES_ACTIVITY = "NotesActivity";
+
     private static final String LOGIN_ACTIVITY = "LoginActivity";
+
     private static final String CREDITS_ACTIVITY = "CreditsActivity";
+
     private static final String EDIT_NOTE_ACTIVITY = "EditNoteActivity";
+
     private static final String SETUP_ACTIVITY = "SetupActivity";
-    private static final String LOG_TAG = "Notes Activity";
 
-    // UI references
-    private ArrayList mNoteNames;
-    private Context mContext;
+    private final Context m_context = this;
 
-    // Commonly used variables
-    private String mLocation;
-    private String mPassword;
+    private List m_noteNames;
+
+    private String m_location;
+
+    private String m_password;
+
+    private TextfileRemover m_textFileRemover;
+
+    private TextfileReader m_textFileReader;
+
+    private BackupImporter m_backupImporter;
+
+    private BackupStorageHandler m_backupStorageHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
 
-        // Context
-        mContext = this;
-
-        // Set up the notes screen
         final TextView introText = (TextView) findViewById(R.id.introText);
         final ListView listNotes = (ListView) findViewById(R.id.listNotes);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Get mPassword from Login activity.
-        // Password is needed to derivate a secret key for encrypting and decrypting the data.
-        mPassword = getIntent().getStringExtra("PASSWORD");
+        m_password = getIntent().getStringExtra(LoginActivity.KEY_PASSWORD);
+        m_textFileRemover = new TextfileRemover();
+        m_backupImporter = new BackupImporter();
+        m_backupStorageHandler = new BackupStorageHandler();
+        m_textFileReader = new TextfileReader();
 
-        // Check whether NoteBuddy is receiving incoming text. If so, skip everything and go to EditNoteActivity instantly
-        if (getIntent().getStringExtra("TEXTTOSEND") != null) {
-            if (!getIntent().getStringExtra("TEXTTOSEND").isEmpty()) {
-                String note = getIntent().getStringExtra("TEXTTOSEND");
+        if(null != getIntent().getStringExtra(MainActivity.KEY_TEXT_TO_SEND)) {
+            if(!getIntent().getStringExtra(MainActivity.KEY_TEXT_TO_SEND).isEmpty()) {
                 Calendar c = Calendar.getInstance();
-                final String noteTitle = getString(R.string.title_for_external_note) + " (" + c.get(Calendar.DAY_OF_MONTH) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.YEAR) + ")";
-                startActvitiy(EDIT_NOTE_ACTIVITY, true, note, noteTitle);
+                String noteTitle = getString(R.string.title_for_external_note) + " (" + c.get(Calendar.DAY_OF_MONTH) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.YEAR) + ")";
+                startActvitiy(EDIT_NOTE_ACTIVITY, true, getIntent().getStringExtra(MainActivity.KEY_TEXT_TO_SEND), noteTitle);
             }
         }
 
-        // Get absolute internal storage path
-        // Log the path as well
-        mLocation = getFilesDir().getAbsolutePath();
-        Log.d(LOG_TAG, "Location: " + mLocation);
-
-        // Retrieve files from internal storage
-        DirectoryReader dr = new DirectoryReader();
+        m_location = getFilesDir().getAbsolutePath();
         try {
-            mNoteNames = dr.getFileNames(mLocation, 0);
-            if(mNoteNames != null) {
-                if(mNoteNames.size() > 0) {
+            m_noteNames = DirectoryReader.getFileNames(m_location, 0);
+            if(null != m_noteNames) {
+                if(m_noteNames.size() > 0) {
                     introText.setVisibility(View.GONE);
                 }
-                final StableArrayAdapter adapter = new StableArrayAdapter(this, android.R.layout.simple_list_item_1, mNoteNames);
-                listNotes.setAdapter(adapter);
+                listNotes.setAdapter(new StableArrayAdapter(this, android.R.layout.simple_list_item_1, m_noteNames));
             }
         } catch (Exception e) {
-            // Let the user know that the app cannot read the files
             Toast.makeText(getApplicationContext(), getString(R.string.error_cannot_read_files) + ".", Toast.LENGTH_SHORT).show();
-
-            // Log exception
-            Log.d(LOG_TAG, e.getMessage());
         }
 
-        // When clicked on a note, start the Edit Note activity
-        // and send the note body and the node title to the new activity
         listNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Get selected note name
-                String selectedNoteTitle = mNoteNames.get((int)id).toString();
-
-                // Get text from selected note name
-                TextfileReader t = new TextfileReader();
-                String note = t.getText(mLocation, selectedNoteTitle, mPassword, mContext, true);
-
-                // Start activity to edit the note
-                // Pass note and selected note name
-                startActvitiy(EDIT_NOTE_ACTIVITY, true, note, selectedNoteTitle);
+                String selectedNoteTitle = m_noteNames.get((int)id).toString();
+                startActvitiy(EDIT_NOTE_ACTIVITY, true, m_textFileReader.getText(m_location, selectedNoteTitle, m_password, m_context, true), selectedNoteTitle);
             }
         });
 
-        // When clicked on the add button, start the edit note activity
         FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.addNoteButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Proceed to add note activity
                 startActvitiy(EDIT_NOTE_ACTIVITY, true, null, null);
             }
         });
 
-        // The navigation drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -160,172 +148,115 @@ public class NotesActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
-        // Handle navigation view item clicks here
         int id = item.getItemId();
 
-        // Credits item
-        if (id == R.id.nav_credits) {
-            // Proceed to credits activity
+        if(id == R.id.nav_credits) {
             startActvitiy(CREDITS_ACTIVITY, false, null, null);
 
-        // Erase item
-        } else if (id == R.id.nav_erase) {
-            // Display warning dialog
-            new AlertDialog.Builder(mContext)
+        } else if(id == R.id.nav_erase) {
+            new AlertDialog.Builder(m_context)
                     .setTitle(getString(R.string.dialog_title_delete_everything))
                     .setMessage(getString(R.string.dialog_question_delete_everything))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // Delete all settings
-                            KeyValueDB keyValueDB = new KeyValueDB();
-                            keyValueDB.clearSharedPreference(mContext);
-
-                            // Delete notes
-                            TextfileRemover tr = new TextfileRemover();
-                            tr.deleteAllFiles(mLocation);
-
-                            // Notify user and ourselves
+                            KeyValueDB.clearSharedPreference(m_context);
+                            m_textFileRemover.deleteAllFiles(m_location);
                             Toast.makeText(getApplicationContext(), getString(R.string.success_deleted) + ".", Toast.LENGTH_SHORT).show();
-                            Log.d(LOG_TAG, "Everything deleted");
-
-                            // Go to notes activity
                             startActvitiy(SETUP_ACTIVITY, true, null, null);
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // Log credentials not deleted
-                            Log.d(LOG_TAG, "Credentials not deleted");
+                            return;
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
-        // Lock item
-        } else if (id == R.id.nav_lock) {
-            // Proceed to main activity to force login
+        } else if(id == R.id.nav_lock) {
             startActvitiy(LOGIN_ACTIVITY, true, null, null);
 
-        // Backup notes item
-        } else if (id == R.id.nav_backup) {
+        } else if(id == R.id.nav_backup) {
             final BackupCreator backupCreator = new BackupCreator();
-
-            // Ask user if backup must be backed up encrypted or decrypted
-            new AlertDialog.Builder(mContext)
+            new AlertDialog.Builder(m_context)
                     .setTitle(getString(R.string.dialog_title_store_encrypted))
                     .setMessage(getString(R.string.dialog_question_store_encrypted))
                     .setPositiveButton(getString(R.string.dialog_answer_encrypt), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            provideBackupResult(backupCreator, backupCreator.isBackupCreated(mLocation, mPassword, mContext, false), true);
+                            provideBackupResult(backupCreator, backupCreator.isBackupCreated(m_location, m_password, m_context, false), true);
                         }
                     })
                     .setNegativeButton(getString(R.string.dialog_answer_decrypt), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            provideBackupResult(backupCreator, backupCreator.isBackupCreated(mLocation, mPassword, mContext, true), false);
+                            provideBackupResult(backupCreator, backupCreator.isBackupCreated(m_location, m_password, m_context, true), false);
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
-        // Import notes item
-        } else if (id == R.id.nav_import) {
-            // Importing may take a while, because possible encrypted notes must be decrypted first. Thus, notify the user
+        } else if(id == R.id.nav_import) {
             Toast.makeText(getApplicationContext(), getString(R.string.import_info) + ".", Toast.LENGTH_SHORT).show();
+            provideImportResult(m_backupImporter.areNotesImported(m_password, m_context));
 
-            // Now, let's import those beautiful notes
-            final BackupImporter backupImporter = new BackupImporter();
-            provideImportResult(backupImporter.areNotesImported(mPassword, mContext));
-
-        // Delete all notes item
-        } else if (id == R.id.nav_clear) {
-            new AlertDialog.Builder(mContext)
+        } else if(id == R.id.nav_clear) {
+            new AlertDialog.Builder(m_context)
                     .setTitle(getString(R.string.dialog_title_delete_all_notes))
                     .setMessage(getString(R.string.dialog_question_delete_all_notes))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // Delete notes
-                            TextfileRemover tr = new TextfileRemover();
-                            tr.deleteAllFiles(mLocation);
-
-                            // Notify user and ourselves
+                            m_textFileRemover.deleteAllFiles(m_location);
                             Toast.makeText(getApplicationContext(), getString(R.string.success_deleted) + ".", Toast.LENGTH_SHORT).show();
-                            Log.d(LOG_TAG, "All notes deleted");
-
-                            // Go to notes activity
                             startActvitiy(NOTES_ACTIVITY, true, null, null);
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            // Log that notes are not deleted
-                            Log.d(LOG_TAG, "Notes not deleted");
+                            return;
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
-        // Clear backup storage item
-        } else if (id == R.id.nav_clear_ext) {
-            final BackupStorageHandler backupStorageHandler = new BackupStorageHandler();
-
-            // Request permissions to delete files
-            backupStorageHandler.requestWritingPermissions(mContext);
-
-            // Only show dialog if permissions are granted
-            if(backupStorageHandler.isExternalStorageWritable()) {
-                new AlertDialog.Builder(mContext)
+        } else if(id == R.id.nav_clear_ext) {
+            m_backupStorageHandler.requestWritingPermissions(m_context);
+            if(m_backupStorageHandler.isExternalStorageWritable()) {
+                new AlertDialog.Builder(m_context)
                         .setTitle(getString(R.string.dialog_title_delete_ext_storage))
-                        .setMessage(getString(R.string.dialog_question_delete_ext_storage) + ": " + backupStorageHandler.getBackupDirectory() + "?")
+                        .setMessage(getString(R.string.dialog_question_delete_ext_storage) + ": " + m_backupStorageHandler.getBackupDirectory() + "?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    // Check if there are files to delete
-                                    if(!backupStorageHandler.isStorageDirEmpty(mContext)) {
-                                        // Get number of files
-                                        final int numberOfFiles = backupStorageHandler.getNumberOfFilesInStorageDir(mContext);
-
-                                        // Clear the files
-                                        backupStorageHandler.clearStorageDir(mContext);
-
-                                        // Display result
-                                        provideBackupClearedResult(numberOfFiles);
-                                    } else {
-                                        // Nothing to delete, notify user and ourselves
-                                        Toast.makeText(getApplicationContext(), getString(R.string.error_nothing_to_delete) + ".", Toast.LENGTH_LONG).show();
-                                        Log.d(LOG_TAG, "Nothing to delete...");
+                                    if(!m_backupStorageHandler.isStorageDirEmpty(m_context)) {
+                                        m_backupStorageHandler.clearStorageDir(m_context);
+                                        provideBackupClearedResult(m_backupStorageHandler.getNumberOfFilesInStorageDir(m_context));
+                                        return;
                                     }
+                                    Toast.makeText(getApplicationContext(), getString(R.string.error_nothing_to_delete) + ".", Toast.LENGTH_LONG).show();
+                                    return;
                                 } catch (Exception e) {
-                                    // Something went wrong. Notify user and ourselves
                                     Toast.makeText(getApplicationContext(), getString(R.string.error_cannot_delete) + ". " +  getString(R.string.error_general) + ".", Toast.LENGTH_LONG).show();
-                                    Log.d(LOG_TAG, e.getMessage());
                                 }
-
-                                // Go to notes activity
                                 startActvitiy(NOTES_ACTIVITY, true, null, null);
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                // Log that notes are not deleted
-                                Log.d(LOG_TAG, "External storage not cleared");
+                                return;
                             }
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
             }
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     private void provideBackupClearedResult(int numberOfFilesInDir) {
-        // Notify user and ourselves
         Toast.makeText(getApplicationContext(), getString(R.string.backup_ext_cleared) + ".", Toast.LENGTH_LONG).show();
         Toast.makeText(getApplicationContext(), numberOfFilesInDir == 1 ? numberOfFilesInDir + " " + getString(R.string.backup_number_deleted_singular).toLowerCase() + "." :
                 numberOfFilesInDir + " " + getString(R.string.backup_number_deleted_plural).toLowerCase() + "." , Toast.LENGTH_LONG).show();
-        Log.d(LOG_TAG, "All external files deleted");
     }
 
     /**
@@ -339,19 +270,14 @@ public class NotesActivity extends AppCompatActivity
             final int numberOfNotes = backupCreator.getNumberOfNotes();
             Toast.makeText(getApplicationContext(), numberOfNotes + " " + (numberOfNotes <= 1 ? getString(R.string.backup_number_created_singular).toLowerCase() + "." : getString(R.string.backup_number_created_plural).toLowerCase() + "."), Toast.LENGTH_LONG).show();
         }
-        Log.d(LOG_TAG, "Backup is " + (isBackupCreated ? "created successfully" : "not created"));
     }
 
     /**
      * Notifies user and ourselves of import result
      * @param areNotesImported
      */
-    private void provideImportResult(Boolean areNotesImported) {
-        final String resultMessage = areNotesImported ? getString(R.string.import_success) : getString(R.string.import_error);
-        Toast.makeText(getApplicationContext(), resultMessage + ".", Toast.LENGTH_LONG).show();
-        Log.d(LOG_TAG, resultMessage);
-
-        // If notes are imported, start the NotesActivity again (i.e. refresh the activity) in order to see the latest notes
+    private void provideImportResult(boolean areNotesImported) {
+        Toast.makeText(getApplicationContext(), areNotesImported ? getString(R.string.import_success) : getString(R.string.import_error) + ".", Toast.LENGTH_LONG).show();
         if(areNotesImported) {
             startActvitiy(NOTES_ACTIVITY, true, null, null);
         }
@@ -365,30 +291,19 @@ public class NotesActivity extends AppCompatActivity
      * @param note
      * @param selectedNoteName
      */
-    private void startActvitiy(@NonNull String activity, @NonNull Boolean finish, @Nullable String note, @Nullable String selectedNoteName) {
-        // Log activity
-        Log.d(LOG_TAG, "Proceed to " + activity);
-
-        // Construct activity
+    private void startActvitiy(@NonNull String activity, @NonNull boolean finish, @Nullable String note, @Nullable String selectedNoteName) {
         Intent intent = new Intent();
-        intent.setClassName(mContext, PACKAGE_NAME + "." + activity);
+        intent.setClassName(m_context, PACKAGE_NAME + "." + activity);
 
-        // Check if a note and a note name are given.
-        // If true, add them to the activity.
-        // Add provided mPassword as well for key derivation.
-        if (note != null && selectedNoteName != null) {
-            intent.putExtra("SELECTED_NOTE", note);
-            intent.putExtra("SELECTED_NOTE_FILENAME", selectedNoteName);
+        if(null != note && null != selectedNoteName) {
+            intent.putExtra(KEY_NOTE, note);
+            intent.putExtra(KEY_NOTE_TITLE, selectedNoteName);
         }
 
-        // Add provided mPassword as well for key derivation.
-        intent.putExtra("PASSWORD", mPassword);
-
-        // Start activity
+        intent.putExtra(LoginActivity.KEY_PASSWORD, m_password);
         startActivity(intent);
 
-        // Close activity for security purposes
-        if (finish) {
+        if(finish) {
             finish();
         }
     }
@@ -397,20 +312,17 @@ public class NotesActivity extends AppCompatActivity
      * Stable array adapter for displaying the notes
      */
     private class StableArrayAdapter extends ArrayAdapter<String> {
-
-        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
-
+        Map<String, Integer> map = new HashMap<>();
         public StableArrayAdapter(Context context, int textViewResourceId, List<String> objects) {
             super(context, textViewResourceId, objects);
-            for (int i = 0; i < objects.size(); ++i) {
-                mIdMap.put(objects.get(i), i);
+            for(String o : objects) {
+                map.put(objects.get(objects.indexOf(o)), objects.indexOf(o));
             }
         }
 
         @Override
         public long getItemId(int position) {
-            String item = getItem(position);
-            return mIdMap.get(item);
+            return map.get(getItem(position));
         }
 
         @Override

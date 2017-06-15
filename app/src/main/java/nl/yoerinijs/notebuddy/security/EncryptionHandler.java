@@ -15,7 +15,7 @@ import static nl.yoerinijs.notebuddy.security.AesCbcWithIntegrity.keyString;
  */
 public class EncryptionHandler {
 
-    private AesCbcWithIntegrity.CipherTextIvMac cipherTextIvMac;
+    private static AesCbcWithIntegrity.CipherTextIvMac cipherTextIvMac;
 
     /**
      * Method to get a key derived of a password
@@ -24,7 +24,7 @@ public class EncryptionHandler {
      * @return
      * @throws GeneralSecurityException
      */
-    public String getDerivedKey(@NonNull String password, @NonNull String salt) throws GeneralSecurityException {
+    public static String getDerivedKey(@NonNull String password, @NonNull String salt) throws GeneralSecurityException {
         return keyString(createDerivedKey(password, salt));
     }
 
@@ -35,7 +35,7 @@ public class EncryptionHandler {
      * @return
      * @throws GeneralSecurityException
      */
-    private AesCbcWithIntegrity.SecretKeys createDerivedKey(@NonNull String password, @NonNull String derivedKeySalt) throws GeneralSecurityException {
+    private static AesCbcWithIntegrity.SecretKeys createDerivedKey(@NonNull String password, @NonNull String derivedKeySalt) throws GeneralSecurityException {
         return generateKeyFromPassword(password, derivedKeySalt);
     }
 
@@ -46,7 +46,7 @@ public class EncryptionHandler {
      * @return
      * @throws GeneralSecurityException
      */
-    private AesCbcWithIntegrity.SecretKeys getMasterKey(@NonNull String derivedKey, @NonNull String masterKeySalt) throws GeneralSecurityException {
+    private static AesCbcWithIntegrity.SecretKeys getMasterKey(@NonNull String derivedKey, @NonNull String masterKeySalt) throws GeneralSecurityException {
         return generateKeyFromPassword(derivedKey, masterKeySalt);
     }
 
@@ -58,7 +58,7 @@ public class EncryptionHandler {
      * @return
      * @throws Exception
      */
-    public String encryptFile(@NonNull String plainText, @NonNull String password, @NonNull Context context) throws Exception {
+    public static String encryptFile(@NonNull String plainText, @NonNull String password, @NonNull Context context) throws Exception {
         String encryptedText = "";
         SaltHandler saltHandler = new SaltHandler();
         String salt = saltHandler.getDerivedKeySalt(context);
@@ -82,7 +82,7 @@ public class EncryptionHandler {
      * @return
      * @throws Exception
      */
-    public String decryptFile(@NonNull String encryptedText, @NonNull String password, @NonNull Context context) throws Exception {
+    public static String decryptFile(@NonNull String encryptedText, @NonNull String password, @NonNull Context context) throws Exception {
         String decryptedText = "";
         SaltHandler saltHandler = new SaltHandler();
         String derivedKey = getDerivedKey(password, saltHandler.getDerivedKeySalt(context));
@@ -100,7 +100,7 @@ public class EncryptionHandler {
      * @return
      * @throws NoSuchAlgorithmException
      */
-    public String hashString(@NonNull String string) throws NoSuchAlgorithmException {
+    public static String hashString(@NonNull String string) throws NoSuchAlgorithmException {
         MessageDigest m = MessageDigest.getInstance("SHA-256");
         m.update(string.getBytes());
         return new String(m.digest());
