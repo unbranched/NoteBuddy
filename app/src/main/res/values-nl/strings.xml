@@ -17,6 +17,7 @@
     <string name="error_cannot_read_files">Kan de bestanden niet lezen</string>
     <string name="error_cannot_delete">Kan niet verwijderen</string>
     <string name="error_nothing_to_delete">Er is niets om te verwijderen</string>
+    <string name="error_some_not_deleted">Een aantal bestanden is niet verwijderd</string>
     <string name="success_login_general">Ingelogd</string>
     <string name="success_saved">Opgeslagen</string>
     <string name="success_changed">Veranderd</string>

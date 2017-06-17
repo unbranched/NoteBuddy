@@ -17,6 +17,7 @@
     <string name="error_cannot_read_files">ファイルを読み取りできません</string>
     <string name="error_cannot_delete">削除できません</string>
     <string name="error_nothing_to_delete">Nothing to delete</string>
+    <string name="error_some_not_deleted">Some files are not deleted</string>
     <string name="success_login_general">ログインしました</string>
     <string name="success_saved">保存しました</string>
     <string name="success_changed">変更しました</string>

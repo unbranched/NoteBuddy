@@ -156,8 +156,12 @@ public class NotesActivity extends AppCompatActivity
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             KeyValueDB.clearSharedPreference(m_context);
-                            TextfileRemover.deleteAllFiles(m_location);
-                            Toast.makeText(getApplicationContext(), getString(R.string.success_deleted) + ".", Toast.LENGTH_SHORT).show();
+                            int filesNotDeleted = TextfileRemover.deleteAllFiles(m_location);
+                            if(filesNotDeleted <= 0) {
+                                Toast.makeText(getApplicationContext(), getString(R.string.success_deleted) + ".", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), getString(R.string.error_some_not_deleted) + ": " + filesNotDeleted + ".", Toast.LENGTH_SHORT).show();
+                            }
                             startActvitiy(SETUP_ACTIVITY, true, null, null);
                         }
                     })
@@ -198,8 +202,12 @@ public class NotesActivity extends AppCompatActivity
                     .setMessage(getString(R.string.dialog_question_delete_all_notes))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            TextfileRemover.deleteAllFiles(m_location);
-                            Toast.makeText(getApplicationContext(), getString(R.string.success_deleted) + ".", Toast.LENGTH_SHORT).show();
+                            int filesNotDeleted = TextfileRemover.deleteAllFiles(m_location);
+                            if(filesNotDeleted <= 0) {
+                                Toast.makeText(getApplicationContext(), getString(R.string.success_deleted) + ".", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), getString(R.string.error_some_not_deleted) + ": " + filesNotDeleted + ".", Toast.LENGTH_SHORT).show();
+                            }
                             startActvitiy(NOTES_ACTIVITY, true, null, null);
                         }
                     })

@@ -17,6 +17,7 @@
     <string name="error_cannot_read_files">Cannot read files</string>
     <string name="error_cannot_delete">Cannot delete</string>
     <string name="error_nothing_to_delete">Nothing to delete</string>
+    <string name="error_some_not_deleted">Some files are not deleted</string>
     <string name="success_login_general">Logged in</string>
     <string name="success_saved">Saved</string>
     <string name="success_changed">Changed</string>
