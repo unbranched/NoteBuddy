@@ -54,9 +54,6 @@ public class TextfileReader {
 
     public boolean fileExists(String location, String fileName, String password, Context context) {
         String textContent = getText(location, fileName, password, context, true);
-        if("empty".equals(textContent) || "".equals(textContent) || null == textContent) {
-            return false;
-        }
-        return true;
+        return !("empty".equals(textContent) || "".equals(textContent) || null == textContent);
     }
 }

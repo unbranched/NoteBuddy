@@ -15,19 +15,19 @@ import static nl.yoerinijs.notebuddy.security.AesCbcWithIntegrity.saltString;
 public class SaltHandler {
 
     public static void setSalt(@NonNull Context context) throws Exception {
-        if (null == KeyValueDB.getDerivedKeySalt(context) || null == KeyValueDB.getMasterKeySalt(context)) {
+        if(null == KeyValueDB.getDerivedKeySalt(context) || null == KeyValueDB.getMasterKeySalt(context)) {
             KeyValueDB.setDerivedKeySalt(context, saltString(generateSalt()));
             KeyValueDB.setMasterKeySalt(context, saltString(generateSalt()));
         }
     }
 
     @Nullable
-    public static String getDerivedKeySalt(@NonNull Context context) throws Exception {
+    static String getDerivedKeySalt(@NonNull Context context) throws Exception {
         return KeyValueDB.getDerivedKeySalt(context);
     }
 
     @Nullable
-    public static String getMasterKeySalt(@NonNull Context context) throws Exception {
+    static String getMasterKeySalt(@NonNull Context context) throws Exception {
         return KeyValueDB.getMasterKeySalt(context);
     }
 }

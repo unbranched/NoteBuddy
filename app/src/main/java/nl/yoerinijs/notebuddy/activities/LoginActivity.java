@@ -46,8 +46,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private View m_loginFormView;
 
-    private Button m_clearPrefsButton;
-
     private String m_password;
 
     @Override
@@ -56,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         m_passwordView = (EditText) findViewById(R.id.password);
-        m_clearPrefsButton = (Button) findViewById(R.id.clear_prefs_button);
+        Button m_clearPrefsButton = (Button) findViewById(R.id.clear_prefs_button);
 
         m_passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -124,7 +122,7 @@ public class LoginActivity extends AppCompatActivity {
             if(cancel) {
                 focusView.requestFocus();
                 m_passwordView.setText(null);
-            } else if (correctPassword) {
+            } else {
                 Toast.makeText(getApplicationContext(), getString(R.string.success_login_general)
                         + ". " + getString(R.string.greeting_general) + ", " + KeyValueDB.getUsername(m_context)
                         + "!", Toast.LENGTH_SHORT).show();
@@ -144,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
      * @param activityName
      * @param providePassword
      */
-    private void startActivity(@NonNull String activityName, @NonNull boolean providePassword) {
+    private void startActivity(@NonNull String activityName, boolean providePassword) {
         Intent intent = new Intent();
         if(providePassword) {
             intent.putExtra(KEY_PASSWORD, m_password);

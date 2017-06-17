@@ -16,8 +16,7 @@ import nl.yoerinijs.notebuddy.security.EncryptionHandler;
 public class TextfileWriter {
 
     public void writeFile(Context context, String fileName, String fileContent, String password) throws Exception {
-        EncryptionHandler tc = new EncryptionHandler();
-        String encryptedFileContent = tc.encryptFile(fileContent, password, context);
+        String encryptedFileContent = EncryptionHandler.encryptFile(fileContent, password, context);
         writeFileContent(null, fileName, encryptedFileContent, context);
     }
 
@@ -29,12 +28,22 @@ public class TextfileWriter {
         if(null == file && null == fileName && context == null) {
             throw new IllegalStateException("File or file name must be provided!");
         }
-        FileOutputStream fileOutputStream = null == file && null != context ? context.openFileOutput(fileName, Context.MODE_PRIVATE) : new FileOutputStream(file);
+        FileOutputStream fileOutputStream;
+        if(null == file && null != context) {
+            fileOutputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+        } else if(null != file) {
+            fileOutputStream = new FileOutputStream(file);
+        } else {
+            throw new IllegalStateException("Expecting file is not null!");
+        }
         try {
             fileOutputStream.write(fileContent.getBytes());
         } catch (FileNotFoundException f) {
-            file.createNewFile();
-            fileOutputStream.write(fileContent.getBytes());
+            if(null != file && file.createNewFile()){
+                fileOutputStream.write(fileContent.getBytes());
+            } else {
+                throw new IllegalStateException("Expecting file is not null!");
+            }
         }
         fileOutputStream.close();
     }

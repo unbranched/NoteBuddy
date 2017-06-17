@@ -32,14 +32,6 @@ public class EditNoteActivity extends AppCompatActivity {
 
     private final Context m_context = this;
 
-    private FloatingActionButton m_backButton;
-
-    private FloatingActionButton m_saveButton;
-
-    private FloatingActionButton m_deleteButton;
-
-    private FloatingActionButton m_shareButton;
-
     private EditText m_noteTitle;
 
     private EditText m_noteBody;
@@ -61,10 +53,11 @@ public class EditNoteActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         m_focusView = null;
 
-        m_saveButton = (FloatingActionButton) findViewById(R.id.saveButton);
-        m_backButton = (FloatingActionButton) findViewById(R.id.backButton);
-        m_deleteButton = (FloatingActionButton) findViewById(R.id.deleteButton);
-        m_shareButton = (FloatingActionButton) findViewById(R.id.shareButton);
+        FloatingActionButton m_saveButton = (FloatingActionButton) findViewById(R.id.saveButton);
+        FloatingActionButton m_backButton = (FloatingActionButton) findViewById(R.id.backButton);
+        FloatingActionButton m_deleteButton = (FloatingActionButton) findViewById(R.id.deleteButton);
+        FloatingActionButton m_shareButton = (FloatingActionButton) findViewById(R.id.shareButton);
+
         m_noteTitle = (EditText) findViewById(R.id.noteTitle);
         m_noteBody = (EditText) findViewById(R.id.noteText);
         m_password = getIntent().getStringExtra(LoginActivity.KEY_PASSWORD);
@@ -97,9 +90,7 @@ public class EditNoteActivity extends AppCompatActivity {
                                     }
                                 })
                                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        return;
-                                    }
+                                    public void onClick(DialogInterface dialog, int which) {}
                                 })
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .show();
@@ -138,17 +129,14 @@ public class EditNoteActivity extends AppCompatActivity {
                             .setMessage(getString(R.string.dialog_question_delete_note))
                             .setPositiveButton(getString(R.string.dialog_question_confirm), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    TextfileRemover textfileRemover = new TextfileRemover();
-                                    Toast.makeText(getApplicationContext(), textfileRemover.deleteFile(m_location, noteFileName) ?
+                                    Toast.makeText(getApplicationContext(), TextfileRemover.deleteFile(m_location, noteFileName) ?
                                             getString(R.string.success_deleted) : getString(R.string.error_cannot_delete) + ". ",
                                             Toast.LENGTH_SHORT).show();
                                     startNotesActivity();
                                 }
                             })
                             .setNegativeButton(getString(R.string.dialog_question_deny), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    return;
-                                }
+                                public void onClick(DialogInterface dialog, int which) {    }
                             })
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
@@ -165,7 +153,6 @@ public class EditNoteActivity extends AppCompatActivity {
      * @param noteBody
      * @return
      */
-    @NonNull
     private boolean onSave(@Nullable String noteTitle, @Nullable String noteBody) {
         boolean error = false;
         if(!NoteTitleValidator.isNoteTitleValid(noteTitle)) {
@@ -201,8 +188,7 @@ public class EditNoteActivity extends AppCompatActivity {
                             .setMessage(getString(R.string.dialog_question_delete_old_note))
                             .setPositiveButton(getString(R.string.dialog_answer_delete_old_note), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    TextfileRemover textfileRemover = new TextfileRemover();
-                                    textfileRemover.deleteFile(m_location, oldNoteTitle);
+                                    TextfileRemover.deleteFile(m_location, oldNoteTitle);
                                     postWriting();
                                 }
                             })

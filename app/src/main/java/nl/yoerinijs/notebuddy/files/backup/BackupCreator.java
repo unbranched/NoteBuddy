@@ -17,7 +17,7 @@ public class BackupCreator {
 
     private final static String BEGIN_ENCRYPTED_FILE = "<enc>";
 
-    public final static String BACKUP_FILE_EXT = "txt";
+    final static String BACKUP_FILE_EXT = "txt";
 
     private static int m_numberOfNotes;
 
@@ -35,7 +35,7 @@ public class BackupCreator {
      * This part is needed to verify whether a file is encrypted or not.
      * @return
      */
-    public String getBeginEncryptedFile() {
+    String getBeginEncryptedFile() {
         return BEGIN_ENCRYPTED_FILE;
     }
 
@@ -73,10 +73,11 @@ public class BackupCreator {
      * @param password
      * @param context
      * @param decryptNotes
+     * @param backupStorageHandler
      * @return
      * @throws Exception
      */
-    private boolean isCreated(@NonNull String locationPath, @NonNull String password, @NonNull Context context, boolean decryptNotes, BackupStorageHandler b) throws Exception {
+    private boolean isCreated(@NonNull String locationPath, @NonNull String password, @NonNull Context context, boolean decryptNotes, BackupStorageHandler backupStorageHandler) throws Exception {
         List<String> storedFiles = DirectoryReader.getFileNames(locationPath, 0);
         if(null == storedFiles) {
             return false;
@@ -87,20 +88,19 @@ public class BackupCreator {
             return false;
         }
 
+        TextfileReader textfileReader = new TextfileReader();
+        TextfileWriter textfileWriter = new TextfileWriter();
         for(String storedFile : storedFiles) {
-            File file = new File(b.getStorageDir(context) + "/" + storedFile + "." + BACKUP_FILE_EXT);
             StringBuilder sb = new StringBuilder();
-            TextfileReader textfileReader = new TextfileReader();
             if(decryptNotes) {
                 sb.append(textfileReader.getText(locationPath, storedFile, password, context, true));
             } else {
                 sb.append(BEGIN_ENCRYPTED_FILE);
                 sb.append(textfileReader.getText(locationPath, storedFile, password, context, false));
             }
-            TextfileWriter textfileWriter = new TextfileWriter();
+            File file = new File(backupStorageHandler.getStorageDir(context) + "/" + storedFile + "." + BACKUP_FILE_EXT);
             textfileWriter.writeExternalFile(file, sb.toString());
         }
-
         return true;
     }
 }

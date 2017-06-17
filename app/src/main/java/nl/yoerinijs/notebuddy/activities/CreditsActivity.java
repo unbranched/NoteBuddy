@@ -20,10 +20,6 @@ public class CreditsActivity extends AppCompatActivity {
 
     private static final String NOTES_ACTIVITY = "NotesActivity";
 
-    private TextView m_textView;
-
-    private Button m_button;
-
     private Context m_context = this;
 
     private String m_password;
@@ -34,10 +30,10 @@ public class CreditsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_credits);
 
         m_password = getIntent().getStringExtra(LoginActivity.KEY_PASSWORD);
-        m_textView = (TextView) findViewById(R.id.creditsView);
+        TextView m_textView = (TextView) findViewById(R.id.creditsView);
         m_textView.setText(CreditsBuilder.getCredits(m_context));
 
-        m_button = (Button) findViewById(R.id.backButton);
+        Button m_button = (Button) findViewById(R.id.backButton);
         m_button.setOnClickListener(new View.OnClickListener() {
 
             @Override

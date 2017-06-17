@@ -60,8 +60,7 @@ public class EncryptionHandler {
      */
     public static String encryptFile(@NonNull String plainText, @NonNull String password, @NonNull Context context) throws Exception {
         String encryptedText = "";
-        SaltHandler saltHandler = new SaltHandler();
-        String salt = saltHandler.getDerivedKeySalt(context);
+        String salt = SaltHandler.getDerivedKeySalt(context);
         if (salt == null) {
             return encryptedText;
         }
@@ -69,8 +68,11 @@ public class EncryptionHandler {
         if (derivedKey == null) {
             return encryptedText;
         }
-        cipherTextIvMac = AesCbcWithIntegrity.encrypt(plainText, getMasterKey(derivedKey, saltHandler.getMasterKeySalt(context)));
-        encryptedText = cipherTextIvMac.toString();
+        String masterKeySalt = SaltHandler.getMasterKeySalt(context);
+        if(null != masterKeySalt) {
+            cipherTextIvMac = AesCbcWithIntegrity.encrypt(plainText, getMasterKey(derivedKey, masterKeySalt));
+            encryptedText = cipherTextIvMac.toString();
+        }
         return encryptedText;
     }
 
@@ -84,13 +86,15 @@ public class EncryptionHandler {
      */
     public static String decryptFile(@NonNull String encryptedText, @NonNull String password, @NonNull Context context) throws Exception {
         String decryptedText = "";
-        SaltHandler saltHandler = new SaltHandler();
-        String derivedKey = getDerivedKey(password, saltHandler.getDerivedKeySalt(context));
-        if (derivedKey == null) {
-            return decryptedText;
+        String salt = SaltHandler.getDerivedKeySalt(context);
+        if(null != salt) {
+            String derivedKey = getDerivedKey(password, salt);
+            String masterKey = SaltHandler.getMasterKeySalt(context);
+            if(null != derivedKey && null != masterKey) {
+                cipherTextIvMac = new AesCbcWithIntegrity.CipherTextIvMac(encryptedText);
+                decryptedText = AesCbcWithIntegrity.decryptString(cipherTextIvMac, getMasterKey(derivedKey, masterKey));
+            }
         }
-        cipherTextIvMac = new AesCbcWithIntegrity.CipherTextIvMac(encryptedText);
-        decryptedText = AesCbcWithIntegrity.decryptString(cipherTextIvMac, getMasterKey(derivedKey, saltHandler.getMasterKeySalt(context)));
         return decryptedText;
     }
 

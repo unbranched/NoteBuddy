@@ -44,8 +44,6 @@ public class SetupActivity extends AppCompatActivity {
 
     private EditText m_passwordCheckView;
 
-    private Button m_registerButton;
-
     private View m_progressView;
 
     private View m_loginFormView;
@@ -69,7 +67,7 @@ public class SetupActivity extends AppCompatActivity {
         });
         m_passwordCheckView = (EditText) findViewById(R.id.passwordCheck);
 
-        m_registerButton = (Button)findViewById(R.id.register_button);
+        Button m_registerButton = (Button) findViewById(R.id.register_button);
         m_registerButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

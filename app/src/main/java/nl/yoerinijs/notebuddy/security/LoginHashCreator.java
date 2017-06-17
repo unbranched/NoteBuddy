@@ -29,8 +29,7 @@ public class LoginHashCreator {
     public static String getLoginHash(@NonNull Context context, @NonNull String password) throws Exception {
         String randomPasswordString = createRandomPasswordString(context);
         String subPassword = createSubPassword(password);
-        EncryptionHandler eh = new EncryptionHandler();
-        return eh.hashString(sortStringAlphabetically(randomPasswordString + subPassword)).toString();
+        return EncryptionHandler.hashString(sortStringAlphabetically(randomPasswordString + subPassword)).toString();
     }
 
     /**
@@ -108,15 +107,10 @@ public class LoginHashCreator {
     private static boolean isVowel(final String substring) {
         switch(substring.toLowerCase()) {
             case "a":
-                return true;
             case "e":
-                return true;
             case "i":
-                return true;
             case "o":
-                return true;
             case "u":
-                return true;
             case "y":
                 return true;
             default:
@@ -161,14 +155,10 @@ public class LoginHashCreator {
      * @throws Exception
      */
     private static String createRandomPasswordString(@NonNull Context context) throws Exception {
-        KeyValueDB keyValueDB = new KeyValueDB();
-        String randomPasswordString = keyValueDB.getRandomPasswordString(context);
-        if (randomPasswordString == null) {
-            final String randomChars = "01";
-            StringGenerator rsg = new StringGenerator();
-            Random random = new Random();
-            randomPasswordString = rsg.generateString(random, randomChars, 50);
-            keyValueDB.setRandomPasswordString(context, randomPasswordString);
+        String randomPasswordString = KeyValueDB.getRandomPasswordString(context);
+        if(null == randomPasswordString) {
+            randomPasswordString = StringGenerator.generateString(new Random(), "01", 50);
+            KeyValueDB.setRandomPasswordString(context, randomPasswordString);
             return randomPasswordString;
         }
         return randomPasswordString;
@@ -187,11 +177,11 @@ public class LoginHashCreator {
         Arrays.sort(chars, new Comparator<Character>() {
             public int compare(Character c1, Character c2) {
                 int cmp = Character.compare(
-                        Character.toLowerCase(c1.charValue()),
-                        Character.toLowerCase(c2.charValue())
+                        Character.toLowerCase(c1),
+                        Character.toLowerCase(c2)
                 );
                 if (cmp != 0) return cmp;
-                return Character.compare(c1.charValue(), c2.charValue());
+                return Character.compare(c1, c2);
             }
         });
 

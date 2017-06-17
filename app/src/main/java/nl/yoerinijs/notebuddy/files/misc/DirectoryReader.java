@@ -35,18 +35,14 @@ public class DirectoryReader {
         }
 
         List<String> storedData = new ArrayList<String>();
-        for (int i = 0; i < files.length; i++) {
-            // Some users report that NoteBuddy in some cases displays full activity paths (e.g. nl.yoerinijs.notebuddy.activities.MainActivity).
-            // Therefore, it will be checked here whether the file contains certain words in order to filter them out.
-            if(!files[i].contains("notebuddy") && !files[i].contains("yoerinijs")) {
-                storedData.add(files[i]);
+        for(String file : files) {
+            if(!file.contains("notebuddy") && !file.contains("yoerinijs")) {
+                storedData.add(file);
             }
         }
-
         if(storedData.size() == 0) {
             return null;
         }
-
         if (sort != 0)
         {
             Collections.sort(storedData, String.CASE_INSENSITIVE_ORDER);

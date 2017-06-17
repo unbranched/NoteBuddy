@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -61,13 +60,11 @@ public class NotesActivity extends AppCompatActivity
 
     private final Context m_context = this;
 
-    private List m_noteNames;
+    private List<String> m_noteNames;
 
     private String m_location;
 
     private String m_password;
-
-    private TextfileRemover m_textFileRemover;
 
     private TextfileReader m_textFileReader;
 
@@ -87,7 +84,6 @@ public class NotesActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         m_password = getIntent().getStringExtra(LoginActivity.KEY_PASSWORD);
-        m_textFileRemover = new TextfileRemover();
         m_backupImporter = new BackupImporter();
         m_backupStorageHandler = new BackupStorageHandler();
         m_textFileReader = new TextfileReader();
@@ -116,7 +112,7 @@ public class NotesActivity extends AppCompatActivity
         listNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedNoteTitle = m_noteNames.get((int)id).toString();
+                String selectedNoteTitle = m_noteNames.get((int) id);
                 startActvitiy(EDIT_NOTE_ACTIVITY, true, m_textFileReader.getText(m_location, selectedNoteTitle, m_password, m_context, true), selectedNoteTitle);
             }
         });
@@ -146,7 +142,7 @@ public class NotesActivity extends AppCompatActivity
      */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         int id = item.getItemId();
 
@@ -160,15 +156,13 @@ public class NotesActivity extends AppCompatActivity
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             KeyValueDB.clearSharedPreference(m_context);
-                            m_textFileRemover.deleteAllFiles(m_location);
+                            TextfileRemover.deleteAllFiles(m_location);
                             Toast.makeText(getApplicationContext(), getString(R.string.success_deleted) + ".", Toast.LENGTH_SHORT).show();
                             startActvitiy(SETUP_ACTIVITY, true, null, null);
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            return;
-                        }
+                        public void onClick(DialogInterface dialog, int which) {}
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
@@ -204,14 +198,13 @@ public class NotesActivity extends AppCompatActivity
                     .setMessage(getString(R.string.dialog_question_delete_all_notes))
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            m_textFileRemover.deleteAllFiles(m_location);
+                            TextfileRemover.deleteAllFiles(m_location);
                             Toast.makeText(getApplicationContext(), getString(R.string.success_deleted) + ".", Toast.LENGTH_SHORT).show();
                             startActvitiy(NOTES_ACTIVITY, true, null, null);
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            return;
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -227,8 +220,9 @@ public class NotesActivity extends AppCompatActivity
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
                                     if(!m_backupStorageHandler.isStorageDirEmpty(m_context)) {
+                                        int filesInStorageDir = m_backupStorageHandler.getNumberOfFilesInStorageDir(m_context);
                                         m_backupStorageHandler.clearStorageDir(m_context);
-                                        provideBackupClearedResult(m_backupStorageHandler.getNumberOfFilesInStorageDir(m_context));
+                                        provideBackupClearedResult(filesInStorageDir);
                                         return;
                                     }
                                     Toast.makeText(getApplicationContext(), getString(R.string.error_nothing_to_delete) + ".", Toast.LENGTH_LONG).show();
@@ -240,9 +234,7 @@ public class NotesActivity extends AppCompatActivity
                             }
                         })
                         .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                return;
-                            }
+                            public void onClick(DialogInterface dialog, int which) {}
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
@@ -291,7 +283,7 @@ public class NotesActivity extends AppCompatActivity
      * @param note
      * @param selectedNoteName
      */
-    private void startActvitiy(@NonNull String activity, @NonNull boolean finish, @Nullable String note, @Nullable String selectedNoteName) {
+    private void startActvitiy(@NonNull String activity, boolean finish, @Nullable String note, @Nullable String selectedNoteName) {
         Intent intent = new Intent();
         intent.setClassName(m_context, PACKAGE_NAME + "." + activity);
 
@@ -313,7 +305,7 @@ public class NotesActivity extends AppCompatActivity
      */
     private class StableArrayAdapter extends ArrayAdapter<String> {
         Map<String, Integer> map = new HashMap<>();
-        public StableArrayAdapter(Context context, int textViewResourceId, List<String> objects) {
+        StableArrayAdapter(Context context, int textViewResourceId, List<String> objects) {
             super(context, textViewResourceId, objects);
             for(String o : objects) {
                 map.put(objects.get(objects.indexOf(o)), objects.indexOf(o));

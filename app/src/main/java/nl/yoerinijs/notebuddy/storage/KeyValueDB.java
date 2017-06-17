@@ -25,7 +25,6 @@ public class KeyValueDB {
     private static final String VALUE_SETUP = "setup_value";
     private static final String KEY_RANDOM_PASSWORD_STRING = "random_password_string_key";
     private static final String KEY_VERIFICATION_PASSWORD_HASH = "verification_password_hash_key";
-    private static final String LOG_TAG = "Key Value DB";
 
     public KeyValueDB() {
         super();
@@ -160,16 +159,11 @@ public class KeyValueDB {
     private static String getValue(@NonNull Context context, @NonNull String key) throws NoSuchAlgorithmException {
         SharedPreferences settings = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String text;
-        if (isVersionNougatOrHigher()) {
-            EncryptionHandler eh = new EncryptionHandler();
-            text = settings.getString(eh.hashString(key), null);
+        if(isVersionNougatOrHigher()) {
+            text = settings.getString(EncryptionHandler.hashString(key), null);
         } else {
             text = settings.getString(key, null);
         }
-
-        // Log success
-        Log.d(LOG_TAG, "Value retrieved");
-
         return text;
     }
 
@@ -189,17 +183,13 @@ public class KeyValueDB {
         // Otherwise, use the raw key and value due to limitations by previous Android versions. Albeit this is not ideal, it is not really insecure due the fact
         // notes are encrypted by an unknown password provided by the user. Nevertheless, it is possible to see the current keys.
         // TODO: create a way so keys are always encrypted.
-        if (isVersionNougatOrHigher()) {
-            EncryptionHandler eh = new EncryptionHandler();
-            key = eh.hashString(key);
-            value = secure ? eh.hashString(value) : value;
+        if(isVersionNougatOrHigher()) {
+            key = EncryptionHandler.hashString(key);
+            value = secure ? EncryptionHandler.hashString(value) : value;
         }
 
         editor.putString(key, value);
-        editor.commit();
-
-        // Log success
-        Log.d(LOG_TAG, "Value set");
+        editor.apply();
     }
 
     /**
@@ -217,9 +207,6 @@ public class KeyValueDB {
 
         editor.remove(key);
         editor.apply();
-
-        // Log success
-        Log.d(LOG_TAG, "Value deleted");
     }
 
     /**
@@ -234,17 +221,13 @@ public class KeyValueDB {
         editor = settings.edit();
 
         editor.clear();
-        editor.commit();
-
-        // Log success
-        Log.d(LOG_TAG, "Cleared shared prefs");
+        editor.apply();
     }
 
     /**
      * Returns true if the current Android version is Nougat or higher.
      * @return
      */
-    @NonNull
     private static boolean isVersionNougatOrHigher() {
         return android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
     }

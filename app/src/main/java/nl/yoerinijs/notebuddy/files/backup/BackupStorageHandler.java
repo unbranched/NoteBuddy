@@ -64,8 +64,7 @@ public class BackupStorageHandler {
      * @return
      */
     public void clearStorageDir(@NonNull Context context) throws Exception  {
-        TextfileRemover textfileRemover = new TextfileRemover();
-        textfileRemover.deleteAllFiles(getStorageDir(context).toString());
+        TextfileRemover.deleteAllFiles(getStorageDir(context).toString());
     }
 
     /**

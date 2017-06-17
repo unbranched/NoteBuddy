@@ -1,8 +1,10 @@
 package nl.yoerinijs.notebuddy.files.text;
 
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * This class removes text files
@@ -16,13 +18,8 @@ public class TextfileRemover {
      * @param fileName
      * @return
      */
-    public boolean deleteFile(String filesDir, String fileName) {
-        try {
-            new File(filesDir, fileName).delete();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public static boolean deleteFile(String filesDir, String fileName) {
+        return new File(filesDir, fileName).delete();
     }
 
     /**
@@ -31,16 +28,17 @@ public class TextfileRemover {
      * @param filesDir
      * @return
      */
-    public boolean deleteAllFiles(String filesDir) {
-        try {
-            File file = new File(filesDir);
-            for (int i = 0; i < file.list().length; i++) {
-                File note = new File(file, file.list()[i]);
-                note.delete();
+    public static boolean deleteAllFiles(String filesDir) {
+        File dir = new File(filesDir);
+        if(dir.isDirectory()) {
+            for(String child : dir.list()) {
+                File childFile = new File(dir, child);
+                if(!childFile.delete()) {
+                    return false;
+                }
             }
             return true;
-        } catch (Exception e) {
-            return false;
         }
+        return false;
     }
 }
