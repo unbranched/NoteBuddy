@@ -94,6 +94,7 @@
     <string name="menu_import">Import backed up notes</string>
     <string name="menu_clear">Delete all notes</string>
     <string name="menu_clear_ext">Clear backup storage</string>
+    <string name="menu_color">Change color</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">Username</string>

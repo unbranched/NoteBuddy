@@ -149,8 +149,8 @@ public class BackupCreator {
      * Notifies user and ourselves of backup result
      * @param isBackupCreated
      */
-    private void provideBackupResult(int numberOfCreatedNotes, boolean isBackupCreated, boolean areNotesEncrypted) {
-        final String notesEncrypted = areNotesEncrypted ? "(" + m_context.getResources().getString(R.string.backup_encrypted).toLowerCase() + ")" : "(" + m_context.getResources().getString(R.string.backup_decrypted).toLowerCase() + ")";
+    private void provideBackupResult(int numberOfCreatedNotes, boolean isBackupCreated, boolean areNotesDecrypted) {
+        final String notesEncrypted = areNotesDecrypted ? "(" + m_context.getResources().getString(R.string.backup_decrypted).toLowerCase() + ")" : "(" + m_context.getResources().getString(R.string.backup_encrypted).toLowerCase() + ")";
         Toast.makeText(m_context, isBackupCreated ? m_context.getResources().getString(R.string.backup_success) + " " + getBackupLocation() + " " + notesEncrypted : m_context.getResources().getString(R.string.backup_error) + ".", Toast.LENGTH_LONG).show();
         if(isBackupCreated) {
             Toast.makeText(m_context, numberOfCreatedNotes + " " + (numberOfCreatedNotes <= 1 ? m_context.getResources().getString(R.string.backup_number_created_singular).toLowerCase() + "." : m_context.getResources().getString(R.string.backup_number_created_plural).toLowerCase() + "."), Toast.LENGTH_LONG).show();

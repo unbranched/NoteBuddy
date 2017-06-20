@@ -59,6 +59,8 @@ public class NotesActivity extends AppCompatActivity
 
     private static final String SETUP_ACTIVITY = LocationCentral.SETUP;
 
+    private static final String COLOR_ACTIVITY = LocationCentral.COLOR;
+
     private final Context m_context = this;
 
     private List<String> m_noteNames;
@@ -204,7 +206,7 @@ public class NotesActivity extends AppCompatActivity
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             int filesNotDeleted = TextfileRemover.deleteAllFiles(m_location);
-                            if(filesNotDeleted <= 0) {
+                            if (filesNotDeleted <= 0) {
                                 Toast.makeText(getApplicationContext(), getString(R.string.success_deleted) + ".", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(getApplicationContext(), getString(R.string.error_some_not_deleted) + ": " + filesNotDeleted + ".", Toast.LENGTH_SHORT).show();
@@ -218,6 +220,9 @@ public class NotesActivity extends AppCompatActivity
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
+
+        } else if(id == R.id.nav_color) {
+            startActvitiy(COLOR_ACTIVITY, true, null, null);
 
         } else if(id == R.id.nav_clear_ext) {
             m_backupStorageHandler.requestWritingPermissions(m_context);

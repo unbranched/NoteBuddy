@@ -33,7 +33,7 @@ import nl.yoerinijs.notebuddy.validators.UsernameValidator;
  */
 public class SetupActivity extends AppCompatActivity {
 
-    private static final String PACKAGE_NAME = MainActivity.PACKAGE_NAME;
+    private static final String PACKAGE_NAME = LocationCentral.PACKAGE;
 
     private static final String NOTES_ACTIVITY = LocationCentral.NOTES;
 
