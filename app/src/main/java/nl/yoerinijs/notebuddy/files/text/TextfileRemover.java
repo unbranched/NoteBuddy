@@ -1,15 +1,8 @@
 package nl.yoerinijs.notebuddy.files.text;
 
-import android.content.Context;
-import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.io.File;
-import java.util.List;
-
-import nl.yoerinijs.notebuddy.R;
 
 /**
  * This class removes text files

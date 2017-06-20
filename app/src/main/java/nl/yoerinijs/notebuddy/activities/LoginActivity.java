@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import nl.yoerinijs.notebuddy.R;
+import nl.yoerinijs.notebuddy.files.misc.LocationCentral;
 import nl.yoerinijs.notebuddy.security.LoginHashCreator;
 import nl.yoerinijs.notebuddy.storage.KeyValueDB;
 
@@ -32,11 +33,11 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String KEY_PASSWORD = "password";
 
-    private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
+    private static final String PACKAGE_NAME = LocationCentral.PACKAGE;
 
-    private static final String NOTES_ACTIVITY = "NotesActivity";
+    private static final String NOTES_ACTIVITY = LocationCentral.NOTES;
 
-    private static final String MAIN_ACTIVITY = "MainActivity";
+    private static final String MAIN_ACTIVITY = LocationCentral.MAIN;
 
     private final Context m_context = this;
 

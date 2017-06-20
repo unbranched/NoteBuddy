@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import java.security.NoSuchAlgorithmException;
 
+import nl.yoerinijs.notebuddy.files.misc.LocationCentral;
 import nl.yoerinijs.notebuddy.storage.KeyValueDB;
 
 /**
@@ -12,9 +13,9 @@ import nl.yoerinijs.notebuddy.storage.KeyValueDB;
  */
 public class ActivityChoser {
 
-    private static final String SETUP_ACTIVITY = "SetupActivity";
+    private static final String SETUP_ACTIVITY = LocationCentral.SETUP;
 
-    private static final String LOGIN_ACTIVITY = "LoginActivity";
+    private static final String LOGIN_ACTIVITY = LocationCentral.LOGIN;
 
     /**
      * A method that returns which activity to start

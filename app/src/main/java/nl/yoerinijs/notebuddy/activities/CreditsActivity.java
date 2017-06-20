@@ -10,15 +10,16 @@ import android.widget.TextView;
 
 import nl.yoerinijs.notebuddy.R;
 import nl.yoerinijs.notebuddy.credits.CreditsBuilder;
+import nl.yoerinijs.notebuddy.files.misc.LocationCentral;
 
 /**
  * A simple activity to display credits
  */
 public class CreditsActivity extends AppCompatActivity {
 
-    private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
+    private static final String PACKAGE_NAME = LocationCentral.PACKAGE;
 
-    private static final String NOTES_ACTIVITY = "NotesActivity";
+    private static final String NOTES_ACTIVITY = LocationCentral.NOTES;
 
     private Context m_context = this;
 

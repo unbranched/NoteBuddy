@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import nl.yoerinijs.notebuddy.R;
+import nl.yoerinijs.notebuddy.files.misc.LocationCentral;
 import nl.yoerinijs.notebuddy.files.text.TextfileReader;
 import nl.yoerinijs.notebuddy.files.text.TextfileRemover;
 import nl.yoerinijs.notebuddy.files.text.TextfileWriter;
@@ -26,9 +27,9 @@ import nl.yoerinijs.notebuddy.validators.NoteTitleValidator;
  */
 public class EditNoteActivity extends AppCompatActivity {
 
-    private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
+    private static final String PACKAGE_NAME = LocationCentral.PACKAGE;
 
-    private static final String NOTES_ACTIVITY = "NotesActivity";
+    private static final String NOTES_ACTIVITY = LocationCentral.NOTES;
 
     private final Context m_context = this;
 

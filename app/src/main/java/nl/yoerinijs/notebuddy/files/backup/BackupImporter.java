@@ -1,15 +1,20 @@
 package nl.yoerinijs.notebuddy.files.backup;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-
-import org.w3c.dom.Text;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.yoerinijs.notebuddy.R;
+import nl.yoerinijs.notebuddy.activities.LoginActivity;
 import nl.yoerinijs.notebuddy.files.misc.DirectoryReader;
+import nl.yoerinijs.notebuddy.files.misc.LocationCentral;
 import nl.yoerinijs.notebuddy.files.text.TextfileReader;
 import nl.yoerinijs.notebuddy.files.text.TextfileRemover;
 import nl.yoerinijs.notebuddy.files.text.TextfileWriter;
@@ -19,13 +24,23 @@ import nl.yoerinijs.notebuddy.files.text.TextfileWriter;
  */
 public class BackupImporter {
 
+    private static final String PACKAGE_NAME = LocationCentral.PACKAGE;
+
+    private static final String NOTES_ACTIVITY = LocationCentral.NOTES;
+
     private final static String TEMP_NAME = "TEMP";
 
-    private static String m_backupLocationString;
+    private String m_backupLocationString;
 
     private BackupStorageHandler m_backupStorageHandler = new BackupStorageHandler();
 
     private BackupCreator m_backupCreator = new BackupCreator();
+
+    private String m_password;
+
+    private Context m_context;
+
+    private ProgressDialog m_dialog;
 
     /**
      * Imports external notes. Returns true if everything went well.
@@ -33,18 +48,24 @@ public class BackupImporter {
      * @param context
      * @return
      */
-    public boolean areNotesImported(@NonNull String password, @NonNull Context context) {
+    public void importExternalNotes(@NonNull String password, @NonNull Context context) {
         if(!m_backupStorageHandler.isExternalStorageWritable()) {
-            return false;
+            return;
         }
+
         if(getNumberOfFilesInDir(context) <= 0) {
-            return false;
+            return;
         }
-        try {
-            return areNotesImported(context, password);
-        } catch (Exception e) {
-            return false;
+
+        if(getExternalNotes() == null || getExternalNotes().size() <= 0) {
+            return;
         }
+
+        m_password = password;
+        m_context = context;
+
+        ImportNotes importNotes = new ImportNotes();
+        importNotes.execute();
     }
 
     /**
@@ -75,38 +96,52 @@ public class BackupImporter {
         return cleanListOfExternalNotes;
     }
 
-    /**
-     * This imports all external notes. Should return true.
-     * @param context
-     * @param password
-     * @return
-     * @throws Exception
-     */
-    private boolean areNotesImported(@NonNull Context context, @NonNull String password) throws Exception {
-        final List<String> externalNotes = getExternalNotes();
-        if(externalNotes == null || externalNotes.size() <= 0) {
-            return false;
+    private class ImportNotes extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            try {
+                TextfileReader textfileReader = new TextfileReader();
+                TextfileWriter textfileWriter = new TextfileWriter();
+
+                int counter = 0;
+                for(String noteName : getExternalNotes()) {
+                    String noteContent = textfileReader.getText(m_backupLocationString, noteName, m_password, m_context, false);
+                    if(!noteContent.isEmpty()) {
+                        if(isEncrypted(noteContent)) {
+                            final String tempNoteName = getTempNoteName(noteName);
+                            textfileWriter.writeExternalFile(new File(m_backupStorageHandler.getStorageDir(m_context) + "/" + tempNoteName), cleanNoteContent(noteContent));
+                            noteContent = textfileReader.getText(m_backupLocationString, tempNoteName, m_password, m_context, true);
+                            TextfileRemover.deleteFile(m_backupLocationString, tempNoteName);
+                        }
+                    }
+                    if(noteName.contains(BackupCreator.BACKUP_FILE_EXT)) {
+                        noteName = noteName.replace("." + BackupCreator.BACKUP_FILE_EXT, "");
+                    }
+                    textfileWriter.writeFile(m_context, noteName, noteContent, m_password);
+                    m_dialog.setProgress(++counter);
+                }
+            } catch (Exception e) {
+                return Boolean.FALSE;
+            }
+            return Boolean.TRUE;
         }
 
-        TextfileReader textfileReader = new TextfileReader();
-        TextfileWriter textfileWriter = new TextfileWriter();
-        TextfileRemover textfileRemover = new TextfileRemover();
-        for(String noteName : externalNotes) {
-            String noteContent = textfileReader.getText(m_backupLocationString, noteName, password, context, false);
-            if(!noteContent.isEmpty()) {
-                if(isEncrypted(noteContent)) {
-                    final String tempNoteName = getTempNoteName(noteName);
-                    textfileWriter.writeExternalFile(new File(m_backupStorageHandler.getStorageDir(context) + "/" + tempNoteName), cleanNoteContent(noteContent));
-                    noteContent = textfileReader.getText(m_backupLocationString, tempNoteName, password, context, true);
-                    textfileRemover.deleteFile(m_backupLocationString, tempNoteName);
-                }
-            }
-            if(noteName.contains(BackupCreator.BACKUP_FILE_EXT)) {
-                noteName = noteName.replace("." + BackupCreator.BACKUP_FILE_EXT, "");
-            }
-            textfileWriter.writeFile(context, noteName, noteContent, password);
+        @Override
+        protected void onPreExecute() {
+            m_dialog = new ProgressDialog(m_context);
+            m_dialog.setCancelable(true);
+            m_dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            m_dialog.setProgress(0);
+            m_dialog.setMax(getExternalNotes().size());
+            m_dialog.show();
         }
-        return true;
+
+        @Override
+        protected void onPostExecute(Boolean isImported) {
+            m_dialog.dismiss();
+            provideImportResult(isImported);
+        }
     }
 
     /**
@@ -148,5 +183,17 @@ public class BackupImporter {
      */
     private String cleanNoteContent(@NonNull String noteContent) {
         return noteContent.replace(m_backupCreator.getBeginEncryptedFile(), "");
+    }
+
+    /**
+     * Notifies user and ourselves of import result
+     * @param areNotesImported
+     */
+    private void provideImportResult(boolean areNotesImported) {
+        Toast.makeText(m_context, areNotesImported ?  m_context.getResources().getString(R.string.import_success) :  m_context.getResources().getString(R.string.import_error) + ".", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent();
+        intent.setClassName(m_context, PACKAGE_NAME + "." + NOTES_ACTIVITY);
+        intent.putExtra(LoginActivity.KEY_PASSWORD, m_password);
+        m_context.startActivity(intent);
     }
 }

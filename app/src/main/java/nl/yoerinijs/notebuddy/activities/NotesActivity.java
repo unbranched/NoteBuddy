@@ -32,6 +32,7 @@ import nl.yoerinijs.notebuddy.files.backup.BackupCreator;
 import nl.yoerinijs.notebuddy.files.backup.BackupImporter;
 import nl.yoerinijs.notebuddy.files.backup.BackupStorageHandler;
 import nl.yoerinijs.notebuddy.files.misc.DirectoryReader;
+import nl.yoerinijs.notebuddy.files.misc.LocationCentral;
 import nl.yoerinijs.notebuddy.files.text.TextfileReader;
 import nl.yoerinijs.notebuddy.files.text.TextfileRemover;
 import nl.yoerinijs.notebuddy.storage.KeyValueDB;
@@ -46,17 +47,17 @@ public class NotesActivity extends AppCompatActivity
 
     public static final String KEY_NOTE_TITLE = "title";
 
-    private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
+    private static final String PACKAGE_NAME = LocationCentral.PACKAGE;
 
-    private static final String NOTES_ACTIVITY = "NotesActivity";
+    public static final String NOTES_ACTIVITY = LocationCentral.NOTES;
 
-    private static final String LOGIN_ACTIVITY = "LoginActivity";
+    private static final String LOGIN_ACTIVITY = LocationCentral.LOGIN;
 
-    private static final String CREDITS_ACTIVITY = "CreditsActivity";
+    private static final String CREDITS_ACTIVITY = LocationCentral.CREDITS;
 
-    private static final String EDIT_NOTE_ACTIVITY = "EditNoteActivity";
+    private static final String EDIT_NOTE_ACTIVITY = LocationCentral.EDIT_NOTE;
 
-    private static final String SETUP_ACTIVITY = "SetupActivity";
+    private static final String SETUP_ACTIVITY = LocationCentral.SETUP;
 
     private final Context m_context = this;
 
@@ -67,8 +68,6 @@ public class NotesActivity extends AppCompatActivity
     private String m_password;
 
     private TextfileReader m_textFileReader;
-
-    private BackupImporter m_backupImporter;
 
     private BackupStorageHandler m_backupStorageHandler;
 
@@ -84,7 +83,6 @@ public class NotesActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         m_password = getIntent().getStringExtra(LoginActivity.KEY_PASSWORD);
-        m_backupImporter = new BackupImporter();
         m_backupStorageHandler = new BackupStorageHandler();
         m_textFileReader = new TextfileReader();
 
@@ -181,20 +179,23 @@ public class NotesActivity extends AppCompatActivity
                     .setMessage(getString(R.string.dialog_question_store_encrypted))
                     .setPositiveButton(getString(R.string.dialog_answer_encrypt), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            provideBackupResult(backupCreator, backupCreator.isBackupCreated(m_location, m_password, m_context, false), true);
+                            dialog.dismiss();
+                            backupCreator.createBackup(m_location, m_password, m_context, false);
                         }
                     })
                     .setNegativeButton(getString(R.string.dialog_answer_decrypt), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            provideBackupResult(backupCreator, backupCreator.isBackupCreated(m_location, m_password, m_context, true), false);
+                            dialog.dismiss();
+                            backupCreator.createBackup(m_location, m_password, m_context, true);
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
         } else if(id == R.id.nav_import) {
-            Toast.makeText(getApplicationContext(), getString(R.string.import_info) + ".", Toast.LENGTH_SHORT).show();
-            provideImportResult(m_backupImporter.areNotesImported(m_password, m_context));
+            Toast.makeText(getApplicationContext(), getString(R.string.import_info) + ".", Toast.LENGTH_LONG).show();
+            BackupImporter backupImporter = new BackupImporter();
+            backupImporter.importExternalNotes(m_password, m_context);
 
         } else if(id == R.id.nav_clear) {
             new AlertDialog.Builder(m_context)
@@ -257,30 +258,6 @@ public class NotesActivity extends AppCompatActivity
         Toast.makeText(getApplicationContext(), getString(R.string.backup_ext_cleared) + ".", Toast.LENGTH_LONG).show();
         Toast.makeText(getApplicationContext(), numberOfFilesInDir == 1 ? numberOfFilesInDir + " " + getString(R.string.backup_number_deleted_singular).toLowerCase() + "." :
                 numberOfFilesInDir + " " + getString(R.string.backup_number_deleted_plural).toLowerCase() + "." , Toast.LENGTH_LONG).show();
-    }
-
-    /**
-     * Notifies user and ourselves of backup result
-     * @param isBackupCreated
-     */
-    private void provideBackupResult(BackupCreator backupCreator, boolean isBackupCreated, boolean areNotesEncrypted) {
-        final String notesEncrypted = areNotesEncrypted ? "(" + getString(R.string.backup_encrypted).toLowerCase() + ")" : "(" + getString(R.string.backup_decrypted).toLowerCase() + ")";
-        Toast.makeText(getApplicationContext(), isBackupCreated ? getString(R.string.backup_success) + " " + backupCreator.getBackupLocation() + " " + notesEncrypted : getString(R.string.backup_error) + ".", Toast.LENGTH_LONG).show();
-        if(isBackupCreated) {
-            final int numberOfNotes = backupCreator.getNumberOfNotes();
-            Toast.makeText(getApplicationContext(), numberOfNotes + " " + (numberOfNotes <= 1 ? getString(R.string.backup_number_created_singular).toLowerCase() + "." : getString(R.string.backup_number_created_plural).toLowerCase() + "."), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    /**
-     * Notifies user and ourselves of import result
-     * @param areNotesImported
-     */
-    private void provideImportResult(boolean areNotesImported) {
-        Toast.makeText(getApplicationContext(), areNotesImported ? getString(R.string.import_success) : getString(R.string.import_error) + ".", Toast.LENGTH_LONG).show();
-        if(areNotesImported) {
-            startActvitiy(NOTES_ACTIVITY, true, null, null);
-        }
     }
 
     /**

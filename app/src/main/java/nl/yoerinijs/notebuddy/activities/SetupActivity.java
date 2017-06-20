@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import nl.yoerinijs.notebuddy.R;
+import nl.yoerinijs.notebuddy.files.misc.LocationCentral;
 import nl.yoerinijs.notebuddy.security.LoginHashCreator;
 import nl.yoerinijs.notebuddy.security.SaltHandler;
 import nl.yoerinijs.notebuddy.storage.KeyValueDB;
@@ -32,9 +33,9 @@ import nl.yoerinijs.notebuddy.validators.UsernameValidator;
  */
 public class SetupActivity extends AppCompatActivity {
 
-    private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
+    private static final String PACKAGE_NAME = MainActivity.PACKAGE_NAME;
 
-    private static final String NOTES_ACTIVITY = "NotesActivity";
+    private static final String NOTES_ACTIVITY = LocationCentral.NOTES;
 
     private final Context m_context = this;
 

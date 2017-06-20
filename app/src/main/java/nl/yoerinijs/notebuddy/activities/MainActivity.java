@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import nl.yoerinijs.notebuddy.R;
+import nl.yoerinijs.notebuddy.files.misc.LocationCentral;
 import nl.yoerinijs.notebuddy.helpers.ActivityChoser;
 
 /**
@@ -16,11 +17,11 @@ import nl.yoerinijs.notebuddy.helpers.ActivityChoser;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private static final String PACKAGE_NAME = "nl.yoerinijs.notebuddy.activities";
+    public static final String PACKAGE_NAME = LocationCentral.PACKAGE;
 
-    private static final String LOGIN_ACTIVITY = "LoginActivity";
+    private static final String LOGIN_ACTIVITY = LocationCentral.LOGIN;
 
-    private static final String NOTES_ACTIVITY = "NotesActivity";
+    private static final String NOTES_ACTIVITY = LocationCentral.NOTES;
 
     private static final String LOG_TAG = "Main Activity";
 

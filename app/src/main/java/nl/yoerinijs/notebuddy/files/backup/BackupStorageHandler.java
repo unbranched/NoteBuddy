@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import java.io.File;
 
 import nl.yoerinijs.notebuddy.files.misc.DirectoryReader;
+import nl.yoerinijs.notebuddy.files.misc.LocationCentral;
 import nl.yoerinijs.notebuddy.files.text.TextfileRemover;
 
 /**
@@ -19,7 +20,7 @@ import nl.yoerinijs.notebuddy.files.text.TextfileRemover;
  */
 public class BackupStorageHandler {
 
-    private final static String BACKUP_DIRECTORY = "NoteBuddy";
+    private final static String BACKUP_DIRECTORY = LocationCentral.BACKUP_DIR;
 
     /**
      * Returns whether external storage is writable
