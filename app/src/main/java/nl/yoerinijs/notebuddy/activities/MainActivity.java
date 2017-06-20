@@ -17,7 +17,7 @@ import nl.yoerinijs.notebuddy.helpers.ActivityChoser;
  */
 public class MainActivity extends AppCompatActivity {
 
-    public static final String PACKAGE_NAME = LocationCentral.PACKAGE;
+    private static final String PACKAGE_NAME = LocationCentral.PACKAGE;
 
     private static final String LOGIN_ACTIVITY = LocationCentral.LOGIN;
 
