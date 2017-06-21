@@ -59,7 +59,8 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/noteTitle"
-        android:hint="@string/prompt_note_title" />
+        android:hint="@string/prompt_note_title"
+        android:backgroundTint="@android:color/background_light" />
 
     <EditText
         android:layout_width="match_parent"
@@ -69,7 +70,8 @@
         android:ems="10"
         android:id="@+id/noteText"
         android:hint="@string/prompt_note_body"
-        android:singleLine="false" />
+        android:singleLine="false"
+        android:backgroundTint="@android:color/background_light" />
 
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
@@ -82,5 +84,12 @@
         app:srcCompat="@drawable/ic_share_black_24dp"
         android:id="@+id/shareButton"
         app:backgroundTint="@color/colorPrimaryDark" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/edittest">
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

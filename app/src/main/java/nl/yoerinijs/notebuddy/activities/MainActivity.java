@@ -1,10 +1,15 @@
 package nl.yoerinijs.notebuddy.activities;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import nl.yoerinijs.notebuddy.R;

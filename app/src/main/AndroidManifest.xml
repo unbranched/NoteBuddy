@@ -43,10 +43,6 @@
             android:label="@string/title_activity_create_note"
             android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.ColorActivity"
-            android:label="@string/title_activity_color"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

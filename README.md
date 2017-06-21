@@ -13,16 +13,18 @@ To use NoteBuddy, one must setup a simple user account (username and password wi
 NoteBuddy was a project to learn how to code in Android. However, due the fact learning is fun, the app will be extended in the following time. Obviously, all help will be appreciated!
 
 # Todo
+- Assing some search functionality;
 - Implement unit tests;
-- Do some code reviewing;
 - The possibility to work with multiple user accounts;
 - Come up with the possibility to hash keys in Android's in shared preferences.
 
 # Done
 - Add some (external) back-up functionality;
-- Better check for password hash. 
+- Better check for password hash;
+- Do some code reviewing.
 
 # Changes
+- Version 1.3.0: Major code refactoring. Furthermore, it is possible to follow backup progresses now due to new progress bars. And, finally, there is a feedback button in the menu;
 - Version 1.2.2: Fixed a bug that prevented to backup files correctly;
 - Version 1.2.1: Bugfix and possibility added to clear external backup storage, so it is not necessary to use another file browser to do this;
 - Version 1.2.0: Major improvements added. Primarily, the initial version of some external back-up functionality is introduced. It has been chosen to simply copy the encrypted or decrypted notes, and not to support Google, Dropbox, or whatsoever due to privacy concerns. Users can copy the notes to external backup services themselves, if wanted. Secondly, the setup now validates the password, so it should be impossible to make a mistake. Lastly, some dialog language is changed and a new introduction text is added to the NotesActivity;

@@ -3,6 +3,7 @@ package nl.yoerinijs.notebuddy.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -59,7 +60,7 @@ public class NotesActivity extends AppCompatActivity
 
     private static final String SETUP_ACTIVITY = LocationCentral.SETUP;
 
-    private static final String COLOR_ACTIVITY = LocationCentral.COLOR;
+    private static final String WEB_ISSUES = LocationCentral.ISSUES;
 
     private final Context m_context = this;
 
@@ -221,8 +222,9 @@ public class NotesActivity extends AppCompatActivity
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
 
-        } else if(id == R.id.nav_color) {
-            startActvitiy(COLOR_ACTIVITY, true, null, null);
+        } else if(id == R.id.nav_feedback) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(WEB_ISSUES));
+            startActivity(browserIntent);
 
         } else if(id == R.id.nav_clear_ext) {
             m_backupStorageHandler.requestWritingPermissions(m_context);

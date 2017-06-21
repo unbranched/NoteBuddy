@@ -1,6 +1,7 @@
 package nl.yoerinijs.notebuddy.security;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import java.security.GeneralSecurityException;

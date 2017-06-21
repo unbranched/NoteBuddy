@@ -21,6 +21,5 @@ public class LocationCentral {
 
     public static final String SETUP = "SetupActivity";
 
-    public static final String COLOR = "ColorActivity";
-
+    public static final String ISSUES = "https://github.com/YoeriNijs/NoteBuddy/issues";
 }

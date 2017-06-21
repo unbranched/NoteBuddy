@@ -94,7 +94,7 @@
     <string name="menu_import">Importeer back-up</string>
     <string name="menu_clear">Verwijder alle notities</string>
     <string name="menu_clear_ext">Schoon back-upruimte op</string>
-    <string name="menu_color">Verander kleur</string>
+    <string name="menu_feedback">Feedback</string>
 
     <!-- Strings related to login -->
     <string name="prompt_username">Gebruikersnaam</string>

@@ -22,9 +22,9 @@
         <item android:title="@string/menu_remove_everything"
             android:id="@+id/nav_erase"
             android:icon="@drawable/ic_clear_black_24dp" />
-        <item android:title="@string/menu_color"
-            android:id="@+id/nav_color"
-            android:icon="@drawable/ic_color_lens_black_24dp" />
+        <item android:title="@string/menu_feedback"
+            android:id="@+id/nav_feedback"
+            android:icon="@drawable/ic_forum_black_24dp" />
         <item android:title="@string/menu_credits"
             android:id="@+id/nav_credits"
             android:icon="@drawable/ic_group_black_24dp" />
