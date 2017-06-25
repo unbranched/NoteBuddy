@@ -37,4 +37,4 @@ NoteBuddy was a project to learn how to code in Android. However, due the fact l
 - Version 1.0.0: Initial release.
 
 # Screenshots
-[Screenshots](https://play.google.com/store/apps/details?id=nl.yoerinijs.notebuddy)
+[Screenshots](https://play.google.com/store/apps/details?id=nl.yoerinijs.nb)
