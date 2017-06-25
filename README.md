@@ -13,7 +13,7 @@ To use NoteBuddy, one must setup a simple user account (username and password wi
 NoteBuddy was a project to learn how to code in Android. However, due the fact learning is fun, the app will be extended in the following time. Obviously, all help will be appreciated!
 
 # Todo
-- Assing some search functionality;
+- Adding some search functionality;
 - Implement unit tests;
 - The possibility to work with multiple user accounts;
 - Come up with the possibility to hash keys in Android's in shared preferences.
