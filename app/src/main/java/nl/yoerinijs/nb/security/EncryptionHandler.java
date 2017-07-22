@@ -24,7 +24,7 @@ public class EncryptionHandler {
      * @return
      * @throws GeneralSecurityException
      */
-    public static String getDerivedKey(@NonNull String password, @NonNull String salt) throws GeneralSecurityException {
+    static String getDerivedKey(@NonNull String password, @NonNull String salt) throws GeneralSecurityException {
         return keyString(createDerivedKey(password, salt));
     }
 

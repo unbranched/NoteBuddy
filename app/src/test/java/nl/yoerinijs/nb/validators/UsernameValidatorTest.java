@@ -1,4 +1,4 @@
-package nl.yoerinijs.nb;
+package nl.yoerinijs.nb.validators;
 
 import android.util.Log;
 
