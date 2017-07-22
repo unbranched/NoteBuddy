@@ -36,5 +36,8 @@ NoteBuddy was a project to learn how to code in Android. However, due the fact l
 - Version 1.0.1: due a bug it was possible that one was not able to login. Fixed;
 - Version 1.0.0: Initial release.
 
+# Known issues
+- Somehow, when the app is installed via F-Droid, the accent color is not always visible in the activities (e.g. when one is clicking on the title area when creating a note). Till now it is impossible to reproduce the problem during development.
+
 # Screenshots
 [Screenshots](https://play.google.com/store/apps/details?id=nl.yoerinijs.nb)
