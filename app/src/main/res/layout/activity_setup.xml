@@ -58,7 +58,8 @@
                     android:imeActionLabel="@string/action_login"
                     android:imeOptions="actionUnspecified"
                     android:maxLines="1"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:importantForAccessibility="no" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -70,6 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
+                    android:importantForAccessibility="no"
                     android:ems="10"
                     android:id="@+id/passwordCheck"
                     android:hint="@string/action_provide_password_check"
