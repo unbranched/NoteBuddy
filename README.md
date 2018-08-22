@@ -24,7 +24,7 @@ NoteBuddy was a project to learn how to code in Android. However, due the fact l
 - Did some major code refactoring.
 
 # Changes
-- Version 1.3.2: Fixed [NB-1000](https://github.com/YoeriNijs/NoteBuddy/issues/7)
+- Version 1.3.2: Fixed [NB-1000](https://github.com/YoeriNijs/NoteBuddy/issues/7);
 - Version 1.3.1: Minor security fix, see [pull request](https://github.com/YoeriNijs/NoteBuddy/pull/5);
 - Version 1.3.0: Major code refactoring. Furthermore, it is possible to follow backup progresses now due to new progress bars. And, finally, there is a feedback button in the menu;
 - Version 1.2.2: Fixed a bug that prevented to backup files correctly;
