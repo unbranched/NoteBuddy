@@ -31,11 +31,17 @@ public class BackupStorageHandler {
     }
 
     /**
-     * Returns the backup directory as String
+     * Returns the backup directory as String.
+     * If it does not exist, this will create the directory
+     * automatically.
      * @return
      */
     public String getBackupDirectory() {
-        return Environment.getExternalStorageDirectory().getPath() + "/" + BACKUP_DIRECTORY + "/";
+        File dir = new File(Environment.getExternalStorageDirectory(), BACKUP_DIRECTORY);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        return dir.getPath();
     }
 
     /**

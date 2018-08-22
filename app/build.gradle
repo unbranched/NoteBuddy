@@ -8,8 +8,8 @@ android {
             applicationId "nl.yoerinijs.nb"
             minSdkVersion 24
             targetSdkVersion 25
-            versionCode 16
-            versionName "1.3.1"
+            versionCode 17
+            versionName "1.3.2"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
             vectorDrawables.useSupportLibrary = true
         }
@@ -17,8 +17,8 @@ android {
             applicationId "nl.yoerinijs.notebuddy"
             minSdkVersion 24
             targetSdkVersion 25
-            versionCode 16
-            versionName "1.3.1"
+            versionCode 17
+            versionName "1.3.2"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
             vectorDrawables.useSupportLibrary = true
         }
