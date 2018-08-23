@@ -9,6 +9,9 @@ To use NoteBuddy, one must setup a simple user account (username and password wi
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="100"/></a> 
 <a href='https://play.google.com/store/apps/details?id=nl.yoerinijs.nb'><img alt='Get it on Google Play' height="100" src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
+# Frequently asked questions
+See our [frequently asked questions](https://github.com/YoeriNijs/NoteBuddy/blob/master/FAQ.md) by [omideleayo](https://github.com/omideleayo).
+
 # Help wanted
 NoteBuddy was a project to learn how to code in Android. However, due the fact learning is fun, the app will be extended in the following time. Obviously, all help will be appreciated!
 
