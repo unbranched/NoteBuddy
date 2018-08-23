@@ -28,6 +28,7 @@ See [here](https://github.com/tozny/java-aes-crypto) for Tozny AES algorithm.
 Advanced Encryption Standard (AES) is a **symmetric-key algorithm** which implies the use of the same key for both encrypting and decrypting data.
 
 #### On which Android versions does NoteBuddy work?
+
 No, NoteBuddy is a note App available for devices running on Android 6.0 and above.
 
 #### What permission does NoteBuddy require?
