@@ -1,88 +1,61 @@
 # NoteBuddy FAQs
 
+Welcome to the FAQs section of NoteBuddy. This document is available to assist new and existing users of NoteBuddy to navigate easily on NoteBuddy.
 
-Welcome to the FAQs section of NoteBuddy.
-This document is available to assist new and existing users of NoteBuddy to navigate easily on NoteBuddy.
-Why the name NoteBuddy?
-NoteBuddy sounds cool and shows having a friend to help create notes, store, and save notes for future reference.
+#### Why the name NoteBuddy?
+NoteBuddy just sounds cool and, moreover, is a friendly tool that helps to create, store and maintain notes for future references.
 
 #### How do I start making notes on NoteBuddy?
+Once the user is logged in, he or she can click on the pencil icon at the bottom right of the screen. Subsequently, the user is able to insert the preferred note and the note title in the respective boxes. The title helps users to scroll through the note list with ease.
 
-Once you are logged in, click on the pencil icon at the bottom right of the screen, input the preferred title of your note, (this help users scroll through the note list).
-Type or paste words in the **Note** box.
-You can paste notes from anywhere on your device into your NoteBuddy notes.
-Select the save icon at the bottom right this automatically saves the notes.
+You can paste notes from anywhere on your device into your NoteBuddy notes. Select the save icon at the bottom right this automatically saves the notes.
 
 #### How do I backup my notes?
-
-Click on the menu icon at the top left of the screen and select **create backup**. 
-Then select either **decrypted** or **encrypted**, and a backup file would be generated depending on your selection.
+Click on the menu icon at the top left of the screen and select **create backup**. Then select either **decrypted** or **encrypted**, and a backup file would be generated depending on your selection.
 
 #### NoteBuddy uses what sort of encryption algorithm?
-
-NoteBuddy uses the Advanced Encryption Standard (AES)algorithm implemented by Tozny's for encryption and decryption of data.
-See [here](https://github.com/tozny/java-aes-crypto) for Tozny AES algorithm.
+NoteBuddy uses the Advanced Encryption Standard (AES) algorithm implementation by Tozny's for encryption and decryption of data.
+Click [here](https://github.com/tozny/java-aes-crypto) to read more about Tozny's AES algorithm.
 
 #### Which encryption algorithm does NoteBuddy use?
-
-Advanced Encryption Standard (AES) is a **symmetric-key algorithm** which implies the use of the same key for both encrypting and decrypting data.
+Advanced Encryption Standard (AES) is a **symmetric-key algorithm**, which implies the use of the same key for both encrypting and decrypting data.
 
 #### On which Android versions does NoteBuddy work?
-
-No, NoteBuddy is a note App available for devices running on Android 6.0 and above.
+NoteBuddy is a note app that is available for all devices that are running on Android 6.0 and above.
 
 #### What permission does NoteBuddy require?
-
 NoteBuddy only requires read and write access to your device storage.
 
-#### Where is my NoteBuddy login details stored?
-
-For now, login details are stored in Android shared preferences.
-However, in the future SQLite would be used for the login database.
+#### Where are my NoteBuddy login details stored?
+For now, login details, such as the username, salts and user preferences, are stored in Android shared preferences. However, in the future, SQLite might be used. Please note: NoteBuddy **does not** store the password; the application uses password key derivation.
 
 #### What is the minimum password length on NoteBuddy?
+The minimum password length required by NoteBuddy is six (6), although the recommendend password length is eight (8).
 
-The minimum password length required by NoteBuddy is six (6)
-
-#### What mixtures of characters are viable for use as NoteBuddy password?
-
+#### What mixtures of password characters are viable?
 NoteBuddy allows users to use the mixture of numbers, letters, and symbols for a stronger password.
 
 #### How do I change my NoteBuddy password?
-
-First, you need to make a backup of your notes.
-Then, click the menu button at the top left of the screen and select **reset NoteBuddy**.
-Warning: This process deletes all your notes
-A password setup page will appear, where you fill in your new details and click done.
-Click on the menu button at the top left of the screen and select **Import backed up notes**, this would restore your deleted notes back into NoteBuddy.
-A more efficient process would be available in coming updates.
+First, you need to make an unencrypted backup of your notes, because with encryption enabled it is not possible to read the notes with a new password. Next, click the menu button at the top left of the screen and select **reset NoteBuddy**. Warning: this process deletes all your notes. A password setup page will appear, where you fill in your new details and click done.
+Click on the menu button at the top left of the screen and select **Import backed up notes**, this would restore your deleted notes. In the future, a more efficient process will become available.
 
 #### What do I have to do when I have forgotten my password and cannot log in anymore?
+In this case, the only option you have is to reinstall the app to gain access to NoteBuddy. Warning: this process deletes all your saved notes. 
 
-In this case, you can only reinstall the app to gain access to NoteBuddy.
-Warning: This process deletes all your saved notes.
-It’s important you back up your notes after each saves. A less painstaking option would be made available in the future.
-
-#### Do I need to pay any fee to use any feature on NoteBuddy?
-
-NoteBuddy is an open source project, and free to use.
-However, you can support the project via developing more features.
-Feel free to make a pull. 
+#### I like this app, how can I help?
+NoteBuddy is an open source project, and free to use. You can support the project via developing more features. Feel free to make a pull request. 
 
 #### Are my notes accessible to the developer?
-
 No, NoteBuddy does not collect any user data.
 
 #### Where can I download NoteBuddy?
-
-NoteBuddy is available for download on Google Play store and F-droid.
+NoteBuddy is available in Google Play and F-droid.
 
 #### Need to contact the developer?	
+Click the menu button at the top left of NoteBuddy's screen and select **feedback**.
 
-Click the menu button at the top left of the screen and select **feedback**.
+NoteBuddy is an app under development, with more exciting features to be added to enhance user’s experience.
+This document would be updated from time to time, whenever new changes or implementations are made to the software, to help users navigate easily and better with new updates. For further inquiries, you can contact the developer via the issue section [here]( https://github.com/YoeriNijs/NoteBuddy/issues)
 
-
-NoteBuddy is an App under development, with more exciting features to be added to enhance user’s experience.
-This document would be updated from time to time, whenever new changes or implementations are made to the software, to help users navigate easily and better with new updates.
-For further inquiries, you can contact the developer via the issue section [here]( https://github.com/YoeriNijs/NoteBuddy/issues)
-
+### Credits
+This document is provided by [omideleayo](https://github.com/omideleayo).
